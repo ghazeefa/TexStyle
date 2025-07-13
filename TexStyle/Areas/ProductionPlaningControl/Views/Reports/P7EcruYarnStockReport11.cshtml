@@ -1,0 +1,263 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.Reports.P7EcruYarnStockReportViewModel>
+@{
+    ViewData["Title"] = "Ecru Fabric PO-Wise Stock Report";
+    Layout = "_LayoutPrint";
+    var noData = "No Data Available";
+    var abc = @ViewBag.Message;
+    decimal totalkgs = 0;
+}
+
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .borders > tbody > tr > td, .borders > thead > tr > td {
+        border: 1px solid black !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }
+</style>
+@if (Model.Count() > 0)
+{
+
+
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+                <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+                    <p>@Model.FirstOrDefault().CompanyBranch</p>
+                </div>}
+        </div>
+        <div class="text-center" style=" line-height:10px;float:right">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                D-2
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <div class="table-responsive">
+        <table class="table table-responsive" style="line-height:5px; letter-spacing:1; font-family: 'Trebuchet MS','Lucida Grande', Arial, sans-serif; font-size:10px;">
+
+            <thead>
+                <tr class="report-detailheader">
+                    <th>Party</th>
+                    <th>IGPDate</th>
+                    <th>IGP</th>
+
+                    @if (Model.FirstOrDefault().IsYarn == true)
+                    {
+                        <th>YarnType</th>
+                        <th>YarnQuality</th>
+                        <th width="7%">YManufacturer</th>
+                        <th>Bags</th>
+                    }
+                    else
+                    {
+                        <th>IGPReff</th>
+                        <th>Buyer</th>
+                        <th>PO.No</th>
+                        <th>FabricType</th>
+                        <th>FabricQuality</th>
+                        <th width="7%">Knitter</th>
+                        <th width="7%">RollCount</th>
+
+                        <th>Dia</th>
+                        <th>GSM</th>
+
+                    }
+
+
+
+                    <th>NetKgs</th>
+                    <th>PlannedKgs</th>
+
+                    @if (Model.FirstOrDefault().IsYarn == false)
+                    {
+
+                        <th>IssuedKgs</th>
+                        <th>FinishingKgs</th>
+                    }
+
+
+
+
+
+                    <th>ReturnedKgs</th>
+                    <th>InStockKgs</th>
+                    <th></th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var grp in Model)
+                {
+
+                    <tr>
+                        <td colspan="11" style="font-size:larger">
+
+                            <strong>@grp.Date</strong>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    @foreach (var detail in grp.P7EcruYarnStockReportDetailViewModel.OrderBy(c => c.Buyer).ThenBy(c => c.FabricType))
+                    {
+                        <tr style="line-height:30px; border:1px solid black">
+                            <td>
+                            </td>
+                            <td>
+                                @detail.Date
+                            </td>
+                            <td>
+                                @detail.No
+                            </td>
+                            @if (detail.IsYarn == true)
+                            {
+                                <td>
+                                    @detail.YarnType
+                                </td>
+                                <td>
+                                    @detail.YarnQuality
+                                </td>
+                                <td>
+                                    @detail.YarnManufacturer
+                                </td>
+                                <td>
+                                    @detail.Bags
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @detail.GateReffId
+                                </td>
+                                <td>
+                                    @detail.Buyer
+                                </td>
+                                <td>
+                                    @detail.BuyerPO
+                                </td>
+                                <td>
+                                    @detail.FabricType
+                                </td>
+                                <td>
+                                    @detail.FabricQuality
+                                </td>
+
+                                <td>
+                                    @detail.Knitter
+                                </td>
+                                <td>
+                                    @detail.NoOfRolls
+                                </td>
+                                <td>
+                                    @detail.Dia
+                                </td>
+                                <td>
+                                    @detail.GSM
+                                </td>
+
+
+                            }
+
+                            <td>
+                                @detail.NetKgs
+                            </td>
+                            <td>
+                                @detail.DyedKgs
+                            </td>
+
+                            @if (detail.IsYarn == false)
+                            {
+
+                                <td>
+                                    @detail.IssuedKgs
+                                </td>
+                                <td>
+                                    @detail.FinishingKgs
+                                </td>
+                            }
+                            <td>
+                                @detail.ReturnedKgs
+                            </td>
+                            <td>
+                                @detail.InStockKgs
+                                @{
+                                    totalkgs = totalkgs + detail.InStockKgs;
+                                }
+                            </td>
+
+
+
+                            <td>
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+
+                </tr>
+
+
+            </tfoot>
+        </table>
+
+
+        <table class="table table-responsive" style="line-height:5px; letter-spacing:1; font-family: 'Trebuchet MS','Lucida Grande', Arial, sans-serif; font-size:10px;">
+
+
+            <tr style="line-height:30px; border:1px solid black">
+
+
+                <td style="line-height: 30px; border-right: 1px solid black; font-family: serif; font-size: 30px">
+                    <strong>
+                        Total Kgs In Stock :
+                    </strong>
+                </td>
+
+                <td style="line-height:30px; border:1px solid black; font-family:serif; font-size: 30px">
+                    <strong>
+                        @*@Model.FirstOrDefault().TotalSum*@
+                        @totalkgs
+                    </strong>
+                </td>
+
+
+
+            </tr>
+
+
+        </table>
+
+
+
+    </div>
+
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>
+}

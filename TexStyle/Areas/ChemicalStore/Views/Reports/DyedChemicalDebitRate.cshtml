@@ -1,0 +1,118 @@
+﻿@model IEnumerable<TexStyle.ViewModels.CS.Reports.DyeChemicalDetail_C7ViewModel>
+@{ ViewData["Title"] = "Dye & Chemical Purchase Rate Detail";
+    Layout = "_LayoutPrint"; }
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+
+
+
+@if (Model.Count() > 0)
+{
+
+<div class="container">
+    <div class="text-center" style=" line-height:16px;">
+        <div style="text-align:end; font-weight:bold; font-size:22px;">
+            <p>@Model.FirstOrDefault().CompanyName</p>
+        </div>
+        @if (Model.FirstOrDefault().CompanyBranch != null)
+        {
+<div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+    <p>@Model.FirstOrDefault().CompanyBranch</p>
+</div>}
+    </div>
+    <div class="text-center" style=" line-height:10px;float:right">
+        <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            Report No.
+        </div>
+        <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            C12
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="w-100 text-center" style="margin-top:-110px">
+            <h4>@ViewData["Title"]</h4>
+            Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+        </div>
+    </div>
+
+</div><br/>
+                <div class="table-responsive" style="margin-left:60px;">
+                    <table class="table table-responsive">
+
+                        <thead>
+                            <tr class="report-detailheader" style="line-height:30px; border:1px solid black">
+                                <th colspan="2">Item</th>
+                                <th colspan="2">Date</th>
+                                <th>Tr No</th>
+                                <th>TrType</th>
+                                <th>Qty</th>
+                                <th>Rate</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detail in Model)
+                            {
+            <tr>
+                <td colspan="2" class="report-detail-footer" style="font-size:large;line-height:30px; border:1px solid black">
+                    @detail.Name
+                </td>
+                @*<td colspan="6" class="report-detail-footer"></td>*@
+
+            </tr>
+
+                                @foreach (var d in detail.DyeChemicalDetail1_C7ViewModels)
+                                {
+                                    if (d.QtyCr == 0 && d.QtyDr != 0)
+                                    {
+
+
+            <tr style="line-height:30px; border:1px solid black">
+
+                <td colspan="2"></td>
+                <td colspan="2">
+                    @d.TransactionDate.ToString("dd-MMM-yyyy")
+                </td>
+                <td>
+                    @d.Sno
+                </td>
+                <td width="15%">
+                    @d.TypeName
+                </td>
+                <td width="15%">
+                    @d.QtyDr
+                </td>
+
+                <td>
+                    @d.Rate
+                </td>
+            </tr>
+}
+    }}
+
+                        </tbody>
+                        @*<tfoot>
+                                <tr>
+
+                                    <th width="9%">Item</th>
+                                        <th width="9%">Date</th>
+                                        <th width="9%">Tr No</th>
+                                        <th width="9%">TrType</th>
+                                        <th width="9%">Dr</th>
+                                        <th width="9%">Cr</th>
+                                        <th width="9%">Rate</th>
+                                        <th width="9%">Amount</th>
+                                        <th width="9%">Final Qty</th>
+                                        <th width="9%">Final Rate</th>
+                                        <th width="9%">Final Amount</th>
+                                </tr>
+                            </tfoot>*@
+                    </table>
+                </div> }
+            else
+            {
+<h1><center> No Record in Report </center></h1>}

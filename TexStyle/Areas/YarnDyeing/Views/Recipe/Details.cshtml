@@ -1,0 +1,488 @@
+﻿@model Recipe
+@{
+    var title = "Recipe";
+
+
+    //ViewData["Title"] = $"{title} No. {Model.No}";
+
+
+    var AddLPSAction = "/yd/Recipe/AddLPS/";
+    var DeleteLPSAction = "/yd/Recipe/DeleteLPS/";
+    var AddOrUpdateDetailAction = "/yd/Recipe/AddOrUpdateDetail/";
+    var DeleteDetailAction = "/yd/Recipe/DeleteDetail/";
+    var CalculateWeight = "/yd/Recipe/CalculateWeight/";
+    var DeleteAction = "/ppc/IssueNoteDetail/Delete/";
+    var RecipieReportAction = "/yd/Recipe/DyeingRecipe_D2Report/";
+    var CostingRecipieReportAction = "/yd/Recipe/DyeingCostingReport_D5/";
+
+    var WithoutLPSReportAction = "/yd/Recipe/WithoutLPS_D5Report/";
+
+
+    var Header = ViewBag.Header;
+    var LPS = ViewBag.LPS;
+    var Detail = ViewBag.Detail;
+
+
+
+    List<SelectListItem> machineTypeList = ViewBag.machineTypeList;
+}
+
+@if (Model !=null)
+{
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.Something)){<button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW</button>}*@
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="form-horizontal">
+                                    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+                                    @*<input type="hidden" asp-for="Id" />*@
+                                    @*@Html.HiddenFor(m => m.Id)*@
+                                    @*<div class="row">
+                                            <div class="form-group col-4">
+                                                <label  class="control-label"> RecipeNo</label>
+                                                <input readonly="readonly" disabled="disabled" type="text" class="form-control" />
+                                                <span class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label asp-for="Date" class="control-label"></label>
+                                                <input asp-for="Date" readonly="readonly" disabled="disabled" type="date" class="form-control" />
+                                                <span asp-validation-for="Date" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label class="control-label" asp-for="LiquorRate"></label>
+                                                <input asp-for="LiquorRate" readonly="readonly" disabled="disabled" class="form-control" />
+                                                <span asp-validation-for="LiquorRate" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label class="control-label" asp-for="MachineTypeId"></label>
+                                                <select asp-for="MachineTypeId" disabled select2="@(machineTypeList)" select2-ph="Select Machine Type" class="form-control select2"></select>
+                                                <span asp-validation-for="MachineTypeId" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="form-group col-4">
+                                                <label class="control-label" asp-for="Weight"></label>
+                                                <input asp-for="Weight" readonly="readonly" disabled="disabled" class="form-control" />
+                                                <span asp-validation-for="Weight" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label class="control-label" asp-for="Cones"></label>
+                                                <input asp-for="Cones" readonly="readonly" disabled="disabled" class="form-control" />
+                                                <span asp-validation-for="Cones" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group form-check col-4">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @(Model.IsReprocessed == true ? "checked" : "")>
+                                                            <label class="border-checkbox-label" asp-for="IsReprocessed"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-check col-4">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @(Model.IsConfirmed == true ? "checked" : "")>
+                                                            <label class="border-checkbox-label" asp-for="IsConfirmed"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>*@
+
+
+
+
+                                    <table class="table table-striped table-bordered nowrap dataTable" role="grid">
+                                        <thead>
+                                            <tr role="row">
+
+                                                <th class="sorting">Recipe No</th>
+
+                                                <th class="sorting">Date</th>
+                                                <th class="sorting">LiqureRate</th>
+                                                <th class="sorting">MachineType</th>
+                                                @if (Model.IsGarmentPrinting == true)
+                                                {
+                                                    <th class="sorting">Pcs</th>
+                                                }
+                                                else
+                                                {
+                                                    <th class="sorting">Weight</th>
+                                                }
+
+
+                                                <th class="sorting">Cons</th>
+
+
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var c in Header)
+                                            {
+                                            <tr role="row">
+                                                <td>@c.No</td>
+                                                <td>@c.Date</td>
+                                                <td>@c.LiquorRate</td>
+                                                <td>@c.MachineType</td>
+                                                @if (Model.IsGarmentPrinting == true)
+                                                {
+                                                    <td>@c.Pcs</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@c.Weight</td>
+                                                }
+
+                                                <td>@c.Cones</td>
+
+
+
+                                            </tr>
+                                            }
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Details</h5>
+                <div>
+                    @if (Model.IsGarmentPrinting == false)
+                    {
+                        <a href="@CalculateWeight@(Model.Id)" class="btn btn-outline-primary">Calculate Weight</a>
+                    }
+                    @if (Model.IsWithoutLPS == true)
+                    {
+                        <a target="_blank" href="@WithoutLPSReportAction@(Model.Id)" class="btn btn-outline-primary">Print Recipe</a>
+
+
+                    }
+                    else
+                    {
+                        <a target="_blank" href="@RecipieReportAction@(Model.Id)" class="btn btn-outline-primary">Print Recipe</a>
+
+                    }
+                    <a href="@CostingRecipieReportAction@(Model.Id)" class="btn btn-outline-primary">Print Costing Recipe</a>
+
+                    @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_deta))
+        {
+            <a href="@(AddOrUpdateDetailAction)?rId=@(Model.Id)" class="btn btn-primary" data-title="Create @title">ADD NEW</a>
+
+        }*@
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12 m-dT">
+                                @*dataTable*@
+                                <table id="IGPDetailsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Sno</th>
+                                            <th class="sorting">Recipe Step</th>
+                                            <th class="sorting">Dye</th>
+                                            <th class="sorting">Chemical</th>
+                                            <th class="sorting">Water</th>
+                                            <th class="sorting">GPL</th>
+                                            <th class="sorting">% age</th>
+                                            @*<th class="sorting">Store Location</th>*@
+                                            <th class="sorting">Weight</th>
+
+
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Detail)
+                                        {
+                                            <tr role="row" class="@(@c.RecipeStepId == null ? @c.ChemicalId != null ? "table-info" : "table-success" : "table-danger")">
+                                                <td>@c.Sno</td>
+                                                <td>@c.RecipeStep</td>
+                                                <td>@c.Dye</td>
+                                                <td>@c.Chemical</td>
+                                                @if (c.RecipeStepId != null)
+                                                {
+                                                    <td></td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                @if (c.RecipeStepId == null)
+                                                {
+                                                    <td>@c.Gpl</td>
+                                                    <td>@c.Percentage</td>
+                                                    <td>@c.Weight</td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="sorting"></td>
+                                                    <td class="sorting"></td>
+                                                    <td class="sorting"></td>
+                                                }
+
+
+
+                                                <td style="width:150px;">
+
+                                                    @if (Model.IsConfirmed == false)
+                                                    {
+                                                        <a href="@(AddOrUpdateDetailAction)@c.Id?rId=@Model.Id" class="btn btn-primary" data-title="Update @title">Edit</a>
+
+                                                    }
+                                                    @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.recipedeta)){<button class="btn btn-danger item-delete-btn" data-delete-url="@(DeleteDetailAction)@(c.Id)">Delete</button>}*@
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    @*<tfoot>
+                                            <tr role="row">
+                                                <th class="sorting_asc">Return No</th>
+                                                <th class="sorting">Yarn Type</th>
+                                                <th class="sorting">Yarn Quality</th>
+                                                <th class="sorting">Store Location</th>
+                                                <th class="sorting">Kgs</th>
+                                                <th class="sorting">Bags</th>
+                                                <th class="sorting">Issue Xrefrence</th>
+                                                <th class="sorting">Actions</th>
+                                            </tr>
+                                        </tfoot>*@
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@if (Model.IsWithoutLPS == false && LPS.Count > 0)
+{
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>@title @(Model.IsReprocessed ? "Reprocessed" : "") LPSes</h5>
+                    @*@if (Model.IsConfirmed == false)
+                        {*@
+                    <a href="@(AddLPSAction)@Model.Id" class="btn btn-primary" data-title="Create @title">ADD NEW</a>
+
+                </div>
+                <div class="card-block">
+                    <div class="dt-responsive table-responsive">
+                        <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                            <div class="">
+                                <div class="col-xs-12 col-sm-12 m-dT">
+                                    @*dataTable*@
+                                    <table id="" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="simpletable_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting_asc">Id</th>
+                                                <th class="sorting">Recipe No</th>
+                                                @if (Model.IsReprocessed)
+                                                {
+                                                    <th class="sorting">Reprocess No</th>
+
+                                                }
+                                                else
+                                                {
+                                                    <th class="sorting">LPS No</th>
+
+                                                }
+                                                <th class="sorting">Lot No</th>
+                                                <th class="sorting">Party</th>
+
+                                                @if (Model.IsGarmentPrinting == true)
+                                                {
+                                                    <th class="sorting">Pcs</th>
+                                                }
+                                                else
+                                                {
+                                                    <th class="sorting">Weight</th>
+                                                }
+
+                                                @if (Model.IsYarn == true)
+                                                {
+
+                                                    <th class="sorting">Yarn Type</th>
+                                                    //  <th class="sorting">Cones</th>
+
+                                                }
+
+                                                else
+                                                {
+
+                                                    <th class="sorting">Fabric Type</th>
+                                                    //  <th class="sorting">No of Rolls</th>
+                                                }
+
+
+                                                <th class="sorting">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var c in LPS)
+                                            {
+                                            <tr role="row">
+                                                <td>@c.Id</td>
+                                                <td>@c.No</td>
+                                                <td>@c.LPSId</td>
+                                                <td>@c.LotNo</td>
+                                                <td>@c.Party </td>
+
+                                                @if (Model.IsGarmentPrinting == true)
+                                                {
+                                                    <td>@c.Pcs</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@c.Kgs</td>
+                                                }
+
+                                                
+
+
+                                                @if (Model.IsYarn == true)
+                                                {
+
+                                                    <td>@c.YarnType</td>
+                                                    //  <td>@c.LPS?.Cones</td>
+                                                }
+
+                                                else
+                                                {
+                                                    <td>@c.FabricType</td>
+                                                    //<td>@c.LPS?.NoOfRolls</td>
+                                                }
+
+                                                @if (Model.IsConfirmed == false)
+                                                {
+                                                    <td style="width:150px;">
+                                                        <button class="btn btn-danger item-delete-btn" data-delete-url="@(DeleteLPSAction)@(c.Id)">Delete</button>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="width:150px;">
+                                                        <button class="btn btn-danger item-delete-btn" data-delete-url="@(DeleteLPSAction)@(c.Id)" disabled>Delete</button>
+                                                    </td>
+
+                                                }
+                                            </tr>
+                                            }
+                                        </tbody>
+                                        <tfoot>
+                                            <tr role="row">
+                                                <th class="sorting_asc">Id</th>
+                                                <th class="sorting">Recipe No</th>
+                                                @if (Model.IsReprocessed)
+                                                {
+                                                    <th class="sorting">Reprocess No</th>
+
+                                                }
+                                                else
+                                                {
+                                                    <th class="sorting">LPS No</th>
+
+                                                }
+                                                <th class="sorting">Lot No</th>
+                                                <th class="sorting">Party</th>
+                                                <th class="sorting">Weight</th>
+
+
+
+                                                @if (Model.IsYarn == true)
+                                                {
+
+                                                    <th class="sorting">Yarn Type</th>
+                                                    // <th class="sorting">Cones</th>
+
+                                                }
+
+                                                else
+                                                {
+
+                                                    <th class="sorting">Fabric Type</th>
+                                                    // <th class="sorting">No of Rolls</th>
+                                                }
+                                                <th class="sorting">Actions</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+}
+else
+{
+
+    <h1>No LPS Found...</h1>
+
+    @if (Model.IsWithoutLPS == false)
+    {
+        <h6>Click on button below to add LPS</h6>
+        <a href="@(AddLPSAction)@Model.Id" class="btn btn-primary" data-title="Create @title">ADD NEW</a>
+    }
+
+
+
+}
+
+}
+
+else
+{
+
+    <h1>Recipe has no Details to show</h1>
+
+}
+
+
+
+
+
+

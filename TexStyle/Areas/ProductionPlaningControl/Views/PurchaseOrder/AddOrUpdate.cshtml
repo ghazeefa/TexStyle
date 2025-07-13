@@ -1,0 +1,151 @@
+﻿@model TexStyle.ViewModels.PPC.PurchaseOrderViewModel
+@using TexStyle.ViewModels
+@{
+    List<SelectListItem> yarnTypeList = ViewBag.yarnTypeList;
+    List<SelectListItem> yarnQualityList = ViewBag.yarnQualityList;
+    List<SelectListItem> partyList = ViewBag.partyList;
+    List<SelectListItem> buyerList = ViewBag.buyerList;
+    List<SelectListItem> buyerColorList = ViewBag.buyerColorList;
+    List<SelectListItem> seasonList = ViewBag.seasonList;
+
+List<SelectListItem> FabricTypeList = ViewBag.FabricTypesList;
+    List<SelectListItem> FabricQualityList =  ViewBag.FabricQualityList;
+
+  
+    
+    var filter = ViewBag.filter;
+
+
+}
+
+<form asp-area="ProductionPlaningControl" asp-controller="PurchaseOrder" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+
+    <div class="form-horizontal">
+        @Html.HiddenFor(model => model.Id)
+        @*@Html.HiddenFor(model => model.BuyerColorId)
+        @Html.HiddenFor(model => model.BuyerId)*@
+        @Html.HiddenFor(model => model.PartyId)
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group col-4">
+                <div class="form-group">
+                    <label asp-for="Po" class="control-label"></label>
+                    <input asp-for="Po" class="form-control" min="1" />
+                    <span asp-validation-for="Po" class="text-danger"></span>
+                </div>
+            </div>
+
+            @if (filter.IsYarn == true)
+            {
+                <div class="form-group col-4">
+                    <label class="control-label" asp-for="YarnTypeId"></label>
+                    <select asp-for="YarnTypeId" select2="@(yarnTypeList)" select2-ph="Select Yarn Type" class="form-control select2"></select>
+                    <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label class="control-label" asp-for="YarnQualityId"></label>
+                    <select asp-for="YarnQualityId" select2="@(yarnQualityList)" select2-ph="Select Yarn Quality" class="form-control select2"></select>
+                    <span asp-validation-for="YarnQualityId" class="text-danger"></span>
+                </div>
+
+            }
+            else
+            {
+
+                <div class="form-group col-4">
+                    <label class="control-label" asp-for="FabricTypeId"></label>
+                    <select asp-for="FabricTypeId" select2="@(FabricTypeList)" select2-ph="Select Fabric Type" class="form-control select2"></select>
+                    <span asp-validation-for="FabricTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label class="control-label" asp-for="FabricQualityId"></label>
+                    <select asp-for="FabricQualityId" select2="@(FabricQualityList)" select2-ph="Select Fabric Quality" class="form-control select2"></select>
+                    <span asp-validation-for="FabricQualityId" class="text-danger"></span>
+                </div>
+
+
+            }
+
+            <div class="form-group col-4">
+                <label class="control-label" for="PartyId">Party</label>
+                <select select2="@(partyList)" asp-for="PartyId" select2-ph="Select Party" class="form-control select2"></select>
+                <span asp-validation-for="PartyId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label class="control-label" for="BuyerId">Buyer</label> <small class="text-warning">Select Party</small>
+                <div id="buyerSelectCont">
+                    <select asp-for="BuyerId" select2="@(buyerList)" select2-ph="Select Buyer" class="form-control select2"></select>
+                    <span asp-validation-for="BuyerId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group col-4">
+                <label class="control-label" asp-for="BuyerColorId"></label> <small class="text-warning">Select Buyer</small>
+
+                <div id="colorSelectCont">
+                    <select asp-for="BuyerColorId" select2="@(buyerColorList)" select2-ph="Select Buyer Color" class="form-control select2"></select>
+                    <span asp-validation-for="BuyerColorId" class="text-danger"></span>
+                </div>
+
+
+            </div>
+            <div class="form-group col-4">
+                <label class="control-label" asp-for="SeasonId"></label>
+                <select asp-for="SeasonId" select2="@(seasonList)" select2-ph="Select Season" class="form-control select2"></select>
+                <span asp-validation-for="SeasonId" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check col-4">
+                <label class="control-label">Is Closed</label>
+                <div class="border-checkbox-section">
+                    <div class="row">
+                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                            <input class="border-checkbox" type="checkbox" asp-for="IsClosed">
+                            <label class="border-checkbox-label" for="IsClosed"> Is Closed</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+<script>
+    $(document).on('change', "#PartyId", function (e) {
+        console.log('jjaja');
+        var partyId = $(this).find('option:selected').val();
+        $.ajax({
+            method: 'GET',
+            url: `/ppc/PurchaseOrder/GetBuyersByPartyId/${partyId}`
+        }).done(function (res) {
+            $("#buyerSelectCont").html(res);
+            $("#buyerSelectCont .select2").select2({
+                dropdownParent: $("#igpModal")
+            });
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert("error");
+        });
+    });
+
+    $("body").on("change", "#BuyerId", function () {
+        var Buyerid = $(this).find('option:selected').val();
+        $.ajax({
+            method: 'GET',
+            url: `/ppc/PurchaseOrder/GetColorsByBuyerId/${Buyerid}`
+        }).done(function (res) {
+            $("#colorSelectCont").html(res);
+            $("#colorSelectCont .select2").select2({
+                dropdownParent: $("#igpModal")
+            });
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert("error");
+
+        });
+    });
+</script>
+

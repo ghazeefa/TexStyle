@@ -1,0 +1,435 @@
+﻿@model IEnumerable<TexStyle.ViewModels.YD.Reports.DyeingRecipe_D2ViewModel>
+@{ Layout = "_LayoutPrint"; }
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    td {
+        padding-top: .2em;
+        padding-bottom: .2em;
+    }
+</style>
+
+
+
+
+<div style="margin-left:15px;">
+
+    <div>
+        <div class="w-100 text-center" style="margin-bottom:30px; font-family:'serif'">
+
+            <h4 style="font-weight:bold;">COMFORT KNITWEAR (PVT) LTD(YARN/FIBER DYEING DIVISION)</h4>
+            <div class="m-grid">
+                <div class="row m-g-head">
+                    <div class="col-2"></div>
+                    @if (Model.Count() > 0)
+                    {
+                        @if (Model.FirstOrDefault().IsReprocessed == true)
+                        {
+                            <div class="col-7"><h4>DYEING REPROCESSED RECIPE</h4></div>
+                        }
+                        else
+                        {
+
+                            @if (Model.FirstOrDefault().IsYarn == true && Model.FirstOrDefault().IsWithoutLPS == false)
+
+                            {
+                                <div class="col-7"><h4>Dyeing Recipe Yarn (CKL 5)</h4></div>
+                            }
+
+                            @if (Model.FirstOrDefault().IsYarn == true && Model.FirstOrDefault().IsWithoutLPS == true)
+
+                            {
+                                <div class="col-7"><h4>Machine Wash Recipe (CKL 5)</h4></div>
+                            }
+                            @if (Model.FirstOrDefault().IsYarn == false && Model.FirstOrDefault().IsWithoutLPS == false)
+
+                            {
+                                <div class="col-7"><h4>Dyeing Recipe Fabric (CKL 6)</h4></div>
+                            }
+
+
+                            @if (Model.FirstOrDefault().IsYarn == false && Model.FirstOrDefault().IsWithoutLPS == true)
+
+                            {
+                                <div class="col-7"><h4>Machine Wash Recipe (CKL 6)</h4></div>
+                            }
+
+
+
+                        }
+
+                    }
+
+                </div>
+
+                @if (Model.Count() > 0)
+                {
+
+                    <div style="margin-top:1px; font-size:medium; text-align:center; font-family:  font-family 'Times New Roman, Times, serif'; ">
+                        <table width="100%">
+                            <tr style="line-height:20px; border:1px solid black">
+
+                                <td style="font-weight: bolder; border:1px solid black">Date</td>
+                                <td> @Model.FirstOrDefault().Date.ToString("dd-MMM-yyyy")</td>
+                                @*<td ></td>*@
+
+
+                                <td style="font-weight: bolder; border:1px solid black">RecipeNo</td>
+                                <td>@Model.FirstOrDefault().No</td>
+
+                                <td style="font-weight: bolder;border:1px solid black">Weight</td>
+                                <td>@Model.FirstOrDefault().Weight</td>
+
+                                <td style="font-weight: bolder; border:1px solid black">LiqureRate </td>
+                                <td>  @Model.FirstOrDefault().LiquorRate</td>
+                                @*<td style="font-weight: bolder;border:1px solid black ">Shade</td>
+                                <td>@Model.FirstOrDefault().Color</td>*@
+
+                                @*<td style="font-weight: bolder; border:1px solid black">Buyer </td>
+                                <td>  @Model.FirstOrDefault().Buyer   </td>*@
+                            </tr>
+                            <tr style="line-height: 20px; border:1px solid black">
+
+                                <td style="font-weight: bolder;border:1px solid black ">Machine </td>
+                                <td>@Model.FirstOrDefault().MachineType</td>
+                                @*<td ></td>*@
+
+
+                                <td style="font-weight: bolder;border:1px solid black ">Format</td>
+                                <td style="font-size:small">@Model.FirstOrDefault().Format</td>
+                                @*@if (Model.FirstOrDefault().IsWithoutLPS == false)
+
+                                {
+                                    <td style="font-weight: bolder;border:1px solid black ">LPS</td>
+                                    <td colspan="2">@Model.FirstOrDefault().LPS </td>
+
+                                }
+                                <td style="font-weight: bolder;border:1px solid black ">LotNo</td>
+                                <td colspan="1">@Model.FirstOrDefault().LotNo</td>*@
+                                @*<td style="font-weight: bolder;border:1px solid black ">Party</td>
+                                <td colspan="2">@Model.FirstOrDefault().Party</td>*@
+
+
+                            </tr>
+
+                            @*<tr style="line-height: 20px; border:1px solid black">
+
+
+
+                                    <td></td>
+                                </tr>*@
+                        </table>
+                    </div>
+
+                }
+                <br />
+
+                <div class="table-responsive" style="margin-top:-16px;">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr class="report-detailheader" style=" line-height: 2px;">
+
+
+
+
+                                <th style="font-weight: bolder ; margin-right:20px;">Step</th>
+                                <th colspan="2" style="font-weight: bolder;text-align:center">Name</th>
+
+                                <th style="font-weight: bolder;text-align:center">Kgs</th>
+                                <th style="font-weight: bolder; text-align:center">GPL</th>
+                                <th style="font-weight: bolder; text-align:center">Percentage</th>
+                                <th style="font-weight: bolder;text-align:center">Water</th>
+
+
+                                <th></th>
+                                <th></th>
+
+
+                            </tr>
+
+                        </thead>
+
+
+                        @if (Model.Count() > 0)
+                        {
+                            foreach (var grp in Model)
+                            {
+                                foreach (var item in grp.DyeingRecipeDetail_D2ViewModels)
+                                {
+                                    <tr class="report-detail" style=" line-height:1px; border:1px solid black;font-family:'Times New Roman'; font-size:15px; ">
+
+                                        @if (item.RecipeName == item.ItemName)
+                                        {
+                                            <td width="5%"><Mark style="background-color:lightgrey; font-size: small; font-weight:bold">@item.RecipeName</Mark></td>
+                                            <td colspan="2" width="45%"></td>
+                                            <td width="25%"><Mark style="background-color:lightgray;">@item.Kgs?.ToString("0.000")</Mark></td>
+                                            <td width="18%"><Mark style="background-color:lightgray;">@item.Gpl.ToString("0.00")</Mark></td>
+                                            <td width="18%"><Mark style="background-color:lightgray;">@item.Percentage.ToString("0.0000")</Mark></td>
+                                            <td width="25%"><Mark style="font-weight: bold; background-color:lightgray;">@item.Water?.ToString("0.00")</Mark></td>
+                                            <td></td>
+                                            <td></td>
+                                        }
+
+                                        else
+                                        {
+                                            <td colspan="1" width="25%"><mark style="background-color:lightgrey">@item.RecipeName</mark></td>
+                                            <td colspan="2" width="45%" style="line-break:strict">@item.ItemName</td>
+                                            <td colspan="1" width="15%">@item.Kgs?.ToString("0.000")</td>
+                                            <td colspan="1" width="18%">@item.Gpl.ToString("0.00")</td>
+                                            <td colspan="1" width="18%">@item.Percentage.ToString("0.0000")</td>
+                                            <td colspan="1" width="25%">@item.Water?.ToString("0.00")</td>
+                                            <td></td>
+                                            <td></td>
+                                        }
+
+
+
+
+                                    </tr>
+                                }
+
+                            }
+                        }
+
+
+
+
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top:1px; font-size:medium; text-align:center; font-family:  font-family 'Times New Roman, Times, serif'; ">
+        <table>
+            <tr>
+
+                <td colspan="1" style="font-weight: bolder;">Remarks:</td>
+                <td colspan="20">
+
+
+                    <input type="text" style="height:30px;">
+
+                </td>
+                @*<td ></td>*@
+
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @*<div style="margin-left:15px;">
+
+            <div>
+                <div class="w-100 text-center" style="margin-bottom:30px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+
+                    <h4 style="font-weight:bold;">COMFORT KNITWEAR (PVT) LTD(YARN/FIBER DYEING DIVISION)</h4>
+                    <div class="m-grid">
+                        <div class="row m-g-head">
+                            <div class="col-2"></div>
+                            @if (Model.Count() > 0)
+                            {
+                                @if (Model.FirstOrDefault().IsReprocessed == true)
+                                {
+                                    <div class="col-7"><h4>DYEING REPROCESSED RECIPE</h4></div>
+                                }
+                                else
+                                {
+
+                                    @if (Model.FirstOrDefault().IsYarn == true && Model.FirstOrDefault().IsWithoutLPS == false)
+
+                                    {
+                                        <div class="col-7"><h4>Dyeing Recipe Yarn (CKL 5)</h4></div>
+                                    }
+
+                                    @if (Model.FirstOrDefault().IsYarn == true && Model.FirstOrDefault().IsWithoutLPS == true)
+
+                                    {
+                                        <div class="col-7"><h4>Machine Wash Recipe (CKL 5)</h4></div>
+                                    }
+                                    @if (Model.FirstOrDefault().IsYarn == false && Model.FirstOrDefault().IsWithoutLPS == false)
+
+                                    {
+                                        <div class="col-7"><h4>Dyeing Recipe Fabric (CKL 6)</h4></div>
+                                    }
+
+
+                                    @if (Model.FirstOrDefault().IsYarn == false && Model.FirstOrDefault().IsWithoutLPS == true)
+
+                                    {
+                                        <div class="col-7"><h4>Machine Wash Recipe (CKL 6)</h4></div>
+                                    }
+
+                                }
+                                <div style="height:80px;"></div>
+                            }
+                            <div class="col-2"></div>
+                                <div class="col-7"><h3> (Issue dyes and Chemicals)</h3></div>
+                        </div>
+
+                        @if (Model.Count() > 0)
+                        {
+                            <div class="row m-g-head" style="height:30px; text-align:center;">
+
+
+                                <div class="col-1" style="font-weight: bolder; text-align:right ">Date:</div>
+                                <div class="col-2" style="border: 1px solid #000000;background-color:lightgray; ">@Model.FirstOrDefault().Date.ToString("dd-MM-yyyy")</div>
+                                <div class="col-1"></div>
+
+
+                                <div class="col-1" style="font-weight: bolder; text-align:right;">RecipeNo:</div>
+                                <div class="col-2" style=" border: 1px solid #000000;background-color:lightgray; ">@Model.FirstOrDefault().No</div>
+                                <div class="col-1"></div>
+
+                                <div class="col-1 " style="font-weight: bolder; text-align:right;padding-right:4px;">LiqureRate:</div>
+                                <div class="col-2" style=" border: 1px solid #000000;background-color:lightgray;">@Model.FirstOrDefault().LiquorRate</div>
+
+
+                            </div>
+
+                            <div style="height:2px;"></div>
+                            <div class="col-3"></div>  <div class="col-3"></div>  <div class="col-3"></div>
+                                <div class="col-3"></div>  <div class="col-3"></div>  <div class="col-3"></div>
+                                <div class="col-3"></div>  <div class="col-3"></div>  <div class="col-3"></div>
+                                <div class="col-3"></div>  <div class="col-3"></div>  <div class="col-3"></div>
+
+                            <div class="row m-g-head" style="height:30px; text-align:center;">
+
+                                <div class="col-1" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4; text-align:right;">Machine:</div>
+                                <div class="col-2 " style="border: 1px solid #000000;background-color:lightgray;">@Model.FirstOrDefault().MachineType</div>
+                                <div class="col-1"></div>
+
+
+
+                            </div>
+
+
+                        }
+
+
+                        <div style="height:2px;"></div>
+                        <div class="row m-g-head" style="height:30px;text-align:center;">
+
+
+                            <div class="col-1" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4; text-align:right;">Weight:</div>
+                            <div class="col-2" style=" border: 1px solid #000000;background-color:lightgray;">@Model.FirstOrDefault().Weight</div>
+                            <div class="col-1"></div>
+
+                            <div class="col-1 " style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4; text-align:right;">Format:</div>
+                            <div class="col-3 " style=" border: 1px solid #000000;background-color:lightgray;">@Model.FirstOrDefault().Format</div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-responsive" style="margin-top:-16px;">
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+
+                                    <th scope="col" width="16%"></th>
+                                    <th scope="col" width="16%"></th>
+                                    <th scope="col" width="16%"></th>
+                                    <th scope="col" width="14%"></th>
+                                        <th scope="col" width="14%"></th>
+                                    <th scope="col" width="16%"></th>
+                                    <th scope="col" width="16%"></th>
+                                    <th scope="col" width="16%"></th>
+
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr class="report-detailheader" style="background-color:lightgray;">
+                                    <td style="font-weight: bolder ; margin-right:20px;">Step</td>
+                                    <td style="font-weight: bolder">Name</td>
+                                    <td style="font-weight: bolder;margin-right:20px;">Kgs</td>
+                                    <td style="font-weight: bolder">GPL</td>
+                                        <td style="font-weight: bolder">Percentage</td>
+                                    <td style="font-weight: bolder">Water</td>
+
+
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+                                @if (Model.Count() > 0)
+                                {
+                                    foreach (var grp in Model)
+                                    {<tr>
+                                                <td colspan="14">
+
+                                                    <strong>@grp.RecipeName</strong>
+                                                </td>
+                                            </tr> foreach (var item in grp.DyeingRecipeDetail_D2ViewModels)
+                                    {
+                                        <tr class="report-detail" style="line-height:2px; padding-bottom:-20px; font-family:Trebuchet MS,'Lucida Grande', 'Arial', 'sans-serif'; font-size:9px; letter-spacing:1px;">
+
+                                            @if (item.RecipeName == item.ItemName)
+                                            {
+                                                <td width="25%"><Mark style="background-color:lightgrey">@item.RecipeName</Mark></td>
+                                                <td width="25%"></td>
+                                                <td width="25%"><Mark style="background-color:lightgray;">@item.Kgs?.ToString("0.000")</Mark></td>
+                                                <td width="18%"><Mark style="background-color:lightgray;">@item.Gpl.ToString("0.00")</Mark></td>
+                                                    <td width="18%"><Mark style="background-color:lightgray;">@item.Percentage.ToString("0.0000")</Mark></td>
+                                                <td width="25%"><Mark style="font-weight: bold; background-color:lightgray;">@item.Water?.ToString("0.00")</Mark></td>
+                                                <td></td>
+                                                <td></td>
+                                            }
+                                            else
+                                            {
+                                                <td width="25%"><mark style="background-color:lightgrey">@item.RecipeName</mark></td>
+                                                <td width="25%">@item.ItemName</td>
+                                                <td width="25%">@item.Kgs?.ToString("0.000")</td>
+                                                <td width="18%">@item.Gpl.ToString("0.00")</td>
+                                                    <td width="18%">@item.Percentage.ToString("0.0000")</td>
+                                                <td width="25%">@item.Water?.ToString("0.00")</td>
+                                                <td></td>
+                                                <td></td>
+                                            }
+                                        </tr>
+                                    }
+
+                                }
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>*@
+

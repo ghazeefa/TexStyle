@@ -1,0 +1,139 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.Reports.DyeingLossPOWiseColorWiseReportViewModel>
+@{
+    ViewData["Title"] = "Dyeing Loss Date-Wise";
+    Layout = "_LayoutPrint";
+}
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .borders > tbody > tr > td, .borders > thead > tr > td {
+        border: 1px solid black !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }
+</style>
+@if (Model.Count() > 0)
+{
+<div class="container">
+    <div class="text-center" style=" line-height:16px;">
+        <div style="text-align:end; font-weight:bold; font-size:22px;">
+            <p>@Model.FirstOrDefault().CompanyName</p>
+        </div>
+        @if (Model.FirstOrDefault().CompanyBranch != null)
+        {
+            <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+                <p>@Model.FirstOrDefault().CompanyBranch</p>
+            </div>}
+    </div>
+    <div class="text-center" style="float:right; line-height:10px;">
+        <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            Report No.
+        </div>
+        <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            D-13
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="w-100 text-center" style="margin-top:-110px">
+            <h4>@ViewData["Title"]</h4>
+            Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+        </div>
+    </div>
+
+</div>
+    <br />
+    <div class="table-responsive">
+        <table class="table table-responsive" style="line-height:15px; font-family: 'Trebuchet MS','Lucida Grande', Arial, sans-serif; font-size:10px;">
+
+            <thead>
+                <tr class="report-detailheader">
+                    <th width="5%">LotNo</th>
+                    @if (Model.FirstOrDefault().FabricType != null)
+                    {
+                        <th width="15%">Fabric Name</th>
+                    }
+                    else
+                    {
+                        <th width="15%">Yarn Name</th>
+                    }
+
+                    <th width="15%">Party</th>
+                    <th width="15%">Buyer</th>
+                    <th width="10%">LPS Kgs</th>
+                    <th width="10%">Dispatched Kgs</th>
+                    <th width="10%">Balance Kgs</th>
+                    <th width="10%">Dyeing Loss %</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var PO in Model.GroupBy(x => x.Po))
+                {
+                    <tr style="font-weight: bold; "><td colspan="9">PO #: @PO.Key</td></tr>
+
+                    @foreach (var clrGrp in PO.GroupBy(x => x.BuyerColor))
+                    {
+                        <tr style="font-weight: bold;"><td colspan="9">Color: @clrGrp.Key</td></tr>
+                        foreach (var item in clrGrp)
+                        {
+                            <tr>
+                                <td>@item.LotNo</td>
+                                @if (item.FabricType != null)
+                                {
+                                    <td>@item.FabricType</td>
+                                }
+                                else
+                                {
+                                    <td>@item.YarnType</td>
+                                }
+
+                                <td>@item.Party</td>
+                                <td>@item.Buyer</td>
+                                <td>@item.DyedKgs</td>
+                                <td>@item.DispatchedKgs</td>
+                                <td>@item.BalanceKgs</td>
+                                <td>@Math.Round(item.PercentageBalance ?? 0, 2)</td>
+
+                            </tr>
+                        }
+                        var avgPercentageBalanceClr = clrGrp.Average(x => x.PercentageBalance ?? 0);
+                        <tr style="font-weight:bold;">
+                            <td style="text-align: end;" colspan="7">Average Dyeing Loss (Color)</td>
+                            <td>@Math.Round(avgPercentageBalanceClr, 2)</td>
+                        </tr>
+                    }
+
+                }
+                @{
+                    var avgPercentageBalanceTotal = Model.Average(x => x.PercentageBalance ?? 0);
+                }                
+                <tr style="font-weight:bold;">
+                    <td style="text-align: end;" colspan="7">Total Average Dyeing Loss</td>
+                    <td>@Math.Round(avgPercentageBalanceTotal, 2)</td>
+                </tr>
+
+            </tbody>
+            <tfoot>
+                <tr>
+
+                    <td colspan="5"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>
+}
+
+
+
+

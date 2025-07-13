@@ -1,0 +1,137 @@
+﻿@model IEnumerable<TexStyle.Core.PPC.FactoryPo>
+
+@{ var title = $"Factory Po";
+        ViewData["Title"] = $"{title}s";
+        var AddOrUpdate = "/ppc/FactoryPo/AddOrUpdate/";
+        var DeleteAction = "/ppc/FactoryPo/Delete/";
+        var FPoDetailReportAction = "/ppc/FactoryPo/FactoryPoDetailReport/";
+
+        Layout = "_Layout"; }
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+
+              <button href="#@AddOrUpdate" class="btn btn-primary create-js" data-action="#@AddOrUpdate" data-title="Create @title">ADD NEW</button>
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Date</th>
+                                            <th class="sorting_asc">Id</th>
+                                            <th class="sorting_asc">Po</th>
+                                            <th class="sorting_asc">Buyer</th>
+                                            @*<th class="sorting_asc">BuyerColor</th>*@
+
+                                            <th class="sorting_asc">Description</th>
+                                            <th class="sorting">Selected</th>
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                            {
+                                        <tr role="row">
+                                            <td class="sorting_1">@c.Date</td>
+                                            <td class="sorting_1">@c.Id</td>
+                                            <td class="sorting_1">@c.Po</td>
+                                            <td class="sorting_1">@c.Buyer?.Name</td>
+                                            @*<td class="sorting_1">@c.BuyerColor?.Name</td>*@
+                                            <td class="sorting_1">@c.Description</td>
+                                            <td><input type="checkbox" onclick="submit(this)" value="true" @{var isChecked = c.IsChecked == true ? "checked" : ""; } @isChecked></td>
+                                            <td style="width:150px;">
+                                                <a href="@FPoDetailReportAction@c.Id" class="btn btn-outline-secondary">Factory Po Detail Report</a>
+                                                @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_SETTINGS_YARN_TYPE_EDIT)){*@<button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdate@c.Id" data-title="Update @title">Edit</button>
+
+                                                <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-primary">Details</a>
+                                                @*<button disabled class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>*@
+
+                                            </td>
+                                        </tr>
+}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            @*<th class="sorting_asc">Id</th>*@
+                                            <th class="sorting_asc">Date</th>
+                                            <th class="sorting_asc">Id</th>
+                                            <th class="sorting_asc">Po</th>
+                                            <th class="sorting_asc">Buyer</th>
+
+                                            @*<th class="sorting_asc">BuyerColor</th>*@
+
+
+
+                                            <th class="sorting_asc">Description</th>
+                                            <th class="sorting">Selected</th>
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        var modal = "#adminModal";
+
+        function submit(chebox) {
+            debugger;
+            var id = $(chebox).parents("tr").find("td")[1].innerHTML;
+            //var emplyeeName = $(chebox).parents("tr").find("td")[1].innerHTML;
+            var isCheck = $(chebox).prop("checked");
+            if (isCheck == true) {
+                debugger;
+                //var table = $('#BrandsTable').DataTable();
+                //var id = table.cell($("#index").val(), 0).nodes().to$().find('#id').val();
+                $.ajax({
+                    method: 'GET',
+                    data: 'id=' + id,
+                    url: `/ppc/FactoryPo/Select`
+                }).done(function (res) {
+
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    //  alert("error");
+                });
+                $("#result").html("Checkbox is checked.");
+            }
+            else if (isCheck == false) {
+                //var table = $('#BrandsTable').DataTable();
+                //var id = table.cell($("#index").val(), 0).nodes().to$().find('#id').val();
+                $.ajax({
+                    method: 'GET',
+                    data: 'id=' + id,
+                    url: `/ppc/FactoryPo/UnSelect`
+                }).done(function (res) {
+                    // $("#showdetail").html(res);
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    // alert("error");
+                });
+
+                $("#result").html("Checkbox is unchecked.");
+            }
+            //    });
+
+        }
+
+
+
+    </script>
+}

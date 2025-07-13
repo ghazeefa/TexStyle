@@ -1,0 +1,189 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.PPC.ReturnNoteViewModel
+
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    List<SelectListItem> processActivityTypeList = ViewBag.processActivityTypeList;
+    var activityTypeSl = new SelectListItemViewModel
+    {
+        Name = "ProcessActivityTypeId",
+        PlaceHolder = "Select Activity Type",
+        UseDefault = false,
+        SelectList = processActivityTypeList
+    };
+
+    List<SelectListItem> partyTypeList = ViewBag.partyTypeList;
+    var partySl = new SelectListItemViewModel
+    {
+        Name = "PartyId",
+        PlaceHolder = "Select Party",
+        UseDefault = false,
+        SelectList = partyTypeList
+    };
+
+    List<SelectListItem> buyerSl = ViewBag.buyerTypeList;
+   
+    List<SelectListItem> buyerList = ViewBag.buyerTypeList;
+
+    //List<SelectListItem> bagMarkingList = ViewBag.buyerTypeList;
+    //var buyerSl = new SelectListItemViewModel
+    //{
+    //    Name = "BuyerId",
+    //    PlaceHolder = "Select Bag Marking",
+    //    UseDefault = false,
+    //    SelectList = buyerSl
+    //};
+
+    //List<SelectListItem> coneMarkingList = ViewBag.coneMarkingList;
+    //var coneMarkingSl = new SelectListItemViewModel {
+    //    Name = "ConeMarkingId",
+    //    PlaceHolder = "Select Cone Marking",
+    //    UseDefault = false,
+    //    SelectList = coneMarkingList
+    //};
+
+    //List<SelectListItem> yarnTypeList = ViewBag.yarnTypeList;
+    //var yarnTypeSl = new SelectListItemViewModel {
+    //    Name = "YarnTypeId",
+    //    PlaceHolder = "Select Yarn Type",
+    //    UseDefault = false,
+    //    SelectList = yarnTypeList
+    //};
+
+    //List<SelectListItem> yarnQualityList = ViewBag.yarnQualityList;
+    //var YarnQualitySl = new SelectListItemViewModel {
+    //    Name = "YarnQualityId",
+    //    PlaceHolder = "Select Yarn Quality",
+    //    UseDefault = false,
+    //    SelectList = yarnQualityList
+    //};
+    var filter = ViewBag.filter;
+}
+<form asp-area="ProductionPlaningControl" asp-controller="ReturnNote" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ReturnTypeId)
+    <div class="row">
+        <div class="form-group col-4">
+            <label class="control-label">Return Id</label>
+            <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="ReturnDate" class="control-label"></label>
+            <input asp-for="ReturnDate" class="form-control" type="date" />
+            <span asp-validation-for="ReturnDate" class="text-danger"></span>
+        </div>
+        @*  @if (Model.ReturnTypeId == IssueTypes.ReturnToParty.Id)
+
+
+        {*@
+
+        @if (filter.IsYarn == true)
+        {
+    <div class="form-group col-4">
+        <label asp-for="IRNO" class="control-label"></label>
+        <input asp-for="IRNO" class="form-control" />
+        <span asp-validation-for="IRNO" class="text-danger"></span>
+    </div> }
+                else
+                {
+
+                @*<div class="form-group col-3">
+         <label class="control-label" asp-for="BuyerId"></label>
+     <select asp-for="BuyerId" select2="@(buyerSl)" select2-ph="Select Production Type" class="form-control select2"></select>
+   <span asp-validation-for="BuyerId" class="text-danger"></span>
+        </div>*@
+             <div class="form-group col-3">
+                    <label class="control-label" asp-for="BuyerId"></label>
+                    <select asp-for="BuyerId" select2="@(buyerSl)" select2-ph="Select Buyer" class="form-control select2"></select>
+                    <span asp-validation-for="BuyerId" class="text-danger"></span>
+                </div>
+    <div class="form-group col-4">
+        <label asp-for="LotNo" class="control-label"></label>
+        <input asp-for="LotNo" class="form-control" />
+        <span asp-validation-for="LotNo" class="text-danger"></span>
+    </div>
+        <div class="form-group col-4">
+        <label asp-for="TotalWeight" class="control-label"></label>
+        <input asp-for="TotalWeight" class="form-control" />
+        <span asp-validation-for="TotalWeight" class="text-danger"></span>
+    </div>
+    
+    }
+
+
+
+        @*}*@ @*<div class="form-group col-4">
+            <label asp-for="IsReturnToParty" class="control-label"></label>
+            <input asp-for="IsReturnToParty" class="form-control" />
+            <span asp-validation-for="IsReturnToParty" class="text-danger"></span>
+        </div>*@ @* }   *@
+        <div class="form-group form-check col-4">
+            @* <label class="control-label">Is Return To Party</label>*@
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" asp-for="IsReprocessed">
+                        <label class="border-checkbox-label" for="IsReprocessed"> Is Return From Party</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group form-check col-4">
+            @* <label class="control-label">Is Confirmed</label>*@
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" asp-for="Confirmed">
+                        <label class="border-checkbox-label" for="Confirmed"> Is Confirmed</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="form-group form-check col-4">
+            <label class="control-label">Return To Party</label>
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" asp-for="IsReprocessed">
+                        <label class="border-checkbox-label" for="IsReprocessed"> Return To Party</label>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        @*<div class="form-group col-4">
+            <label asp-for="Confirmed" class="control-label"></label>
+            <input asp-for="Confirmed" class="form-control" />
+            <span asp-validation-for="Confirmed" class="text-danger"></span>
+        </div>*@
+    </div>
+
+    </div>
+    <div class="modal-footer">
+        <button  type="submit" class="btn btn-primary"  onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+
+
+    $(document).ready(function () {
+   
+        $("#btn").on("click", function () {
+            $(this).attr("disabled", "disabled");
+            doWork(); //this method contains your logic
+        });
+    });
+
+    function doWork() {
+        alert("doing work");
+        setTimeout('$("#btn").removeAttr("disabled")', 1500);
+    }
+
+
+
+</script>

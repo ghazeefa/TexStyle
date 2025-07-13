@@ -1,0 +1,150 @@
+﻿@model TexStyle.Core.Gate.GateTr
+@{
+    ViewData["Title"] = ViewBag.reportTitle;
+
+    var noData = "No Data Available";
+}
+<style>
+    @@media print {
+        .m-grid {
+            margin-left: 40px;
+        }
+
+        .h {
+            background-color: gray;
+            margin-right: 20px;
+        }
+
+        .d {
+            padding-left: 20px;
+        }
+
+        .card {
+            border: 1px solid black;
+            border-top: 2px solid black;
+        }
+    }
+
+    .m .c {
+        padding-left: 50px;
+    }
+</style>
+
+
+
+<div class="card user-activity-card">
+    <div class="card-header d-flex justify-content-between align-items-center no-print">
+        <button class="btn btn-sm btn-info " onclick="window.print()"><i class="ti-printer"></i></button>
+    </div>
+    <div class="card-block" style="border:1px solid black !important;">
+        <div class="w-100 text-center" style="margin-bottom:30px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+
+            <img src="~/images/logo.png" width="80" height="35" style="padding-top:10px;" />
+            <h4 style="font-weight:bold;">COMFORT KNITWEAR (PVT) LTD(YARN/FIBER DYEING DIVISION)</h4>
+            <div class="m-grid">
+                <div class="row m-g-head">
+                    <div class="col-2"></div>
+                    <div class="col-7">
+                        <h4>@ViewBag.reportStatus  DYE AND CHEMICAL</h4>
+                        <h5>OGP Yarn</h5>
+                    </div>
+
+                    <div class="col-3"></div>
+
+                </div>
+            </div>
+            <div class="m-grid px-4">
+                <div class="row m-g-head">
+                    <div class="col-9"></div>
+                    <div class="col-1" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">Sr No:</div>
+                    <div class="col-2" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">@Model.Sno</div>
+
+                    <div class="col-9"></div>
+                    <div class="col-1" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">DATE:</div>
+                    <div class="col-2" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">@Model.Date.ToString("dd-MMM-yyyy")</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="m-grid px-4 m">
+            <div class="row m-g-head c">
+                <div class="col-2" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">FROM:</div>
+                <div class="col-2 p-2" style=" border-bottom: 0.2px solid #d5d4d4;">@Model.Party?.Name</div>
+                <div class="col-2"></div>
+                <div class="col-2" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">Gate IGP:</div>
+                <div class="col-2 p-2" style=" border-bottom: 0.2px solid #d5d4d4;">@Model.Id</div>
+                <div class="col-2"></div>
+                <div class="col-2" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">Driver:</div>
+                <div class="col-2 p-2" style=" border-bottom: 0.2px solid #d5d4d4;">@Model.DriverName</div>
+                <div class="col-2"></div>
+                <div class="col-2" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">Bility No:</div>
+                <div class="col-2 p-2" style="border-bottom: 0.2px solid #d5d4d4;"> </div>
+                <div class="col-2"></div>
+                <div class="col-2" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">Vehicle:</div>
+                <div class="col-2 p-2" style="border-bottom: 0.2px solid #d5d4d4;">@Model.VehicleNo</div>
+                <div class="col-2"></div>
+                <div class="col-2" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">Invoice NO:</div>
+                <div class="col-2 p-2" style="border-bottom: 0.2px solid #d5d4d4;"></div>
+                <div class="col-2"></div>
+                <div class="col-2" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">IGP Reff NO:</div>
+                <div class="col-2 p-2" style="border-bottom: 0.2px solid #d5d4d4;">@Model.IGPReffNo</div>
+
+            </div>
+        </div>
+
+
+
+        <div class="m-grid m-t-40 d px-4">
+
+            <div class="row m-g-head h px-2" style="border-bottom: 0.2px solid #d5d4d4;border-top: 0.2px solid #d5d4d4;padding: 5px 0px;">
+                <div class="col-4" style="font-weight:bolder;">Dye/Chemical</div>
+                <div class="col-2" style="font-weight:bolder;">Quantity</div>
+                <div class="col-3" style="font-weight:bolder;">Remarks</div>
+            </div>
+            @if (Model != null)
+            {
+                foreach (var igp in Model.GateTrDetails.Where(x => !x.IsDeleted))
+                {
+                    <div class="row px-2 py-2">
+
+                        @if (igp.DyeId != null)
+                        {
+                            <div class="col-4 p-0" style="font-weight:bold;">@igp.Dye?.Name</div>
+                        }
+                        else
+                        {
+                            <div class="col-4 p-0" style="font-weight:bold;">@igp.Chemical?.Name</div>
+                        }
+
+                        @if (igp.QtyCr != null)
+                        {
+                            <div class="col-2 p-0">@igp.QtyCr</div>
+                        }
+                        else
+                        {
+                            <div class="col-2 p-0">@igp.QtyDr</div>
+                        }
+
+                        <div class="col-3 p-0"></div>
+                        <div class="col-2 p-0"></div>
+                    </div>
+                }
+            }
+            <div class="row m-g-head px-2" style="border-bottom: 0.2px solid #d5d4d4;border-top: 0.2px solid #d5d4d4;padding: 5px 0px;margin-bottom: 10px;">
+
+                <div class="col-4 p-0"></div>
+                @if (@Model.GateTrDetails.FirstOrDefault().QtyCr != null)
+                {
+                    <div class="col-2 p-0" style="font-weight: bolder;">@Model.GateTrDetails.Sum(x => x.QtyCr)</div>
+                }
+                else
+                {
+                    <div class="col-2 p-0" style="font-weight: bolder;">@Model.GateTrDetails.Sum(x => x.QtyDr)</div>
+
+                }
+                <div class="col-3 p-0"></div>
+                <div class="col-2 p-0"></div>
+            </div>
+        </div>
+    </div>
+</div>

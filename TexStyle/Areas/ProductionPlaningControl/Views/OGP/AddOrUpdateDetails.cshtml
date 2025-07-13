@@ -1,0 +1,368 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.PPC.OGPDetailViewModel
+@{
+    ViewData["Title"] = "Add Or Update OGP Detail";
+
+    var CopyReturnNoteAction = "/ppc/OGP/CopyPPCData/";
+    var CopyFactoryPoData = "/ppc/OGP/CopyFactoryPoData/";
+
+    List<SelectListItem> yarnTypeList = ViewBag.yarnTypeList;
+    List<SelectListItem> fabricTypeList = ViewBag.fabricTypeList;
+    List<SelectListItem> buyerList = ViewBag.buyerList;
+    List<SelectListItem> buyerColorList = ViewBag.buyerColorList;
+    //List<SelectListItem> fabricqualityList = ViewBag.fabricqualityList;
+    //  List<SelectListItem> PoList = ViewBag.Po;
+    var filter = ViewBag.filter;
+    var ogpheader = ViewBag.ogpheader;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@ViewData["Title"]</h5>
+                <div>
+                    @*@if (filter.IsYarn == true)
+                        {
+                            <button href="#@CopyReturnNoteAction" class="btn btn-primary IgpRef-js" data-action="#@CopyReturnNoteAction?OGPId=@(Model.OutwardGatePassId)&id=">Get Return Reference</button>
+                        }
+                        else
+                        {
+                            <button href="#@CopyFactoryPoData" class="btn btn-primary IgpRef-js" data-action="#@CopyFactoryPoData?OGPId=@(Model.OutwardGatePassId)&id=">Get Return Reference</button>
+                        }*@
+
+                    <button href="#@CopyReturnNoteAction" class="btn btn-primary IgpRef-js" data-action="#@CopyReturnNoteAction?OGPId=@(Model.OutwardGatePassId)&id=">Get LPS Detail</button>
+
+                </div>
+            </div>
+            <!-- <form asp-area="ProductionPlaningControl" asp-controller="PPCPlanning" asp-action="AddOrUpdate" id="frmppcplanning" method="post" enctype="multipart/form-data">
+            -->
+
+            <form asp-area="ProductionPlaningControl" asp-controller="OGP" asp-action="AddOrUpdateDetails" asp-route-id="@if (Model != null) { <text>@Model.OutwardGatePassId</text> }" method="post" ifctype="multipart/form-data" id="submitForm">
+                <div class="card-block">
+                    <div class="form-horizontal">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        @Html.HiddenFor(x => x.OutwardGatePassId)
+                        @Html.HiddenFor(x => x.Id)
+                        @Html.HiddenFor(x => x.ReprocessId)
+                        @Html.HiddenFor(x => x.YarnTypeId)
+                        @*@Html.HiddenFor(x => x.FabricTypesId)*@
+
+                        <div class="row">
+                            @*<div class="form-group col-3">
+                                    <label asp-for="Id" class="control-label"></label>
+                                    <input asp-for="Id" class="form-control" disabled />
+                                    <span asp-validation-for="Id" class="text-danger"></span>
+                                </div>*@
+
+                            <div class="form-group col-3">
+                                <label asp-for="Xref" class="control-label"></label>
+                                <input asp-for="Xref" class="form-control" />
+                                <span asp-validation-for="Xref" class="text-danger"></span>
+                            </div>
+
+
+                            @if (ogpheader.IsAfterFinishing == true || ogpheader.IsAfterComercialFinishing == true || ogpheader.IsReturnToParty == true)
+                            {
+                                <div class="form-group col-3">
+                                    <label asp-for="InwardGatePassDetailId" class="control-label"></label>
+                                    <input asp-for="InwardGatePassDetailId" class="form-control" placeholder="CopyIGPDetailNo" />
+                                    <span asp-validation-for="InwardGatePassDetailId" class="text-danger"></span>
+                                </div>
+
+
+                            }
+
+                            @*@if (filter.IsYarn == false)
+                                    {
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="FactoryPoId"></label>
+                                    <select asp-for="FactoryPoId" select2="@(PoList)" select2-ph="Select Fabric Type" class="form-control select2"></select>
+                                    <span asp-validation-for="FactoryPoId" class="text-danger"></span>
+                                </div>
+
+                                    }*@
+
+
+                            @*<div class="form-group col-3">
+                                    <label asp-for="LotNo" class="control-label"></label>
+                                    <input asp-for="LotNo" class="form-control" />
+                                    <span asp-validation-for="LotNo" class="text-danger"></span>
+                                </div>*@
+
+                            @if (filter.IsYarn == true)
+                            {
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="YarnTypeId"></label>
+                                    <select asp-for="YarnTypeId" select2="@(yarnTypeList)" select2-ph="Select Yarn Type" class="form-control select2"></select>
+                                    <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+                                </div>}
+                            @if (ogpheader.IsYarn == false && ogpheader.IsAfterFinishing == true || ogpheader.IsAfterComercialFinishing == true || ogpheader.IsReturnToParty == true)
+                            {
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="FabricTypesId"></label>
+                                    <select asp-for="FabricTypesId" select2="@(fabricTypeList)" select2-ph="Select Fabric Type" class="form-control select2" disabled></select>
+                                    <span asp-validation-for="FabricTypesId" class="text-danger"></span>
+                                </div>
+
+                            }
+                            @if (ogpheader.IsYarn == false && ogpheader.IsAfterFinishing == false && ogpheader.IsAfterComercialFinishing == false && ogpheader.IsReturnToParty == false)
+                            {
+
+                                @*<div class="form-group col-3">
+                                        <label class="control-label" asp-for="FactoryPoId"></label>
+                                        <input asp-for="FactoryPoId" class="form-control" />
+                                        <span asp-validation-for="FactoryPoId" class="text-danger"></span>
+                                    </div>*@
+
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="FabricTypesId"></label>
+                                    <select asp-for="FabricTypesId" select2="@(fabricTypeList)" select2-ph="Select Fabric Type" class="form-control select2" disabled></select>
+                                    <span asp-validation-for="FabricTypesId" class="text-danger"></span>
+                                </div>
+
+                                @*<div class="form-group col-3">
+                                        <label class="control-label" asp-for="FabricQualityId"></label>
+                                        <select asp-for="FabricQualityId" select2="@(fabricqualityList)" select2-ph="Select Fabric Quality" class="form-control select2"></select>
+                                        <span asp-validation-for="FabricQualityId" class="text-danger"></span>
+                                    </div>*@
+
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="BuyerId"></label>
+                                    <select asp-for="BuyerId" select2="@(buyerList)" select2-ph="Select Buyer" class="form-control select2" disabled></select>
+                                    <span asp-validation-for="BuyerId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="BuyerColorId"></label>
+                                    <select asp-for="BuyerColorId" select2="@(buyerColorList)" select2-ph="Select Buuyer Color" class="form-control select2" disabled></select>
+                                    <span asp-validation-for="BuyerColorId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="LotNo"></label>
+                                    <input asp-for="LotNo" class="form-control" disabled />
+                                    <span asp-validation-for="LotNo" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="PO"></label>
+                                    <input asp-for="PO" class="form-control" disabled />
+                                    <span asp-validation-for="PO" class="text-danger"></span>
+                                </div>
+
+
+                            }
+
+
+
+
+
+                            @*<div class="row">
+                                    <div class="form-group col-12">
+                                        <label asp-for="Description" class="control-label"></label>
+                                        <textarea rows="12" asp-for="Description" class="form-control">@Model.Description</textarea>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                    </div>
+                                </div>*@
+                            <div class="form-group col-3">
+                                @*<label class="control-label">Kgs <span class="text-warning"> <small>Available: </small><span id="PendingKgs">@{var availablekgs = Model.AvailableLpsKgs != 0 ? Model.AvailableLpsKgs : 0; } @availablekgs</span></span></label>*@
+                                <label class="control-label">Kgs <span class="text-warning"> <small>Available: </small><input style="border:none;" type="text" id="PendingKgs" disabled /></span></label>
+                                <input asp-for="Kgs" class="form-control" type="number" />
+                                <span asp-validation-for="Kgs" class="text-danger"></span>
+                            </div>
+
+                            @if (filter.IsYarn == true)
+                            {
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="Bags"></label>
+                                    <input asp-for="Bags" class="form-control" />
+                                    <span asp-validation-for="Bags" class="text-danger"></span>
+                                </div> }
+                            else
+                            {
+
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="NoOfRolls"></label>
+                                    <input asp-for="NoOfRolls" class="form-control" />
+                                    <span asp-validation-for="NoOfRolls" class="text-danger"></span>
+                                </div>
+
+
+
+                            }
+
+
+
+
+                            <div class="form-group col-3">
+                                <label asp-for="Rate" class="control-label"></label>
+                                <input asp-for="Rate" class="form-control" />
+                                <span asp-validation-for="Rate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-3">
+                                <label asp-for="Remarks" class="control-label"></label>
+                                <input asp-for="Remarks" class="form-control" />
+                                <span asp-validation-for="Remarks" class="text-danger"></span>
+                            </div>
+
+
+                            @*@if (ogpheader.IsYarn == false)
+                                {*@
+
+                            <div class="form-group form-check col-2">
+                                <div class="border-checkbox-section">
+                                    <div class="row">
+                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                            <input class="border-checkbox" type="checkbox" asp-for="IsComplete">
+                                            <label class="border-checkbox-label" asp-for="IsComplete"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            @*}*@
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Save</button>
+                    <label id="lblsave" style="display: none">Saving</label>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<div class="row d-none" id="partialWrapper">
+
+</div>
+
+
+
+@section scripts {
+    <script type="text/javascript">
+
+        $(function () {
+
+            $('.IgpRef-js').click(function (e) {
+                e.preventDefault();
+                var igpno = $("#Xref").val();
+
+                var btn = $(this);
+                var BtnText = btn.text();
+                btn.html(`<i class="fa fa-refresh fa-spin text-white"></i>`);
+
+                var murl = `${$(this).data('action').replace('#', '')}${igpno}`
+                $.ajax({
+                    method: 'GET',
+                    url: murl
+                }).done(function (res) {
+                    btn.text(BtnText);
+
+                    $('#partialWrapper').removeClass('d-none').addClass('d-block').html(res);
+
+                    $("#PPCDetailsTable, #PPCTable").DataTable({
+                        scrollX: 300,
+                        scrollY: true,
+                        autoWidth: true,
+                    });
+                    // script that will work on the partial view
+                    //ActivateCopyShit();
+                    $(".copy-js").click(function () {
+                        var btn = $(this);
+
+                        var tr = btn.parents("tr")
+                        tr.find("input[type='hidden']").each(function (i) {
+                            debugger;
+                            var input = $(this);
+                            $(`input[type='number']#${input.attr("name")},input[type='hidden']#${input.attr("name")},input[type='text']#${input.attr("name")}, select#${input.attr("name")}`).val(input.val());
+                            $('.select2').trigger('change');
+                        });
+
+                        $('.IgpRef-js').attr("disabled", true);
+                        $('#Xref').attr("disabled", true);
+
+                       // $("#Xref").attr("disabled", true);
+
+                        //var maxKg = tr.find("input#AvailableLpsKgs").val();
+
+                        //$("input#Kgs").attr("max", maxKg);
+                        //$("#availableKgs").text(maxKg);
+                    });
+                }).fail(function () {
+                    btn.text(BtnText);
+                    swal("Failed", "Request Failed. Try later.", "error");
+                });
+            });
+        })
+        $(document).ready(function () {
+
+            $("#btn").on("click", function () {
+                $(this).attr("disabled", "disabled");
+                doWork();
+            });
+        });
+
+        function doWork() {
+            alert("doing work");
+            setTimeout('$("#btn").removeAttr("disabled")', 1500);
+        }
+
+
+        //$(document).ready(function () {
+        //    // When the Kgs input value changes
+        //    $("#Kgs").on('input', function () {
+        //        var kgsValue = parseFloat($(this).val());
+        //        var pendingKgsValue = parseFloat($("#PendingKgs").val());
+
+        //        // Check if Kgs is greater than PendingKgs
+        //        if (kgsValue > pendingKgsValue) {
+        //            alert("The value of Kgs cannot be greater than Pending Kgs.");
+        //            $(this).val(pendingKgsValue); // Clear the input or set it to a valid value
+        //        }
+        //    });
+        //});
+
+        $(document).ready(function () {
+        // Get the filter value from ViewBag
+        var filter = @Html.Raw(Json.Serialize(ViewBag.filter));
+
+        // When the Kgs input value changes
+        $("#Kgs").on('input', function () {
+            var kgsValue = parseFloat($(this).val());
+            var pendingKgsValue = parseFloat($("#PendingKgs").val());
+
+            // Determine the allowed limit
+            var allowedKgs = filter.isYarn ? pendingKgsValue * 1.05 : pendingKgsValue;
+
+            // Check if Kgs is greater than the allowed limit
+            if (kgsValue > allowedKgs) {
+                alert("The value of Kgs cannot be greater than " + allowedKgs.toFixed(2) + " Kgs.");
+                $(this).val(pendingKgsValue); // Set the input to the maximum allowed value
+            }
+        });
+    });
+
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#submitForm').on('submit', function () {
+                // Disable the submit button
+                $('#submitBtn').attr("disabled", "disabled");
+                $('#submitBtn').attr('hidden', true);
+                // Optionally, you can change the button text to indicate processing
+                $('#submitBtn').text('Saving...');
+            });
+        });
+
+        
+    </script>
+
+}
+

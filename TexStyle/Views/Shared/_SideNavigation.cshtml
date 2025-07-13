@@ -1,0 +1,1634 @@
+﻿@using TexStyle.Extensions
+
+<ul class="pcoded-item pcoded-left-item">
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        var areaName = "";
+
+        // ppc panel
+        if (User.IsInRole(AccountRoleKeys.PPC_USER) || User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.FabricPPCUser) || User.IsInRole(AccountRoleKeys.Account_USER))
+        {
+            areaName = AreaConstants.PRODUCTION_PLANING_CONTROL.Name;
+            //dash
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN) || User.IsInRole(AccountRoleKeys.Account_USER))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">PPC Planing</div>
+
+                }
+                <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            // forms
+            <li class="pcoded-hasmenu pcoded-trigger">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-pencil-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Forms</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    @if (User.HasClaim(x => x.Value == AccountClaimKeys.PPC_IGP_VIEW))
+                    {
+                        <li>
+                            <a asp-action="Index" asp-controller="IGP" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">IGP</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                    }
+                    @if (User.HasClaim(x => x.Value == AccountClaimKeys.PPC_PURCHASE_ORDER_VIEW))
+                    {
+                        <li>
+                            <a asp-action="Index" asp-controller="PurchaseOrder" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Purchase Order</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                    }
+                    @if (User.HasClaim(x => x.Value == AccountClaimKeys.PPC_PLANING_VIEW))
+                    {
+                        <li>
+                            <a asp-action="Index" asp-controller="PPCPlanning" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">PPC Planning</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                    }
+                    @if (User.Identity.Name == "ppcuser")
+                    {
+
+                        <li>
+                            <a asp-action="Index" asp-controller="IssueNote" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Issue To Winding</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                    }
+                    else
+                    {
+
+                        @if (User.HasClaim(x => x.Value == AccountClaimKeys.PPC_ISSUE_TO_WINDING_VIEW) || User.IsInRole(AccountRoleKeys.PPC_USER) || User.IsInRole(AccountRoleKeys.DEVELOPER))
+                        {
+
+
+                            <li>
+                                <a asp-action="Index" asp-controller="LotMarking" asp-area="@(areaName)">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Lot Marking</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="Index" asp-controller="FactoryPo" asp-area="@(areaName)">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Factory Po</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+
+
+                        }
+                    }
+
+
+
+
+                    <li>
+                        <a asp-action="Index" asp-controller="ReturnNote" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Production Received</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    @if (User.HasClaim(x => x.Value == AccountClaimKeys.PPC_IGP_VIEW))
+                    {
+                        <li>
+                            <a asp-action="Index" asp-controller="OGP" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">OGP</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                    }
+                    @*<li>
+                            <a asp-action="Index" asp-controller="IssueNote" asp-route-id="@IssueTypes.IssueToParty.Id" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Issue To Party</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>*@
+                    @*<li>
+                            <a asp-action="Index" asp-controller="ReturnNote" asp-route-id="@IssueTypes.ReturnToParty.Id" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Return To Party</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>*@
+                    @*<li>
+                            <a asp-action="Index" asp-controller="GetSetGateData" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Get & Send Data</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>*@
+                </ul>
+
+            </li>
+            // reports
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Reports</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a target="_blank" asp-action="Index" asp-controller="Reports" asp-area="@AreaConstants.CHEMICAL_STORE.Name">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">All Reports</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <ul class="pcoded-submenu">
+
+                    @if (User.Identity.Name == "ppcuser")
+                    {
+                        <!--<li>
+                            <a target="_blank" asp-action="IgpReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">IGP Report</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="OgpReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">OGP Report</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a target="_blank" asp-action="P1EcruYarnReceivedReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Received Report P-1</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+
+                            <a target="_blank" asp-action="P2EcruYarnConsumptionReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Consumption Report P-2</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a target="_blank" asp-action="P3DailProductionReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Daily Production Report P-3</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>-->
+                        @*asp-route-groupBy="@(ReportingConsts.YARN_RECEIEVED_PARTY_WISE)" asp-action="YarnRecievedReport" asp-controller="Reports" asp-area="@(areaName)"*@
+                        <!--<a target="_blank" asp-action="P4DyedStockReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyed Yarn Stock Report P-4</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>-->
+                        @*asp-route-groupBy="@(ReportingConsts.YARN_RECEIEVED_PARTY_WISE)" asp-action="YarnRecievedReport" asp-controller="Reports" asp-area="@(areaName)"*@
+                        <!--<a target="_blank" asp-action="P5DyedYarnDespatchedReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Yarn Despatched Report P-5</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>-->
+                        @*asp-route-groupBy="@(ReportingConsts.YARN_RECEIEVED_PARTY_WISE)" asp-action="YarnRecievedReport" asp-controller="Reports" asp-area="@(areaName)"*@
+                        <!--<a target="_blank" asp-action="P5DailProductionReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Yarn Stock Summary Report P-6</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="AnalysisReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Defect Analysis Report</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="P7EcruYarnStockReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Stock Summary Report P-6</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a target="_blank" asp-action="P7EcruYarnStockReport1" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Stock Report P-7</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>-->
+
+                    }
+                    else
+                    {
+
+
+                        <!--<li>-->
+                        @*asp-route-groupBy="@(ReportingConsts.YARN_RECEIEVED_PARTY_WISE)" asp-action="YarnRecievedReport" asp-controller="Reports" asp-area="@(areaName)"*@
+                        <!--<a target="_blank" asp-action="P3DailProductionReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Daily Production Report P-3</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>-->
+                        @*asp-route-groupBy="@(ReportingConsts.YARN_RECEIEVED_PARTY_WISE)" asp-action="YarnRecievedReport" asp-controller="Reports" asp-area="@(areaName)"*@
+                        <!--<a target="_blank" asp-action="P4DyedStockReport1" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyed Fabric Stock Report P-4</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a target="_blank" asp-action="P9IssunaceRecordReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Fabric LPS Issuance Report</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a target="_blank" asp-action="P7EcruYarnStockReport11" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Stock Report P-7</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>-->
+                        @*asp-route-groupBy="@(ReportingConsts.YARN_RECEIEVED_PARTY_WISE)" asp-action="YarnRecievedReport" asp-controller="Reports" asp-area="@(areaName)"*@
+                        <!--<a target="_blank" asp-action="P5DyedYarnDespatchedReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Fabric Despatched Report P-5</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>-->
+                        @*asp-route-groupBy="@(ReportingConsts.YARN_RECEIEVED_PARTY_WISE)" asp-action="YarnRecievedReport" asp-controller="Reports" asp-area="@(areaName)"*@
+                        <!--<a target="_blank" asp-action="P8IssuedLPSReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Issued LPS Status Report P-8</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>-->
+                        @*asp-route-groupBy="@(ReportingConsts.YARN_RECEIEVED_PARTY_WISE)" asp-action="YarnRecievedReport" asp-controller="Reports" asp-area="@(areaName)"*@
+                        <!--<a target="_blank" asp-action="P10EcruStockSummary" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">EcruStock Summary P-10</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>-->
+                        @*asp-route-groupBy="@(ReportingConsts.YARN_RECEIEVED_PARTY_WISE)" asp-action="YarnRecievedReport" asp-controller="Reports" asp-area="@(areaName)"*@
+                        <!--<a target="_blank" asp-action="P11DyedStockSummaryReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyed Stock Summary P-11</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>-->
+                        @*asp-route-groupBy="@(ReportingConsts.YARN_RECEIEVED_PARTY_WISE)" asp-action="YarnRecievedReport" asp-controller="Reports" asp-area="@(areaName)"*@
+                        <!--<a target="_blank" asp-action="P12FactoryPoKgsPeportReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">P-12 Factory Po Kgs Report</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="DyeingLossLotWise" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Loss Lot Wise (Pending Despatch)</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="InwardEcruFabricPOWise" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Inward Ecru Fabric PO Wise</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="InwardEcruFabricKnitterWise" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Inward Ecru Fabric Knitter Wise</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="EcruFabricIssuencePoWise" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Po Wise</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="EcruFabricIssuencePartyWise" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Party Wise</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="EcruFabricIssuenceColorWise" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Color Wise</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>-->
+
+
+
+                    }
+
+
+
+                </ul>
+
+            </li>
+            // settings
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-settings"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Settings</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    @if (User.Identity.Name == "ppcuser")
+                    {
+
+                        <li>
+                            <a asp-action="Index" asp-controller="ConeMarking" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Cone Marking</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a asp-action="Index" asp-controller="YarnType" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Yarn Type</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a asp-action="Index" asp-controller="YarnQuality" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Yarn Quality</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="BagMarking" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Bag Marking</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="YarnManufacturer" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Yarn Manufacturer</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+
+
+
+                        <li>
+                            <a asp-action="Index" asp-controller="RollMarking" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Roll Marking</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a asp-action="Index" asp-controller="FabricTypes" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Fabric Type</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a asp-action="Index" asp-controller="FabricQuality" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Fabric Quality</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="knittingParty" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Knitter</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                    }
+
+
+                    <li>
+                        <a asp-action="Index" asp-controller="StoreLocation" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Store Location</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="Party" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Party</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+
+
+                    <li>
+                        <a asp-action="Index" asp-controller="Buyer" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Buyer</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="BuyerColor" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Buyer Color</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="OrderActivityType" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Activity Type</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-action="Index" asp-controller="Machine" asp-area="@AreaConstants.YARN_DYEING.Name">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Machine</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="MachineType" asp-area="@AreaConstants.YARN_DYEING.Name">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Machine Type</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-action="Index" asp-controller="Season" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Season</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    @*<li>
+                            <a asp-action="Index" asp-controller="ReportFilter" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Report Filters</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>*@
+                </ul>
+
+            </li>
+        }
+
+        // yarn dying panel
+        if (User.IsInRole(AccountRoleKeys.YARN_DYING_USER) || User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.Account_USER))
+        {
+            areaName = AreaConstants.YARN_DYEING.Name;
+            // dash
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN) || User.IsInRole(AccountRoleKeys.Account_USER))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">Yarn/Fabric Dyeing</div>
+                }
+                else
+                {
+                    <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                        <span class="pcoded-micon"><i class="ti-home"></i></span>
+                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                }
+
+
+            </li>
+            // forms
+            <li class="pcoded-hasmenu pcoded-trigger">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-pencil-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Forms</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a asp-action="Index" asp-controller="RecipeFormatHeader" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Recipe Format</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="Recipe" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Recipe</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="Sticker" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Sticker</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
+            // reports
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Reports</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a target="_blank" asp-action="Index" asp-controller="Reports" asp-area="@AreaConstants.CHEMICAL_STORE.Name">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">All Reports</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                </ul>
+                @*<ul class="pcoded-submenu">
+                        <li>
+                            <a target="_blank" asp-action="DyeingConsupmtionSummary_D1Report" asp-controller="Report" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Consupmtion Report</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                    </ul>
+                    <ul class="pcoded-submenu">
+                        <li>
+                            <a target="_blank" asp-action="RecipeIssued_D3Report" asp-controller="Report" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Recipe Sorting Report</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="DyeingConsupmtionDetail_D5Report" asp-controller="Report" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes and Chemical Consumptiont</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a target="_blank" asp-action="DyeingEfficencyReport" asp-controller="Report" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Efficency Report</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="YarnDyeingRecipeReprocess" asp-controller="Report" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Yarn Dyeing Reprocess Report</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="FabricDyeingRecipeReprocess" asp-controller="Report" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Fabric Dyeing Reprocess Report</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                    </ul>*@
+
+            </li>
+            // settings
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-settings"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Settings</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a asp-action="Index" asp-controller="ProcessType" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Process Types</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="MachineType" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Machine Types</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="RecipeStep" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Recipe Steps</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a asp-action="Index" asp-controller="Costing" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Costing</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-action="Index" asp-controller="Machine" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Machines</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                    @*<li>
+                            <a asp-action="Index" asp-controller="ReportFilter" asp-area=@AreaConstants.PRODUCTION_PLANING_CONTROL.Name>
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Report Filters</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>*@
+
+
+                </ul>
+
+            </li>
+
+
+        }
+
+        // chemical store
+        if (User.IsInRole(AccountRoleKeys.CHEMICAL_STORE_USER) || User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.Account_USER))
+        {
+            areaName = AreaConstants.CHEMICAL_STORE.Name;
+
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN) || User.IsInRole(AccountRoleKeys.Account_USER))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">Chemical Store</div>
+                }
+                else
+                {
+                    <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                        <span class="pcoded-micon"><i class="ti-home"></i></span>
+                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                }
+            </li>
+            <li class="pcoded-hasmenu pcoded-trigger">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-pencil-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Forms</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+
+
+
+
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a asp-action="Index" asp-controller="DyesChemicalOpenning" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Opening</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-action="Index" asp-controller="LCImportInTr" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">(1) LC Import In</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="LocalPurchaseInTr" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">(2) Local Purchase In</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="LoanTakenInTr" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">(3) Loan Taken In</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="LoanPartyReturnInTr" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">(4) Loan Party Return In</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-action="Index" asp-controller="ChemicalDilutionTr" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">(5) Chemical Dilution In </span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+
+
+                    <li>
+                        <a asp-action="Index" asp-controller="InterUnitOutTr" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">(1) Inter-Unit Out</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="LoanTakenReturnOutTr" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">(3) Loan Taken Return Out</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="LoanPartyGivenOutTr" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">(4) Loan Party Given Out</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-action="Index" asp-controller="ChemicalIssuanceRecipeTr" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">(6) Chemical Issuance Recipe </span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-action="Index" asp-controller="StoreReturnNote" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">(7) Store Return Note </span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    <li>
+                        <a asp-action="Index" asp-controller="GenralConsumptionTr" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">(8) General Consumption Out</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </li>
+
+
+            @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN) || User.IsInRole(AccountRoleKeys.Account_USER) || User.IsInRole(AccountRoleKeys.CHEMICAL_STORE_USER))
+            {
+
+                <li class="pcoded-hasmenu">
+                    <a href="javascript:void(0)">
+                        <span class="pcoded-micon"><i class="ti-settings"></i></span>
+                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Settings</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                    <ul class="pcoded-submenu">
+
+
+
+                        <li>
+                            <a asp-action="Index" asp-controller="Chemical" asp-area=@AreaConstants.YARN_DYEING.Name>
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Chemicals</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="ManualRateUpdate" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Manual Rate Update</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="Dye" asp-area=@AreaConstants.YARN_DYEING.Name>
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        @*<li>
+                                <a asp-action="Index" asp-controller="ReportFilter" asp-area=@AreaConstants.PRODUCTION_PLANING_CONTROL.Name>
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Report Filters</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>*@
+                        @*<li>
+                                <a asp-action="UpdateRateReport" asp-controller="Reports" asp-area="@(areaName)">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Update Rate</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>*@
+                        <li>
+                            <a asp-action="Index" asp-controller="UpdateRate" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Update Rate</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        @*<li>
+                              <a asp-action="Index" asp-controller="Supplier" asp-area="@(areaName)">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Supplier</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>*@
+
+                    </ul>
+
+
+
+
+
+
+                </li>
+            }
+
+
+            // reports
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Reports</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a target="_blank" asp-action="Index" asp-controller="Reports" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">All Reports</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    @*<li>
+                            <a target="_blank" asp-action="C1DyedStockSummaryReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Stock Summary Report C-1</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="DetailStockInReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Detail Stock In Report C-2</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="DetailStockOutReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Detail Stock Out Report C-3</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="LoanTakenInReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Loan Taken In-Out Report C-4</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="LoanPartyGiveInOutReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Loan Party Out-In Report C-5</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="DyedChemicalRateDetailC7Report" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dye Chemical Rate Detail C-6 </span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="StoreRecipeSortReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Store Recipe Sort Report C-7 </span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="StoreRecipeChemicalConsumptionReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Store Recipe Chemical Consumption Report C-8 </span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="StockOutSummary" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Stock Out Summary Report C-9 </span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a target="_blank" asp-action="ChemicalStoreLedger_Report" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Chemical Store Ledger Report </span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="StockSummaryAccountReport_C13" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Stock Summary Account Report C13 </span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="LeatestRateDyesandChemicals_C14" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes and Chemical Latest Rate C14 </span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="DyedChemicalDebitRate" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dye Chemical Debit Rate </span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="AccountStockReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Accont Stock Report C13</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" asp-action="DyeingProductionAndCostingReport" asp-controller="Reports" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Production and Costing Report C14</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>*@
+                    <li>---</li>
+                </ul>
+
+            </li>
+        }
+
+        if (User.IsInRole(AccountRoleKeys.Account_USER))
+        {
+             
+
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN) || User.IsInRole(AccountRoleKeys.Account_USER))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">Accounts</div>
+                }
+                else
+                {
+                    <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                        <span class="pcoded-micon"><i class="ti-home"></i></span>
+                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                }
+            </li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Forms</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a asp-action="Index" asp-controller="Chemical" asp-area=@AreaConstants.YARN_DYEING.Name>
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Chemicals</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="ManualRateUpdate" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Manual Rate Update</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="Dye" asp-area=@AreaConstants.YARN_DYEING.Name>
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    @*<li>
+                            <a asp-action="Index" asp-controller="ReportFilter" asp-area=@AreaConstants.PRODUCTION_PLANING_CONTROL.Name>
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Report Filters</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>*@
+
+                    <li>
+                        <a asp-action="Index" asp-controller="UpdateRate" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Update Rate</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="DyeingEnergyConsumption" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Energy Consumption</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Reports</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a target="_blank" asp-action="Index" asp-controller="Reports" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">All Reports</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </li>
+        }
+
+        //Gate
+        if (User.IsInRole(AccountRoleKeys.GATE_USER) || User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.FabricGateUser) || User.IsInRole(AccountRoleKeys.Account_USER))
+        {
+            areaName = AreaConstants.GATE.Name;
+
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN) || User.IsInRole(AccountRoleKeys.Account_USER))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">Gate</div>
+                }
+                else
+                {
+                    <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                        <span class="pcoded-micon"><i class="ti-home"></i></span>
+                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                }
+            </li>
+
+            <li class="pcoded-hasmenu pcoded-trigger">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-pencil-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Forms</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    @*<li>
+                            <a asp-action="Index" asp-controller="GateIGPFabric" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">IGP Fabric</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>*@
+                    @if (User.IsInRole(AccountRoleKeys.FabricGateUser))
+                    {
+
+
+                        <li>
+                            <a asp-action="Index" asp-controller="GateIGPYarn" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">IGP</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="GateOGPYarn" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">OGP </span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)">
+                                <span class="pcoded-micon"><i class="ti-settings"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.main">Settings</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+
+                                @*<li>
+                                        <a asp-action="Index" asp-controller="ReportFilter" asp-area=@AreaConstants.PRODUCTION_PLANING_CONTROL.Name>
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Report Filters</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>*@
+                            </ul>
+
+                        </li>
+                    }
+                    else
+                    {
+
+                        <li>
+                            <a asp-action="Index" asp-controller="GateIGPYarn" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">IGP</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        @*@if (User.Identity.Name == "gateuser")
+                            {*@
+                        <li>
+                            <a asp-action="Index" asp-controller="GateIGPDyesChemical" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">IGP Dyes & Chemical</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="GateIGPLoanDyesChemical" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">IGP Loan Dyes & Chemical</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="GateOGPLoanDyesChemical" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">OGP Loan Dyes & Chemical</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a asp-action="Index" asp-controller="GateOGPYarn" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">OGP </span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                    }
+
+                    @*<li>
+                            <a asp-action="Index" asp-controller="GateIGP" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">IGP Gate</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="OGPGate" asp-area="@(areaName)">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">OGP Gate</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>*@
+
+
+                </ul>
+
+            </li>
+
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-settings"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Settings</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+
+                    @*<li>
+                            <a asp-action="Index" asp-controller="ReportFilter" asp-area=@AreaConstants.PRODUCTION_PLANING_CONTROL.Name>
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.default">Report Filters</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>*@
+                </ul>
+
+            </li>
+        }
+
+        //Analysis
+        if (User.IsInRole(AccountRoleKeys.ANALYSIS) || User.IsInRole(AccountRoleKeys.DEVELOPER))
+        {
+            areaName = AreaConstants.Analysis.Name;
+
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">Analysis</div>
+                }
+                else
+                {
+                    <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                        <span class="pcoded-micon"><i class="ti-home"></i></span>
+                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                }
+            </li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-user"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Forms</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+
+                    <li>
+                        <a asp-action="Index" asp-controller="AnalysisType" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Analysis Type</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="Defect" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Defect</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="DefectAnalysis" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Defect Analysis</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </li>
+        }
+
+        // yarn dying time panel
+        if (User.IsInRole(AccountRoleKeys.YARN_DYING_TIME_USER) || User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.Account_USER))
+        {
+            areaName = AreaConstants.YARN_DYEING.Name;
+            // dash
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN) || User.IsInRole(AccountRoleKeys.Account_USER))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">Dyeing Times</div>
+                }
+                else
+                {
+                    <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                        <span class="pcoded-micon"><i class="ti-home"></i></span>
+                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                }
+
+
+            </li>
+            // forms
+            <li class="pcoded-hasmenu pcoded-trigger">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-pencil-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Forms</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a asp-action="Index" asp-controller="RecipeTime" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Recipe Times Pending</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a asp-action="TimeAdded" asp-controller="RecipeTime" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Recipe Times Added</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
+
+
+
+
+        }
+
+        // Accounts
+        if (User.IsInRole(AccountRoleKeys.MARKETING_ACCOUNTS) || User.IsInRole(AccountRoleKeys.DEVELOPER))
+        {
+            areaName = AreaConstants.MarketingAccounts.Name;
+
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">Marketing/Accounts</div>
+                }
+                else
+                {
+                    <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                        <span class="pcoded-micon"><i class="ti-home"></i></span>
+                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                }
+            </li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-user"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Forms</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+
+                    <li>
+                        <a asp-action="Index" asp-controller="OGPInvoice" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Invoice Detail</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </li>
+        }
+
+        // developer
+        if (User.IsInRole(AccountRoleKeys.DEVELOPER))
+        {
+            areaName = AreaConstants.USER_MANAGEMENT.Name;
+
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">User Management</div>
+                }
+                else
+                {
+                    <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                        <span class="pcoded-micon"><i class="ti-home"></i></span>
+                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                }
+            </li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-user"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">User Management</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+
+                    <li>
+                        <a asp-action="Index" asp-controller="Account" asp-area="UserManagement">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Accounts</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="Role" asp-area="UserManagement">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Roles</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
+        }
+
+        // PPC Manager
+        if (User.IsInRole(AccountRoleKeys.PPC_MANAGER_USER))
+        {
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN) || User.IsInRole(AccountRoleKeys.Account_USER))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">PPC Planing</div>
+
+                }
+                <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+
+            // reports
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Reports</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a target="_blank" asp-action="Index" asp-controller="Reports" asp-area="@AreaConstants.CHEMICAL_STORE.Name">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">All Reports</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+            </li>
+        }
+
+        // Reports User
+        if (User.IsInRole(AccountRoleKeys.REPORT_USER))
+        {
+            areaName = AreaConstants.CHEMICAL_STORE.Name;
+
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN) || User.IsInRole(AccountRoleKeys.Account_USER))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">PPC Planing</div>
+
+                }
+                <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Forms</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a asp-action="Index" asp-controller="DyeingEnergyConsumption" asp-area="@(areaName)">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">Energy Consumption</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            // reports
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Reports</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a target="_blank" asp-action="Index" asp-controller="Reports" asp-area="@AreaConstants.CHEMICAL_STORE.Name">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">All Reports</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+            </li>
+        }
+
+        // Knitting User
+        if (User.IsInRole(AccountRoleKeys.KNITTING_USER))
+        {
+            <li class="active">
+                @if (User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.ADMIN) || User.IsInRole(AccountRoleKeys.Account_USER))
+                {
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" menu-title-theme="theme5">PPC Planing</div>
+
+                }
+                <a asp-area="@(areaName)" asp-action="Index" asp-controller="Home">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+
+            // reports
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="ti-layers-alt"></i></span>
+                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Reports</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li>
+                        <a target="_blank" asp-action="Index" asp-controller="Reports" asp-area="@AreaConstants.CHEMICAL_STORE.Name">
+                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.default">All Reports</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+            </li>
+        }
+
+    }
+
+</ul>

@@ -1,0 +1,105 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.YarnReceivedReportViewModel>
+@{
+    ViewData["Title"] = "Yarn Received Report";
+    Layout = "_LayoutPrint";
+    var noData = "No Data Available";
+    var abc = @ViewBag.Message;
+}
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+
+
+<div class="card user-activity-card">
+    @*<div class="card-header d-flex justify-content-between align-items-center no-print">
+            <button class="btn btn-sm btn-info " onclick="window.print()"><i class="ti-printer"></i></button>
+        </div>*@
+    <div class="card-block">
+        <div class="w-100 text-center">
+            <h3>COMFORT KNITWEARS (PVT.) LTD. (YARN DYEING DIV.)</h3>
+            <h4>@ViewBag.ReportTitle YARN RECEIVED REPORT   @ViewData["Message"] @abc</h4>
+            <h6>@ViewBag.ReportDurationTitle FOR THE PERIOD(01-JAN-2020) TO (30-JAN-2020)</h6>
+        </div>
+
+
+
+
+        <div class="m-grid" style="margin-top:20px;">
+            <div class="row m-g-head">
+
+                <div class="col-9"></div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="row m-g-head pt-2" style=" background: #e7e7e7; border-bottom: 0.2px solid #d5d4d4;padding: 5px 0px;margin-bottom: 10px;">
+                <div class="col-2" style="font-weight:bolder; padding:0 0 0 15px;">Date</div>
+                <div class="col-1 p-0" style="font-weight:bolder;">Party</div>
+                <div class="col-1 p-0" style="font-weight:bolder;">IGP </div>
+                <div class="col-1 p-0" style="font-weight:bolder;">Y.Count</div>
+                <div class="col-1 p-0" style="font-weight:bolder;">Quality</div>
+                <div class="col-2 p-0" style="font-weight:bolder;">Manufacturer</div>
+                <div class="col-1 p-0" style="font-weight:bolder;">Buyer Po</div>
+                <div class="col-1 p-0" style="font-weight:bolder;">Bags</div>
+                <div class="col-1 p-0" style="font-weight:bolder;">Gr(Kgs)</div>
+                <div class="col-1 p-0" style="font-weight: bolder;">Net(Kgs)</div>
+            </div>
+            @if (Model.Count() > 0)
+            {
+                foreach (var grp in Model)
+                {
+                    <div class="row">
+                        <div class="col-12" style="font-size: 15px;"><strong>@grp.Descriminator</strong></div>
+                    </div>
+                    foreach (var item in grp.Items)
+                    {
+                        <div class="row detail">
+                            <div class="col-1"></div>
+                            <div class="col-2 p-0" style="font-size:13px;">
+                                @* @if (!item.IsDateWise) {*@
+
+                                @*}*@
+                                @item.Party
+                            </div>
+                            <div class="col-1 p-0" style="font-size:13px;">@item.No</div>
+                            <div class="col-1 p-0" style="font-size:13px;">@item.YarnType</div>
+                            <div class="col-1 p-0" style="font-size:13px;">@item.YarnQuality</div>
+                            <div class="col-2 p-0" style="font-size:13px;">@item.YarnManufacturer</div>
+                            <div class="col-1 p-0" style="font-size:13px;">@item.Po</div>
+                            <div class="col-1 p-0" style="font-size:13px;">@item.Bags</div>
+                            <div class="col-1 p-0" style="font-size:13px;">@item.Kgs</div>
+                            <div class="col-1 p-0" style="font-size:13px;">@item.NetKgs</div>
+
+                        </div>
+
+                        if (item.PPCPlaningList.Count > 0)
+                        {
+                            <div class="row m-g-head pt-2">
+                                <div class="col-10 p-0"></div>
+                                <div class="col-1 p-0" style="background: #e7e7e7;font-weight: bolder; font-size:15px;">LPSNo</div>
+                                <div class="col-1 p-0" style="background: #e7e7e7;font-weight: bolder; font-size:15px;">Kgs</div>
+                            </div>
+                            foreach (var ppcItem in item.PPCPlaningList)
+                            {
+                                <div class="row">
+                                    <div class="col-10 p-0"></div>
+                                    <div class="col-1 p-0" style="font-size:13px;">@ppcItem.LPSNo</div>
+                                    <div class="col-1 p-0" style="font-size:13px;">@ppcItem.Kgs</div>
+
+                                </div>
+                            }
+                            <div class="row m-g-head">
+                                <div class="col-10 p-0"></div>
+                                <div class="col-1 p-0 " style="font-size:13px; background: #e7e7e7;font-weight: bolder;">Balance</div>
+                                <div class="col-1 p-0" style="font-size:13px; background: #e7e7e7; font-weight: bolder;">@item.BalanceKgs</div>
+                            </div>
+                        }
+                    }
+                }
+            }
+        </div>
+
+    </div>
+</div>

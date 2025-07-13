@@ -1,0 +1,119 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.YarnReceivedReportViewModel>
+@{
+    ViewData["Title"] = "ECRU YARN CONSUMPTION";
+    ViewData["Company"] = "COMFORT KNITWEARS PVT LTD (YARN DYEING DIV)";
+    Layout = "_LayoutPrint";
+
+}
+
+<div class="table-responsive">
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+
+                <th scope="col" width="10%" class="table-active report-numberheading">P-2</th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="report-header1" colspan="10"> @ViewData["Company"] </td>
+            </tr>
+            <tr>
+                <td class="report-header2" colspan="10">@ViewData["Title"]</td>
+            </tr>
+            <tr>
+                <td class="report-header3" colspan="10">FROM: 01-02-2020 TO: 09-09-2020</td>
+            </tr>
+            <tr>
+                <td colspan="10"> </td>
+            </tr>
+            <tr>
+                <td colspan="10"> </td>
+            </tr>
+            <tr class="report-detailheader">
+                <td>Date</td>
+                <td>IGP</td>
+                <td>Party</td>
+                <td>Buyer</td>
+                <td>Y.Count</td>
+                <td>Y.Quality</td>
+                <td>Manufacturer</td>
+                <td>Net Kgs</td>
+                <td></td>
+                <td></td>
+
+            </tr>
+
+            @if (Model.Count() > 0)
+            {
+                foreach (var grp in Model)
+                {
+                    <tr>
+                        <td colspan="10">
+
+                            <strong>@grp.Descriminator</strong>
+                        </td>
+                    </tr>
+                    foreach (var item in grp.Items)
+                    {
+                        <tr>
+                            <td>@item.Date.Value.ToString("dd/MMM/yyyy")</td>
+                            <td>@item.No</td>
+                            <td> @item.Party</td>
+                            <td>@item.Party</td>
+                            <td>@item.YarnType</td>
+                            <td>@item.YarnQuality</td>
+                            <td>@item.YarnManufacturer</td>
+                            <td>@item.Kgs</td>
+                            <td></td>
+                            <td></td>
+
+
+                        </tr>
+
+                        if (item.PPCPlaningList.Count > 0)
+                        {
+                            <tr >
+                                <td colspan="6"></td>
+                                <td class="report-Subdetailheader">LPSNo</td>
+                                <td class="report-Subdetailheader">Kgs</td>
+                                <td class="report-Subdetailheader">Issue Id</td>
+                                <td class="report-Subdetailheader">Issue Date</td>
+
+                            </tr>
+
+                            foreach (var ppcItem in item.PPCPlaningList)
+                            {
+                                <tr>
+                                    <td colspan="6"></td>
+                                    <td>@ppcItem.LPSNo</td>
+                                    <td>@ppcItem.Kgs</td>
+                                    <td>@ppcItem.IssueId</td>
+                                    <td>@ppcItem.IssueDate.ToString("dd/MMM/yyyy")</td>
+
+                                </tr>
+                            }
+                            <tr>
+                                <td colspan="6"></td>
+                                <td class="report-Subdetailheader">Balance</td>
+                                <td colspan="2" class="report-Subdetailheader">@item.BalanceKgs</td>
+                            </tr>
+                           
+                        }
+                    }
+                }
+            }
+            
+        </tbody>
+    </table>
+</div>
+

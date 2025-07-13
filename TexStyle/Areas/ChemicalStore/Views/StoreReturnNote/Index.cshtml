@@ -1,0 +1,97 @@
+﻿@model IEnumerable<DyeChemicalTr>
+
+@{
+    var title = $"Store Return Note";
+    ViewData["Title"] = $"{title}s";
+
+    var AddOrUpdateAction = "/cs/StoreReturnNote/AddOrUpdate/";
+    var StoreReturnNoteDetailReport = "/cs/StoreReturnNote/StoreReturnNoteDetailReport/";
+    //   var DeleteAction = "/cs/LCImportInTr/Delete/";
+
+    Layout = "_Layout";
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.CS_STORE_RETURN_NOTE_TR_CREATE))
+                {<button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW </button>}
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" data-order="[[ 2, &quot;asc&quot; ]]" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>SNo</th>
+                                            <th>Transaction Date</th>
+                                        
+                                            <th>Local Purchase No</th>
+                                            <th>Party</th>
+                                            @*<th>Fare Amount</th>
+        <th>DTRE No</th>*@
+
+                                            <th>Invoice No</th>
+                                            <th>InvoiceDate</th>
+                                            <th>OGP Reff No</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                                        <tr role="row">
+                                            <td>@c.Sno</td>
+                                            <td>@c.TransactionDate.ToString("dd MMM yyyy")</td>
+                                            @*<td>@c.LocalPurchaseInTr?.GateTr?.Sno</td>
+        <td>@c.LocalPurchaseInTrId</td>*@
+                                            <td>
+                                                @c.DyeChemicalXrefTr?.Sno
+                                        </td>
+                                        <td>@c.Party?.Name</td>
+
+                                        @*<td>@c.FairPrice</td>
+    <td>@c.DTRENo</td>*@
+                                        <td>@c.InvoiceNo</td>
+                                        <td>@c.InvoiceDate?.ToString("dd MMM yyyy")</td>
+                                        <td>@c.IGPReffNo</td>
+
+                                        <td style="width:150px;">
+                                            <a href="@StoreReturnNoteDetailReport@c.Id" class="btn btn-outline-secondary">OGP Detail Report</a>
+                                            <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-primary">Details</a>
+                                            @if (User.Claims.Any(x => x.Value == AccountClaimKeys.CS_LC_IMPORT_TR_EDIT))
+                                            {<button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdateAction@c.Id" data-title="Update @title">Edit</button>} @*<button type="button" class="btn btn-primary update-js" data-action="#@AddDetailsAction@c.Id" data-title="Detail @title">Details</button>
+        @if (User.Claims.Any(x => x.Value == AccountClaimKeys.Something)){<button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>}*@
+                                        </td>
+
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th>SNo</th>
+                                            <th>Transaction Date</th>
+                                       
+                                            <th>Local Purchase No</th>
+                                            <th>Party</th>
+                                            @*<th>Fare Amount</th>
+        <th>DTRE No</th>*@
+                                            <th>Invoice No</th>
+                                            <th>InvoiceDate</th>
+                                            <th>OGP Reff No</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

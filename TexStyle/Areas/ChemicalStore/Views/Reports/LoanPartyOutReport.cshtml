@@ -1,0 +1,160 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.Reports.P3DailyProductionReportViewModel>
+    @{
+    ViewData["Title"] = "Loan Party Given Out-IN Report";
+    Layout = "_LayoutPrint";
+
+    }
+
+    <div class="table-responsive">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+
+                    <th scope="col" width="7%" class="table-active report-numberheading">C-5</th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    @*<td class="report-header1" colspan="5">@Model.FirstOrDefault().CompanyName </td>*@
+                    <td class="report-header1" colspan="14">COMFORT KNITWEARS PVT </td>
+                </tr>
+
+                <tr>
+                    <td class="report-header2" colspan="14">@ViewData["Title"] </td>
+                </tr>
+
+                <tr>
+                    @*<td class="report-header3" colspan="5">DATE FROM: @Model.FirstOrDefault().DateFrom TO: @Model.FirstOrDefault().DateTo</td>
+                    *@
+                    <td class="report-header3" colspan="14">DATE FROM: 2020-01-01 TO: 2020-02-29</td>
+                </tr>
+                <tr>
+                    <td colspan="14"> </td>
+                </tr>
+                <tr>
+                    <td colspan="14"> </td>
+                </tr>
+                <tr class="report-detailheader">
+                    <td colspan="2">Date</td>
+                    <td colspan="2">Dye/Chemical</td>
+                    <td colspan="2">OGP</td>
+                    <td colspan="2">Qty</td>
+                    <td colspan="2">Date</td>
+                    <td colspan="2">IGP</td>
+                    <td colspan="2">Qty</td>
+
+
+
+                </tr>
+
+
+                <tr>
+                    <td colspan="2">2020/01/20</td>
+                    <td colspan="2">SYNOLON SCARLET SHF 2G</td>
+                    <td colspan="2">3</td>
+                    <td colspan="2">50</td>
+                    <td colspan="2"></td>
+                    <td colspan="2"></td>
+                    <td colspan="2"></td>
+
+                </tr>
+
+                <tr>
+                    <td colspan="8"></td>
+                    <td class="report-Subdetailheader" colspan="2">Date </td>
+                    <td class="report-Subdetailheader" colspan="2"> IGP No </td>
+                    <td class="report-Subdetailheader" colspan="2"> Qty</td>
+                </tr>
+
+                <tr>
+                    <td colspan="8"></td>
+                    <td class="report-Subdetail-detail" colspan="2"> 2020/02/28</td>
+                    <td class="report-Subdetail-detail" colspan="2">1</td>
+                    <td class="report-Subdetail-detail" colspan="2">50</td>
+
+
+                </tr>
+
+
+
+                @*  @if (Model.Count() > 0)
+                    {
+                        foreach (var grp in Model)
+                        {
+                            <tr>
+                                <td colspan="14">
+
+                                    <strong>@grp.Date</strong>
+                                </td>
+                            </tr>
+                            foreach (var item in grp.LPSDetail)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@item.LPSNo</td>
+                                    <td>@item.PurchaseOrderNo</td>
+                                    <td>@item.LotNo</td>
+                                    <td>@item.Buyer</td>
+                                    <td>@item.Shade</td>
+                                    <td>@item.YarnType</td>
+                                    <td>@item.YarnQuality</td>
+                                    <td>@item.EcruKgs</td>
+                                    <td>@item.Cones</td>
+                                    <td>@item.DyeKgs</td>
+                                    <td>@item.DyedBags</td>
+                                    <td>@(((item.EcruKgs - item.DyeKgs) / (item.EcruKgs)) * 100)</td>
+                                    <td>-</td>
+
+
+                                </tr>
+                            }
+
+
+                            <tr>
+                                <td colspan="8"></td>
+                                <td class="report-Subdetailheader">T. Ecru Kg </td>
+                                <td class="report-Subdetailheader">T. Ecru Cones </td>
+                                <td class="report-Subdetailheader">T. Dyed Kg </td>
+                                <td class="report-Subdetailheader">T. Dyed Bags </td>
+                                <td colspan="2"></td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="8"></td>
+                                <td class="report-Subdetail-detail">@grp.EcruTotal</td>
+                                <td class="report-Subdetail-detail">@grp.ConesTotal</td>
+                                <td class="report-Subdetail-detail">@grp.DyedTotal</td>
+                                <td class="report-Subdetail-detail">@grp.BagsTotal</td>
+                                <td colspan="2"></td>
+
+                            </tr>
+
+
+                        }
+
+
+                    }
+                    }*@
+
+
+            </tbody>
+        </table>
+    </div>
+

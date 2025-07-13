@@ -1,0 +1,302 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.PPC.IGPDetailViewModel
+
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    List<SelectListItem> yarnManufacturerList = ViewBag.yarnManufacturerList;
+    List<SelectListItem> storeLocationList = ViewBag.storeLocationList;
+    List<SelectListItem> bagMarkingList = ViewBag.bagMarkingList;
+
+    List<SelectListItem> coneMarkingList = ViewBag.coneMarkingList;
+
+    List<SelectListItem> yarnTypeList = ViewBag.yarnTypeList;
+
+    List<SelectListItem> yarnQualityList = ViewBag.yarnQualityList;
+
+    List<SelectListItem> buyerColorList = ViewBag.buyerColorList;
+
+
+    List<SelectListItem>  rollMarkingList=   ViewBag.rollMarkingList;
+    List<SelectListItem>  fabricTypeList=  ViewBag.fabricTypeList;
+    List<SelectListItem>  fabricQualityList=  ViewBag.fabricQualityList;
+    List<SelectListItem> knittingPartyList = ViewBag.knittingPartyList;
+    List<SelectListItem> processActivityTypeList = ViewBag.processActivityTypeList;
+    var filter= ViewBag.filter ;
+    var igpheader = ViewBag.igpheader;
+
+
+
+
+}
+
+<form asp-area="ProductionPlaningControl" asp-controller="IGPDetail" asp-action="AddOrUpdate" asp-route-id="@if (Model != null) { <text>@Model.InwardGatePassId</text> } " method="post" ifctype="multipart/form-data">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @*@if (Model != null) {
+            <input id="Id" name="Id" type="hidden" value="@Model.Id" />
+        }*@
+        @Html.HiddenFor(x => x.InwardGatePassId)
+        @Html.HiddenFor(x => x.YarnTypeId)
+        @Html.HiddenFor(x => x.Id)
+
+       
+            @*@Html.HiddenFor(x => x.NetWeightInKg)*@
+
+
+        @Html.HiddenFor(x => x.Bags)
+
+        @*@Html.HiddenFor(x => x.NoOfRolls)
+        @Html.HiddenFor(x => x.FabricTypesId)*@
+        @* @Html.HiddenFor(x => x.ActivityTypeId)
+
+        *@
+
+        <div class="row">
+            @*<div class="form-group col-2">
+                <label asp-for="ProductionDate" class="control-label"></label>
+                <input asp-for="ProductionDate" class="form-control" type="date" />
+                <span asp-validation-for="ProductionDate" class="text-danger"></span>
+            </div>*@
+
+            <div class="form-group col-3">
+                <label asp-for="GrossWeightInKg" class="control-label"></label>
+                <input asp-for="GrossWeightInKg" class="form-control" id="grossKg" />
+                <span asp-validation-for="GrossWeightInKg" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-3">
+                <label asp-for="TearWeightInKg" class="control-label"></label>
+                <input asp-for="TearWeightInKg" class="form-control" id="tearKg" />
+                <span asp-validation-for="TearWeightInKg" class="text-danger"></span>
+            </div>
+            <div class="form-group col-3">
+                <label asp-for="NetWeightInKg" class="control-label"></label>
+                <input asp-for="NetWeightInKg" class="form-control" id="netKg" />
+                <span asp-validation-for="NetWeightInKg" class="text-danger"></span>
+            </div>
+
+            @if (filter.IsYarn == true)
+            {
+                <div class="form-group col-3">
+                    <label asp-for="Bags" class="control-label"></label>
+                    <input asp-for="Bags" class="form-control" disabled />
+                    <span asp-validation-for="Bags" class="text-danger"></span>
+                </div>
+                <div class="form-group col-3">
+                    <label asp-for="PartyRefNo" class="control-label"></label>
+                    <input asp-for="PartyRefNo" class="form-control" />
+                    <span asp-validation-for="PartyRefNo" class="text-danger"></span>
+                </div>
+
+            }
+            else
+            {
+
+                <div class="form-group col-3">
+                    <label asp-for="NoOfRolls" class="control-label"></label>
+                    <input asp-for="NoOfRolls" class="form-control" />
+                    <span asp-validation-for="NoOfRolls" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-3">
+                    <label asp-for="Dia" class="control-label"></label>
+                    <input asp-for="Dia" class="form-control" />
+                    <span asp-validation-for="Dia" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-3">
+                    <label asp-for="GSM" class="control-label"></label>
+                    <input asp-for="GSM" class="form-control" />
+                    <span asp-validation-for="GSM" class="text-danger"></span>
+                </div>
+
+            }
+            @*<div class="form-group col-3">
+                <label asp-for="BilityNo" class="control-label"></label>
+                <input asp-for="BilityNo" class="form-control" />
+                <span asp-validation-for="BilityNo" class="text-danger"></span>
+            </div>*@
+            <div class="form-group col-3">
+                <label asp-for="LotNo" class="control-label"></label>
+                <input asp-for="LotNo" class="form-control" />
+                <span asp-validation-for="LotNo" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group col-3">
+                <label asp-for="BuyerPO" class="control-label"></label>
+                <input asp-for="BuyerPO" class="form-control" />
+                <span asp-validation-for="BuyerPO" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group col-3">
+                <label asp-for="Weight" class="control-label"></label>
+                <input asp-for="Weight" class="form-control" />
+                <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>*@
+
+
+            @*<div class="form-group col-3">
+                <label asp-for="StyleNo" class="control-label"></label>
+                <input asp-for="StyleNo" class="form-control" />
+                <span asp-validation-for="StyleNo" class="text-danger"></span>
+            </div>*@
+
+            @*<div class="form-group col-3">
+                <label asp-for="Difference" class="control-label"></label>
+                <input asp-for="Difference" class="form-control" />
+                <span asp-validation-for="Difference" class="text-danger"></span>
+            </div>*@
+
+        </div>
+        <div class="row">
+            <div class="form-group col-3">
+                <label class="control-label" asp-for="StoreLocationId"></label>
+                <select asp-for="StoreLocationId" select2="@(storeLocationList)" select2-ph="Select Store Location" class="form-control select2"></select>
+                <span asp-validation-for="StoreLocationId" class="text-danger"></span>
+            </div>
+            @*<div class="form-group col-3">
+            @if (purchaseOrderList != null) {
+                <label class="control-label" asp-for="PurchaseOrderId"></label>
+                <partial name="~/Views/Shared/_SelectList.cshtml" model="purchaseOrderSl" />
+            }
+            <span asp-validation-for="PurchaseOrderId" class="text-danger"></span>
+        </div>*@
+
+            @if (filter.IsYarn == true)
+            {
+                <div class="form-group col-3">
+                    <label class="control-label" asp-for="YarnTypeId"></label>
+                    <select asp-for="YarnTypeId" select2="@(yarnTypeList)" disabled select2-ph="Select Yarn Type" class="form-control select2"></select>
+                    <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-3">
+                    <label class="control-label" asp-for="YarnQualityId"></label>
+                    <select asp-for="YarnQualityId" select2="@(yarnQualityList)" select2-ph="Select Yarn Quality" class="form-control select2"></select>
+                    <span asp-validation-for="YarnQualityId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-3">
+                    <label class="control-label" asp-for="YarnManufacturerId"></label>
+                    <select asp-for="YarnManufacturerId" select2="@(yarnManufacturerList)" select2-ph="Select Yarn Manufacturer" class="form-control select2"></select>
+
+                    <span asp-validation-for="YarnManufacturerId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-3">
+                    <label class="control-label" asp-for="ConeMarkingId"></label>
+                    <select asp-for="ConeMarkingId" select2="@(coneMarkingList)" select2-ph="Select Cone Marking" class="form-control select2"></select>
+                    <span asp-validation-for="ConeMarkingId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-3">
+                    <label class="control-label" asp-for="BagMarkingId"></label>
+                    <select asp-for="BagMarkingId" select2="@(bagMarkingList)" select2-ph="Select Bag Marking" class="form-control select2"></select>
+                    <span asp-validation-for="BagMarkingId" class="text-danger"></span>
+                </div>
+
+
+
+            }
+            else
+            {
+                @*<div class="form-group col-3">
+                <label class="control-label" asp-for="FabricTypesId"></label>
+                <select asp-for="FabricTypesId" select2="@(fabricTypeList)" select2-ph="Select Fabric Type" class="form-control select2"></select>
+                <span asp-validation-for="FabricTypesId" class="text-danger"></span>
+            </div>*@
+                <div class="form-group col-3">
+                    <label class="control-label" asp-for="FabricTypesId"></label>
+                    <select asp-for="FabricTypesId" select2="@(fabricTypeList)" select2-ph="Select Fabric Type" class="form-control select2"></select>
+                    <span asp-validation-for="FabricTypesId" class="text-danger"></span>
+                </div>
+
+
+
+
+
+
+                <div class="form-group col-3">
+                    <label class="control-label" asp-for="FabricQualityId"></label>
+                    <select asp-for="FabricQualityId" select2="@(fabricQualityList)" select2-ph="Select Fabric Quality" class="form-control select2"></select>
+                    <span asp-validation-for="FabricQualityId" class="text-danger"></span>
+                </div>
+                @*@if (igpheader)
+                {*@
+                    <div class="form-group col-3">
+                        <label class="control-label" asp-for="KnitingPartyId"></label>
+                        <select asp-for="KnitingPartyId" select2="@(knittingPartyList)" select2-ph="Select Knitter" class="form-control select2"></select>
+                        <span asp-validation-for="KnitingPartyId" class="text-danger"></span>
+                    </div>
+                
+
+
+
+
+            }
+
+
+
+
+            <div class="form-group form-check col-3">
+                <label class="control-label">Is Zero Balance</label>
+                <div class="border-checkbox-section">
+                    <div class="row">
+                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                            <input class="border-checkbox" type="checkbox" asp-for="IsZeroBalance">
+                            @*<label class="border-checkbox-label" for="IsZeroBalance"> Is Zero Balance</label>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="form-group col-3">
+            <label asp-for="IsZeroBalance" class="control-label"></label>
+            <input asp-for="IsZeroBalance" class="form-control" />
+            <span asp-validation-for="IsZeroBalance" class="text-danger"></span>
+        </div>*@
+        </div>
+        <div class="row">
+            <div class="form-group col-12">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea rows="3" asp-for="Description" class="form-control">@Model.Description</textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-3">
+                <label class="control-label" asp-for="ActivityTypeId"></label>
+                <select asp-for="ActivityTypeId" select2="@(processActivityTypeList)" select2-ph="Select Process Activity Type" class="form-control select2"></select>
+                <span asp-validation-for="ActivityTypeId" class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#btn").on("click", function () {
+            $(this).attr("disabled", "disabled");
+            doWork();
+        });
+    });
+
+    function doWork() {
+        alert("doing work");
+        setTimeout('$("#btn").removeAttr("disabled")', 1500);
+    }
+
+        $(function(){
+            $("#tearKg").change(function () {
+                var net = parseFloat($("#netKg").val());
+                var tear = parseFloat($("#tearKg").val());
+
+                $("#grossKg").val(net + tear).change();
+            });
+        });
+</script>

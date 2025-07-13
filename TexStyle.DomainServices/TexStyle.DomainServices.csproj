@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>%24/TexStyleZKAP/TexStyle/TexStyle.DomainServices</SccProjectName>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <SccAuxPath>https://dev.azure.com/comfortknitwear</SccAuxPath>
+    <SccLocalPath>.</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Implementation\CS\ChemicalDilutionTrDetailRepository.cs" />
+    <Compile Remove="Implementation\CS\ChemicalDilutionTrRepository.cs" />
+    <Compile Remove="Implementation\CS\ChemicalIssuanceRecipeTrDetailRepository.cs" />
+    <Compile Remove="Implementation\CS\ChemicalIssuanceRecipeTrRepository.cs" />
+    <Compile Remove="Implementation\CS\DyesChemicalOpenningDetailRepository.cs" />
+    <Compile Remove="Implementation\CS\DyesChemicalOpenningRepository.cs" />
+    <Compile Remove="Implementation\CS\InterUnitOutTrDetailRepository.cs" />
+    <Compile Remove="Implementation\CS\InterUnitOutTrRepository.cs" />
+    <Compile Remove="Implementation\CS\LCImportInTrDetailRepository.cs" />
+    <Compile Remove="Implementation\CS\LCImportInTrRepository.cs" />
+    <Compile Remove="Implementation\CS\LoanPartyGivenOutTrDetailRepository.cs" />
+    <Compile Remove="Implementation\CS\LoanPartyGivenOutTrRepository.cs" />
+    <Compile Remove="Implementation\CS\LoanPartyReturnInTrDetailRepository.cs" />
+    <Compile Remove="Implementation\CS\LoanPartyReturnInTrRepository.cs" />
+    <Compile Remove="Implementation\CS\LoanTakenInTrDetailRepository.cs" />
+    <Compile Remove="Implementation\CS\LoanTakenInTrRepository.cs" />
+    <Compile Remove="Implementation\CS\LoanTakenReturnOutTrDetailRepository.cs" />
+    <Compile Remove="Implementation\CS\LoanTakenReturnOutTrRepository.cs" />
+    <Compile Remove="Implementation\CS\LocalPurchaseInTrDetailRepository.cs" />
+    <Compile Remove="Implementation\CS\LocalPurchaseInTrRepository.cs" />
+    <Compile Remove="Implementation\CS\StoreReturnNoteDetailRepository.cs" />
+    <Compile Remove="Implementation\CS\StoreReturnNoteRepository.cs" />
+    <Compile Remove="Implementation\CS\SupplierRepository.cs" />
+    <Compile Remove="Implementation\CS\TrLinkerMasterRepository.cs" />
+    <Compile Remove="Interfaces\ICS\IChemicalDilutionTrDetailRepository.cs" />
+    <Compile Remove="Interfaces\ICS\IChemicalDilutionTrRepository.cs" />
+    <Compile Remove="Interfaces\ICS\IChemicalIssuanceRecipeTrDetailRepository.cs" />
+    <Compile Remove="Interfaces\ICS\IChemicalIssuanceRecipeTrRepository.cs" />
+    <Compile Remove="Interfaces\ICS\IDyesChemicalOpenningDetailRepository.cs" />
+    <Compile Remove="Interfaces\ICS\IDyesChemicalOpenningRepository.cs" />
+    <Compile Remove="Interfaces\ICS\IInterUnitOutTrDetailRepository.cs" />
+    <Compile Remove="Interfaces\ICS\IInterUnitOutTrRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILCImportInTrDetailRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILCImportInTrRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanPartyGivenOutTrDetailRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanPartyGivenOutTrRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanPartyReturnInTrDetailRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanPartyReturnInTrRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanTakenInTrDetailRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanTakenInTrRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanTakenReturnOutTrDetailRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanTakenReturnOutTrRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILocalPurchaseInTrDetailRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ILocalPurchaseInTrRepository.cs" />
+    <Compile Remove="Interfaces\ICS\IStoreReturnNoteDetailRepository.cs" />
+    <Compile Remove="Interfaces\ICS\IStoreReturnNoteRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ISupplierRepository.cs" />
+    <Compile Remove="Interfaces\ICS\ITrLinkerMasterRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TexStyle.Infrastructure\TexStyle.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

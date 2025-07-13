@@ -1,0 +1,206 @@
+﻿@model TexStyle.ViewModels.PPC.ReportFilterViewModel
+@{
+    ViewData["Title"] = "Add Or Updaste";
+    List<SelectListItem> yarnTypelist = ViewBag.YarnTypes;
+    List<SelectListItem> yarnQualitylist = ViewBag.YarnQualities;
+    List<SelectListItem> yarnPartieslist = ViewBag.YarnParties;
+
+
+    List<SelectListItem> analysistypeList = ViewBag.analysistypeList;
+    List<SelectListItem> buyerColorList = ViewBag.BuyerColorList;
+
+
+    List<SelectListItem> BuyerList = ViewBag.BuyerList;
+    List<SelectListItem> FabricQualityList = ViewBag.FabricQualityList;
+    List<SelectListItem> FabricTypeList = ViewBag.FabricTypeList;
+    List<SelectListItem> FactoryPOList = ViewBag.FactoryPOList;
+
+
+
+
+   var filter= ViewBag.filter;
+
+
+
+
+}
+
+<form asp-area="ProductionPlaningControl" asp-controller="ReportFilter" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.UserId)
+        <div class="form-group">
+            <label asp-for="DateFrom" class="control-label"></label>
+            <input asp-for="DateFrom" class="form-control" />
+            <span asp-validation-for="DateFrom" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateTo" class="control-label"></label>
+            <input asp-for="DateTo" class="form-control" />
+            <span asp-validation-for="DateTo" class="text-danger"></span>
+        </div>
+        @if (filter.IsYarn == true)
+        {
+
+            <div class="form-group">
+                <label class="control-label">Yarn Type</label>
+                <div id="YarnTypeId">
+                    <select asp-for="YarnTypeId" class=" form-control select2">
+
+
+                        <option value="" selected>--Select Yarn Type--</option>
+                        @foreach (var item in yarnTypelist)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+}
+                    </select>
+                    <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Yarn Quality</label>
+                <div id="YarnTypeId">
+                    <select asp-for="YarnQualityId" class=" form-control select2">
+
+
+                        <option value="" selected>--Select Yarn Quality--</option>
+                        @foreach (var item in yarnQualitylist)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+}
+                    </select>
+                    <span asp-validation-for="YarnQualityId" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Yarn Party</label>
+                <div id="YarnTypeId">
+                    <select asp-for="YarnPartyId" class=" form-control select2">
+
+
+                        <option value="" selected>--Select Yarn Party--</option>
+                        @foreach (var item in yarnPartieslist)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+}
+                    </select>
+                    <span asp-validation-for="YarnPartyId" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Analysis Type</label>
+                <select asp-for="AnalysisTypeId" select2="@(analysistypeList)" select2-ph="Select Party" class="form-control select2"></select>
+                <span asp-validation-for="AnalysisTypeId" class="text-danger"></span>
+            </div>}
+
+        @if (filter.IsYarn == false)
+
+        {
+
+            <div class="form-group">
+                <label class="control-label">Fabric Type</label>
+                <div id="FabricTypeId">
+                    <select asp-for="FabricTypeId" class=" form-control select2">
+
+
+                        <option value="" selected>--Select Fabric Type--</option>
+                        @foreach (var item in FabricTypeList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="FabricTypeId" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Fabric Quality</label>
+                <div id="FabricQualityId">
+                    <select asp-for="FabricQualityId" class=" form-control select2">
+
+
+                        <option value="" selected>--Select Fabric Quality--</option>
+                        @foreach (var item in FabricQualityList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="FabricQualityId" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Buyer</label>
+                <div id="BuyerId">
+                    <select asp-for="BuyerId" class=" form-control select2">
+
+
+                        <option value="" selected>--Select Buyer--</option>
+                        @foreach (var item in BuyerList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="BuyerId" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Buyer Color</label>
+                <div id="BuyerId">
+                    <select asp-for="BuyerColorId" class=" form-control select2">
+
+
+                        <option value="" selected>--Select Buyer Color--</option>
+                        @foreach (var item in buyerColorList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="BuyerColorId" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Factory PO</label>
+                <div id="BuyerId">
+                    <select asp-for="FactoryPO" class=" form-control select2">
+
+
+                        <option value="" selected>--Select Factory PO--</option>
+                        @foreach (var item in FactoryPOList)
+                        {
+                            <option value="@item.Text">@item.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="FactoryPO" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Analysis Type</label>
+                <select asp-for="AnalysisTypeId" select2="@(analysistypeList)" select2-ph="Select Party" class="form-control select2"></select>
+                <span asp-validation-for="AnalysisTypeId" class="text-danger"></span>
+            </div>}
+
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+

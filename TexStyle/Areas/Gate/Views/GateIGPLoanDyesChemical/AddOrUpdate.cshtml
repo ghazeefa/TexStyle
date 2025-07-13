@@ -1,0 +1,228 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.Gate.GateTrViewModel;
+
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    List<SelectListItem> gateIGPTypeList = ViewBag.gateigptypelist;
+    List<SelectListItem> partyList = ViewBag.partyList;
+    List<SelectListItem> OGPList = ViewBag.ogplist;
+}
+
+<form asp-area="Gate" asp-controller="GateIGPLoanDyesChemical" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Sno)
+        <div class="row">
+            <div class="form-group col-4">
+                <label class="control-label">Tr Id</label>
+                <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Sno" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" type="date" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label class="control-label" asp-for="PartyId"></label>
+                <select asp-for="PartyId" select2="@(partyList)" class="form-control select2"></select>
+                <span asp-validation-for="PartyId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label class="control-label" asp-for="GateActivityTypeId"></label>
+                <select asp-for="GateActivityTypeId" select2="@(gateIGPTypeList)" class="form-control select2"></select>
+                <span asp-validation-for="GateActivityTypeId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label class="control-label" asp-for="Xref">OGP Xref</label>
+                <div id="XrefSelectCont">
+                    <select asp-for="Xref" select2="@(OGPList)" class="form-control select2"></select>
+                </div>
+                <span asp-validation-for="Xref" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label asp-for="DriverName" class="control-label"></label>
+                <input asp-for="DriverName" class="form-control" />
+                <span asp-validation-for="DriverName" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="VehicleNo" class="control-label"></label>
+                <input asp-for="VehicleNo" class="form-control" />
+                <span asp-validation-for="VehicleNo" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="NICNo" class="control-label"></label>
+                <input asp-for="NICNo" class="form-control" />
+                <span asp-validation-for="NICNo" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="EmpNo" class="control-label"></label>
+                <input asp-for="EmpNo" class="form-control" />
+                <span asp-validation-for="EmpNo" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="IGPReffNo" class="control-label"></label>
+                <input asp-for="IGPReffNo" class="form-control" />
+                <span asp-validation-for="IGPReffNo" class="text-danger"></span>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="showdetail">
+
+    </div>
+    s    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+
+
+
+<script type="text/javascript">
+    $("#GateActivityTypeId").change(function () {
+        debugger;
+         //   alert("zxjhdsa");
+        var GateActivityTypeId = $(this).find('option:selected').val();
+        if (GateActivityTypeId != -1) {
+            $.ajax({
+                method: 'GET',
+                url: `/gate/GateIGPLoanDyesChemical/GetOGPByGateActivity/${GateActivityTypeId}`
+            }).done(function (res) {
+                //   alert(res);
+                if (res != null) {
+                    $("#XrefSelectCont").html(res);
+                    $("#XrefSelectCont .select2").parent.select2();
+                }
+                else {
+                    alert('nooo');
+                }
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert("error");
+            });
+        }
+    });
+    $("#Xref").change(function () {
+        alert("asdfasdf");
+        $.get("/cs/LCImportInTr/GetParty/" + $(this).val(), function (d) {
+            $("#PartyId").val(d.id);
+            $("#PartyName").val(d.name);
+        });
+    });
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<script type="text/javascript">
+    $("#GateActivityTypeId").change(function () {
+
+        debugger;
+        var GateActivityTypeId = $(this).find('option:selected').val();
+        if (GateActivityTypeId != -1) {
+            $.ajax({
+                method: 'GET',
+                url: `/gate/GateIGPLoanDyesChemical/GetOGPByGateActivity/${}`
+            }).done(function (res) {
+                alert(res);
+                if (res != null) {
+                    $("#XrefSelectCont").html(res);
+                    $("#XrefSelectCont .select2").parent.select2();
+                }
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert("error");
+            });*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+     //var id = 331230;
+                //debugger;
+                //if (id != -1) {
+                //    $.ajax({
+                //        method: 'GET',
+                //        data: 'id=' + id,
+                //        url: `/gate/GateIGPLoanDyesChemical/ChemicalDetail`
+                //    }).done(function (res) {
+                //        debugger;
+                //        $("#showdetail").html(res);
+
+                //        $('#dt-basic-example').DataTable(
+                //            {
+                //                //responsive: true,
+                //                orderCellsTop: true,
+                //                fixedHeader: true,
+                //            });
+                //    }).fail(function (jqXHR, textStatus, errorThrown) {
+                //        alert("error");
+                //    });
+                //}
+
+
+
+          //var id = $("#Xref").find('option:selected').val();
+</script>

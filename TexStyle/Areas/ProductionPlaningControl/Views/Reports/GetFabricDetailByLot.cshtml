@@ -1,0 +1,96 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.Reports.GetFabricDetailByLotReportViewModel>
+
+@{ ViewData["Title"] = "Fabric Knitter Details LPS-Wise";
+    Layout = "_LayoutPrint";
+}
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+                <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+                    <p>@Model.FirstOrDefault().CompanyBranch</p>
+                </div>}
+        </div>
+        <div class="text-center" style="float:right; line-height:10px;">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                D-19
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                @*Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo*@
+                <br />
+            </div>
+        </div>
+
+    </div>
+    <br />
+
+    <div class="table-responsive">
+        <table class="table table-responsive">
+
+            <thead>
+
+                <tr class="report-detailheader">
+
+                    <th width="8%">LotNo</th>
+                    <th width="8%">LPS</th>
+                    <th width="8%"> PO.No</th>
+                    <th width="12%">FabricType</th>
+                    <th width="20%">Knitter</th>
+                    <th width="20%">Buyer</th>
+                    <th width="18%">BuyerColor</th>
+                    <th width="8%">Kgs</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var itemGrp in Model.GroupBy(x=> x.LotNo))
+                {
+                    <tr style="font-weight: bold; text-decoration: underline;">
+                        <td>@itemGrp.Key</td>
+                    </tr>
+
+                    foreach (var item in itemGrp)
+                    {
+                        <tr>
+                            <td></td>
+                            <td>@item.LPSID</td>
+                            <td>@item.FactoryPo</td>
+                            <td>@item.FabricType</td>
+                            <td>@item.KnittingParty</td>
+                            <td>@item.Buyer</td>
+                            <td>@item.BuyerColor</td>
+                            <td>@item.Kgs</td>
+                        </tr>
+                    }
+
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>
+}

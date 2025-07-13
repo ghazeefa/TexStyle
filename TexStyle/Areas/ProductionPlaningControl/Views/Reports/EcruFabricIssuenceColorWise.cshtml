@@ -1,0 +1,126 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.Reports.EcruFabricIssuenceReportViewModel>
+@{
+    ViewData["Title"] = "Ecru Fabric Issuance Color-Wise";
+    Layout = "_LayoutPrint";
+    decimal groupSum = 0;
+    decimal netKgsSum = 0;
+}
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .borders > tbody > tr > td, .borders > thead > tr > td {
+        border: 1px solid black !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }
+</style>
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+                <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+                    <p>@Model.FirstOrDefault().CompanyBranch</p>
+                </div>}
+        </div>
+        <div class="text-center" style="float:right; line-height:10px;">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                D-18
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <div class="table-responsive">
+        <table class="table table-responsive" style="line-height:15px; font-family: 'Trebuchet MS','Lucida Grande', Arial, sans-serif; font-size:10px; ">
+
+            <thead>
+                <tr class="report-detailheader">
+                    <th width="10%">Buyer Color</th>
+                    <th width="8%">PO #</th>
+                    <th width="5%">LpsId</th>
+                    <th width="24%">Fabric</th>
+                    <th width="10%">Issued Date</th>
+                    <th width="5%">Lot #</th>
+                    <th width="10%">Party</th>
+                    <th width="20%">Buyer</th>
+                    <th width="8%">Issued Kgs</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var groupPO in Model.GroupBy(x => x.BuyerColorName))
+                {
+                    groupSum = 0;
+                    <tr style="font-weight:bold; ">
+                        <td>@groupPO.Key</td>
+                        <td colspan="8"></td>
+
+                    </tr>
+
+                    foreach (var item in groupPO)
+                    {
+                        <tr>
+                            <td></td>
+                            <td>@item.FactoryPO</td>
+                            <td>@item.LpsId</td>
+                            <td>@item.Fabric</td>
+                            <td>@item.IssuedDate.ToString("dd-MM-yyyy")</td>
+                            <td>@item.LotNo</td>
+                            <td>@item.PartyName</td>
+                            <td>@item.BuyerName</td>
+                            <td>@Math.Round(item.IssuedKgs, 2)</td>
+                        </tr>
+
+                        groupSum += @Math.Round(item.IssuedKgs, 2);
+
+
+
+                    }
+                    <tr style="font-weight:bold;">
+                        <td colspan="6"></td>
+                        <td colspan="2" style="text-align:right;">Color Total:</td>
+                        <td>@groupSum</td>
+
+                    </tr>
+                    netKgsSum += groupSum;
+                }
+                <tr style="font-weight:bold;">
+                    <td colspan="6"></td>
+                    <td colspan="2" style="text-align:right;">Total Kgs:</td>
+                    <td>@netKgsSum</td>
+                </tr>
+
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
+
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>
+}
+
+
+
+

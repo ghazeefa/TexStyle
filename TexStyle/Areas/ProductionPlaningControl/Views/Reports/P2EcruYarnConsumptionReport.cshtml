@@ -1,0 +1,163 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.YarnReceivedReportViewModel>
+@{ ViewData["Title"] = "Ecru Yarn Consumption Report";
+                Layout = "_LayoutPrint";
+                var noData = "No Data Available";
+                var abc = @ViewBag.Message; }
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+@if (Model.Count() > 0)
+{
+
+
+<div class="container">
+    <div class="text-center" style=" line-height:16px;">
+        <div style="text-align:end; font-weight:bold; font-size:22px;">
+            <p>@Model.FirstOrDefault().CompanyName</p>
+        </div>
+        @if (Model.FirstOrDefault().CompanyBranch != null)
+        {
+<div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+    <p>@Model.FirstOrDefault().CompanyBranch</p>
+</div>}
+    </div>
+    <div class="text-center" style=" line-height:10px;float:right">
+        <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            Report No.
+        </div>
+        <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            P-2
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="w-100 text-center" style="margin-top:-110px">
+            <h4>@ViewData["Title"]</h4>
+            Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+        </div>
+    </div>
+
+</div>
+<br />
+
+<div class="table-responsive">
+    <table class="table table-responsive" style=" line-height:5px; font-family: Trebuchet MS,'Lucida Grande', 'Arial', 'sans-serif'; font-size:10px; letter-spacing:1px; font-weight:bold">
+
+        <thead>
+            <tr class="report-detailheader">
+                <th width="10%">Date</th>
+                <th width="15%">Party</th>
+                <th width="6%">IGP</th>
+                <th width="8%">Yarn Type</th>
+                <th width="10%">YarnQuality</th>
+                <th width="16%">Yarn Manufacturer</th>
+                <th width="10%">Bags</th>
+                <th width="10%">Gr w</th>
+                <th width="10%">Net W</th>
+                <th width="1%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detail in Model)
+            {
+                @*<tr>
+                        <td colspan="1" class="report-detail-footer" style="font-size: medium; padding:6px;" data-format="DD/MM/yyyy">
+                            @detail.Descriminator
+
+                        </td>
+                        <td colspan="2" class="report-detail-footer"></td>
+                             <td></td>
+                             <td></td>
+                    </tr>*@
+
+
+
+                @foreach (var d in detail.Items)
+                {
+
+                    <tr style=" line-height:30px; border:1px solid black; font-family:serif; font-size:small ">
+
+                        <td> @d.Date.Value.ToString("dd-MM-yyyy")</td>
+                        <td>
+                            @d.Party
+                        </td>
+                        <td>
+                            @d.No
+                        </td>
+                        <td>
+                            @d.YarnType
+                        </td>
+                        <td>
+                            @d.YarnQuality
+                        </td>
+                        <td>
+                            @d.YarnManufacturer
+                        </td>
+                        <td>
+                            @d.Bags
+                        </td>
+                        <td>
+                            @{var a = d.TearWeightInKg + d.NetKgs;} @a
+                        </td>
+                        <td>
+                            @d.NetKgs
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr style="line-height:30px; border:1px solid black">
+
+                        <td colspan="6" class="report-detail-footer"></td>
+
+                        <td style="text-align:left;" class="report-Subdetailheader">
+                            LPS No
+                        </td>
+                        <td style="text-align:left;" class="report-Subdetailheader">
+                            Cones
+                        </td>
+                        <td style="text-align:left;" class="report-Subdetailheader">
+                            Kgs
+                        </td>
+                        <td style="text-align:left;" class="report-Subdetailheader"></td>
+
+                    </tr>
+
+                    @foreach (var lpsd in d.PPCPlaningList)
+                    {
+                        <tr style="line-height:30px; border:1px solid black ">
+
+                            <td colspan="6" class="report-detail-footer"></td>
+
+                            <td class="report-detail-footer">
+                                @lpsd.LPSNo
+                            </td>
+                            <td class="report-detail-footer">
+                                @lpsd.Cones
+                            </td>
+                            <td class="report-detail-footer">
+                                @lpsd.Kgs
+                            </td>
+                            <td class="report-detail-footer">
+                            </td>
+                        </tr>
+
+                    }
+
+                }
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+
+                <td colspan="5"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div> }
+                                            else
+                                            {
+                                <h1><center> No Record in Report </center></h1>}

@@ -1,0 +1,304 @@
+﻿
+
+
+@model IEnumerable<TexStyle.Core.ReportsViewModel.CS.DyeChemicalLoanReturnOut_RemainingBlncViewModel>
+
+@{
+    var AddOrUpdateAction = "/cs/LoanTakenReturnOutTr/AddOrUpdate/";
+    var DeleteAction = "/cs/LCImportInTrDetail/Delete/";
+}
+
+
+<div class="row ">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Details</h5>
+                @*<button href="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" data-title="Create @title Detail">ADD NEW</button>*@
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                        <div class="col-xs-12 col-sm-12 m-dT">
+                            <h6 class="text-danger" style="display:none" id="msg">Please Enter Rate</h6>
+                            @*dataTable*@
+                            <div class="form-group modal-dialog-scrollable" style="overflow-y:scroll; height:200px;">
+                                <table id="datatbl" class="table table-bordered table-hover table-striped overflow-hidden" style="overflow:scroll; height:100px;">
+                                    <thead>
+                                        <tr>
+                                            <th class="sorting_asc">Header Id</th>
+                                            <th class="sorting">Item</th>
+                                            <th class="sorting">Transaction Type</th>
+                                            <th class="sorting">Rate</th>
+                                            <th class="sorting">Detail Id</th>
+                                            <th class="sorting">Return Out Tr </th>
+                                            <th class="sorting">Sno</th>
+                                            <th class="sorting">Available Dr</th>
+                                            <th class="sorting">Required Dr</th>
+                                            <th class="sorting">Required Dr</th>
+
+                                        </tr>
+                                    </thead>
+
+
+
+
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                                        <tr>
+                                            <td style="width:7%">@c.headerId <input style="width:5%" type="text" id="hidid" value="@c.headerId" class="invisible" />  @*<input type="text" class="invisible" id="index" />*@</td>
+                                            
+                  
+                                            <td class="sorting_asc" style="width:12%">@c.Name</td>
+                                            <td class="sorting_asc" style="width:12%"> @c.TrType</td>
+                                            <td class="sorting_asc" style="width:12%">@c.Rate</td>
+                                            <td class="sorting_asc" style="width:12%">@c.DetailId<input type="hidden" id="did" value="@c.DetailId" /></td>
+                                            <td class="sorting_asc" style="width:12%">@c.LRO_TrType</td>
+                                            <td class="sorting_asc" style="width:12%">@c.Sno</td>
+                                            <td class="sorting_asc" style="width:12%">@c.BalanceQtyDr <input type="hidden" id="AvailableQtyDr" value="@c.BalanceQtyDr" /></td>
+                                            <td class="sorting_asc" style="width:12%"><input type="text" id="QtyDr" onblur="check()" value="@c.BalanceQtyDr" onkeypress="return event.charCode > 0 || event.charCode < 1" pattern="(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)" title="Rate is Required" required /><img src="~/images/ticks.png" style="display:none;" width="30" height="30" id="msg" /><img src="~/images/loader2.gif" width="30" height="30" style="display:none;" id="msg2" /> </td>
+                                            @*<td class="sorting_asc" style="width:12%"></td>*@
+
+                                        <td>
+                                            <a class="btn btn-pinterest">Remove</a>
+
+
+                                        </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+
+                                    <tr>
+                                        <th class="sorting_asc">Header Id</th>
+                                        <th class="sorting_asc">Item</th>
+                                    
+                                        <th class="sorting">Transaction Type</th>
+                                        <th class="sorting">Rate</th>
+                                        <th class="sorting">Detail Id</th>
+                                        <th class="sorting">Return Out Tr </th>
+                                        <th class="sorting">Sno</th>
+                                        <th class="sorting">Available Dr</th>
+                                        <th class="sorting">Required Dr</th>
+                                        <th class="sorting">Required Dr</th>
+
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+
+                            <button class="btn btn-primary" onclick="sub()" id="btnUpdate">Update</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+
+<script src="~/global/vendor/datatables/jquery.dataTables.min.js"></script>
+
+
+
+<script>
+
+    $("a").click(function () {
+        $(this).closest("tr").remove();
+    });
+
+
+    function check() {
+        debugger;
+        var table = $('#datatbl').DataTable();
+        var arr = [];
+        var totalrecord = table.rows().count();
+        var rowcount = 0;
+        for (var i = 0; i < table.rows().count(); i++) {
+            var id = 0;
+            var QtyDr = 0;
+            var AvailableQtyDr = 0;
+
+            table.cell(i, 7).nodes().to$().find('#msg2').show();
+            id = table.cell(i, 0).nodes().to$().find('#hidid').val();
+            /*QtyDr = table.cell(i, 7).nodes().to$().find('#QtyDr').val().toFixed(7);*/
+            QtyDr = table.cell(i, 8).nodes().to$().find('#QtyDr').val();
+            AvailableQtyDr = table.cell(i, 7).nodes().to$().find('#AvailableQtyDr').val();
+
+            //arr.push({
+            //        'id' : id,
+            //        'rate' : rate,
+
+            //     });
+            if (QtyDr == "0" || QtyDr == "0.00" || QtyDr == 'undefined' || QtyDr == null || QtyDr == '') {
+
+
+
+
+                $("#btnUpdate").attr('disabled', true);
+
+
+            }
+            else {
+                var a = AvailableQtyDr - QtyDr;
+                if (a<0) {
+                    $("#btnUpdate").attr('disabled', true);
+                }
+                else {
+                    rowcount++;
+                }
+                if (rowcount == totalrecord) {
+                    $("#btnUpdate").attr('disabled', false);
+                }
+
+            }
+
+
+
+            // data(i);
+        }
+    }
+
+
+    function sub() {
+        debugger;
+        var table = $('#datatbl').DataTable();
+        var arr = [];
+        var loanTakenInid = $("#DyeChemicalXrefTrId").find('option:selected').val();
+        var fairprice = $("#FairPrice").val();
+        var igprefno = $("#IGPReffNo").val();
+        var invoiceno = $("#InvoiceNo").val();
+        var invoicedate = $("#InvoiceDate").val();
+        var dtreno = $("#DTRENo").val();
+
+
+
+        for (var i = 0; i < table.rows().count(); i++) {
+            var id = 0;
+            var QtyDr = 0;
+            var detailid = 0;
+
+            table.cell(i, 6).nodes().to$().find('#msg2').show();
+            id = table.cell(i, 0).nodes().to$().find('#hidid').val();
+            QtyDr = table.cell(i, 8).nodes().to$().find('#QtyDr').val();
+            detailid = table.cell(i, 4).nodes().to$().find('#did').val();
+
+            arr.push({
+                'id': id,
+                'QtyDr': QtyDr,
+                'LoanTakenInId': loanTakenInid,
+                'FairPrice': fairprice,
+                'IgpRefNo': igprefno,
+                'InvoiceNo': invoiceno,
+                'InvoiceDate': invoicedate,
+                'Dtreno': dtreno,
+                'DetailId': detailid
+
+            });
+        }
+
+
+
+        //    // data(i);
+        //}
+        ////var list = JSON.stringify(arr);
+        //// var RateDetail = JSON.stringify({ 'RateDetail': arr });
+        //$(document).on("change", "#btnUpdate", function (e) {
+        //    for (var i = 0; i < rows.table.count(); i++) {
+        //        if (QtyDr == "0" || QtyDr == "0.00" || QtyDr == 'undefined' || QtyDr == null || QtyDr == '') {
+        //            $("#btnUpdate").attr('disabled', true);
+        //        }
+
+        //        else {
+        //            $("#btnUpdate").attr('disabled', false);
+        //        }
+
+
+        //    }
+        //});
+
+        //debugger;
+        //$("#QtyDr").change(function () {   // 1st
+
+        //    // When your element is already rendered
+        //    $('#btnUpdate').attr("disabled", false);
+        //});
+
+
+
+
+        //var list = 'abcdhnasjd';
+
+        //console.log(list);
+        debugger;
+        $.ajax({
+            //dataType: 'json',
+
+            method: 'POST',
+            //data:{
+            //'id': id,
+            //'rate': rate
+            ////
+            //}
+            data: {
+                list: JSON.stringify(arr)
+            },
+            url: `/cs/LoanTakenReturnOutTr/AddQuantity`
+        }).done(function (res) {
+            if (res.msg != '') {
+                table.cell(i, 6).nodes().to$().find('#msg').show();
+                table.cell(i, 6).nodes().to$().find('#msg2').hide();
+                setTimeout(function () { table.cell(i, 6).nodes().to$().find('#msg').hide(); }, 2000);
+            }
+            table.cell(i, 0).nodes().to$().find('#hidid').prop("disabled", true);
+            table.cell(i, 6).nodes().to$().find('#rate').prop("disabled", true);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert("error");
+        });
+
+        if ($('#rate').val() != 0) {
+            $('#msg').hide();
+        }
+        else {
+            $('#msg').show();
+        }
+        //var a = 1;
+        //partialfunction(a);
+    }
+    function data(i) {
+        debugger;
+        var table = $('#datatbl').DataTable();
+        var id = 0;
+        var rate = 0;
+        table.cell(i, 6).nodes().to$().find('#msg2').show();
+        id = table.cell(i, 0).nodes().to$().find('#hidid').val();
+        rate = table.cell(i, 6).nodes().to$().find('#rate').val();
+        if (id != -1) {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    Id: id,
+                    rate: rate
+                },
+                url: `/cs/LCImportInTr/UpdateRatess`
+            }).done(function (res) {
+                if (res.msg != '') {
+                    table.cell(i, 6).nodes().to$().find('#msg').show();
+                    table.cell(i, 6).nodes().to$().find('#msg2').hide();
+                    setTimeout(function () { table.cell(i, 6).nodes().to$().find('#msg').hide(); }, 2000);
+                }
+                table.cell(i, 0).nodes().to$().find('#hidid').prop("disabled", true);
+                table.cell(i, 6).nodes().to$().find('#rate').prop("disabled", true);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert("error");
+            });
+        }
+    }
+</script>

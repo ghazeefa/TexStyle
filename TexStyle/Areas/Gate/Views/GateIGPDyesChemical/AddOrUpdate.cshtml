@@ -1,0 +1,87 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.Gate.GateTrViewModel;
+
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    List<SelectListItem> gateIGPTypeList = ViewBag.gateigptypelist;
+    List<SelectListItem> partyList = ViewBag.partyList;
+    //List<SelectListItem> yarntypelist = ViewBag.yarntypelist;
+    //var yarnTyeSl = new SelectListItemViewModel
+    //{
+    //    Name = "YarnTypeId",
+    //    PlaceHolder = "Select Yarn Type",
+    //    UseDefault = false,
+    //    SelectList = yarntypelist
+    //};
+}
+
+<form asp-area="Gate" asp-controller="GateIGPDyesChemical" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Sno)
+    <div class="row">
+        <div class="form-group col-4">
+            <label class="control-label">Tr Id</label>
+            <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Sno" />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="Date" class="control-label"></label>
+            <input asp-for="Date" class="form-control" type="date" required />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-4">
+            <label class="control-label" asp-for="PartyId"></label>
+            <select asp-for="PartyId" select2="@(partyList)" class="form-control select2"></select>
+            <span asp-validation-for="PartyId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label class="control-label" asp-for="GateActivityTypeId"></label>
+            <select asp-for="GateActivityTypeId" select2="@(gateIGPTypeList)" class="form-control select2"></select>
+            <span asp-validation-for="GateActivityTypeId" class="text-danger"></span>
+        </div>
+        @*<div class="form-group col-4">
+            @if (yarntypelist != null)
+            {
+                <label class="control-label" asp-for="YarnTypeId"></label>
+                <partial name="@AppConsts.SelectListPartial" model="yarnTyeSl" />
+            }
+            <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+        </div>*@
+        <div class="form-group col-4">
+            <label asp-for="DriverName" class="control-label"></label>
+            <input asp-for="DriverName" class="form-control" required />
+            <span asp-validation-for="DriverName" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="VehicleNo" class="control-label"></label>
+            <input asp-for="VehicleNo" class="form-control" required />
+            <span asp-validation-for="VehicleNo" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="NICNo" class="control-label"></label>
+            <input asp-for="NICNo" class="form-control" />
+            <span asp-validation-for="NICNo" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="EmpNo" class="control-label"></label>
+            <input asp-for="EmpNo" class="form-control" />
+            <span asp-validation-for="EmpNo" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="IGPReffNo" class="control-label"></label>
+            <input asp-for="IGPReffNo" class="form-control" />
+            <span asp-validation-for="IGPReffNo" class="text-danger"></span>
+        </div>
+
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

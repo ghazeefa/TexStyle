@@ -1,0 +1,145 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.Reports.P10EcruStockSummaryYarnContGsmViewModal>
+
+@{
+    ViewData["Title"] = "Ecru Fabric Party-Wise Stock Report";
+    Layout = "_LayoutPrint";
+    var noData = "No Data Available";
+    var abc = @ViewBag.Message;
+    decimal totalkgs = 0;
+    decimal grouptotalkgs = 0;
+}
+
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .borders > tbody > tr > td, .borders > thead > tr > td {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+                <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+                    <p>@Model.FirstOrDefault().CompanyBranch</p>
+                </div>}
+        </div>
+        <div class="text-center" style="float:right; line-height:10px;">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                D-20
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <div class="table-responsive">
+        <table class="table table-responsive" style="line-height:5px; letter-spacing:1px; font-family: 'Times New Roman';font-size:15px;">
+
+            <thead>
+                <tr class="report-detailheader">
+
+                    <th>Buyer</th>                    
+                    <th>FabricType</th>                   
+                    <th>FabricQuality</th>
+                    <th>GSM</th>
+                    <th>YarnCount</th>
+                    <th>InStockKgs</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @foreach (var grp in Model.GroupBy(x => x.Buyer))
+                {
+
+                    <tr style=" border-collapse: collapse; line-height:20px; letter-spacing:1px; ">
+
+                        <td style=" border-collapse: collapse;">
+                            @grp.Key
+                        </td>
+                        <td></td>
+                    </tr>
+
+
+                    @foreach (var detail in grp.OrderBy(c => c.FabricType).ThenBy(c => c.FabricQuality).ThenBy(c => c.GSM).ThenBy(c => c.YarnCountOfFabric))
+                    {
+
+                        <tr tr style="  border-collapse: collapse; line-height:20px; letter-spacing:1px; ">
+                            <td></td>
+                            <td>@detail.FabricType</td>
+                            <td>@detail.FabricQuality</td>
+                            <td>@detail.GSM</td>
+                            <td>@detail.YarnCountOfFabric</td>                            
+                            <td>@detail.TotalWeight</td>                            
+
+                        </tr>
+                        grouptotalkgs = grouptotalkgs + detail.TotalWeight ?? 0;
+                    }
+
+                    <tr style="line-height:30px;">
+
+                       <td colspan="5"></td>
+
+                        <td style="background-color:lightgray;line-height:30px; font-family:serif">
+                            <strong>
+                                @grouptotalkgs
+                            </strong>
+                        </td>
+
+
+                    </tr>
+
+                    totalkgs = totalkgs + grouptotalkgs;
+                    grouptotalkgs = 0;
+
+                }
+
+
+                <tr style="font-size: 18px; font-weight: bold; background-color: lightgray;">
+
+
+                    <td colspan="5">Total KGs: </td>
+                    <td>@totalkgs</td>
+
+                </tr>
+
+
+            </tbody>
+            <tfoot>
+
+            </tfoot>
+        </table>
+
+    </div>
+
+}
+else
+{
+    < h1 >< center > No Record in Report </ center ></ h1 >
+}
+

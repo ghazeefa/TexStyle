@@ -1,0 +1,419 @@
+﻿@model TexStyle.Core.PPC.InwardGatePass
+@{
+    ViewData["Title"] = "IGP Report";
+
+    var noData = "No Data Available";
+}
+    <style>
+        @@media print {
+            .m-grid {
+                margin-left: 50px;
+            }
+
+            .h {
+                background-color: white;
+            }
+
+            .d {
+                padding-left: 30px;
+            }
+
+            .card .card-block {
+                /*        border: 1px solid black;
+            border-top: 2px solid black;*/
+                margin-top: -64px;
+            }
+
+                .card .card-block .s .d {
+                    padding-right: 60px;
+                }
+            /*           #any{
+             
+                   
+
+            }*/
+
+        }
+
+        .m .c {
+            padding-left: 50px;
+        }
+
+        table, td, th {
+            border: 1px solid black;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #span01 {
+            display: inline-block;
+        }
+
+        #span02 {
+            display: inline-block;
+        }
+
+        #watermark {
+            position: fixed;
+            bottom: 100px;
+            right: 100px;
+        }
+        
+    </style>
+
+
+
+    @*<div class="card user-activity-card"  >
+        <div class="card-header d-flex justify-content-between align-items-center no-print">
+            <button class="btn btn-sm btn-info " onclick="window.print()"><i class="ti-printer"></i></button>
+        </div>
+        <div class="card-block">
+            <div class="w-100 text-center" style="line-height:2px; margin-bottom:30px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+                <img src="~/images/logo.png" width="80" height="45" style="padding-top:10px;  " />
+                <h4 style="font-weight:bold; justify-content:center; font-family:'Times New Roman'">COMFORT SURGICAL COTTON &amp; YARN DYEING</h4>
+                <div class="m-grid">
+                    <div class="row m-g-head">
+                        <div class="col-2"></div>
+                        <div class="col-7" style="line-height:2 ">
+                            <h4 style="font-family: 'Times New Roman'; color: black; ">INWARD GATE PASS</h4>
+                            @if (Model.IsYarn == true)
+                            {
+                                <h5 style="font-family: 'Times New Roman'; justify-content: center">COMMERCIAL YARN DYEING</h5>
+                            }
+                            else
+                            {
+                                <h5 style="font-family: 'Times New Roman'; justify-content: center">COMMERCIAL FABRIC DYEING</h5>
+                            }
+
+
+                            @if (Model.IsCancel == true)
+                            {
+                                <h4 style="color: RED">This OGP is cancled </h4>
+                            }
+                        </div>
+                        <div class="col-3"></div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <span id="span01">
+                <div style="margin-top:20px; font-size:medium ">
+                    <table width="100%">
+                        <tr style="margin-top:20px; font-size:medium; text-align:center; ">
+
+                            <td width="50%" style="border:hidden; "></td>
+                            <td width="50%" style="border-top:hidden; border-left:hidden; border-bottom:hidden;"></td>
+                            <td ></td>
+
+                            <td style="font-weight: bolder; background-color:lightgray">Sr No</td>
+                            <td>@Model.Id</td>
+                        </tr>
+                        <tr>
+
+                            <td width="50%" style="border:hidden;"></td>
+                            <td width="50%" style="border-top:hidden; border-left:hidden; border-bottom:hidden;"></td>
+                            <td ></td>
+                            <td style="font-weight: bolder; background-color:lightgray">DATE</td>
+                            <td>@Model.IgpDate.ToString("dd-MMM-yyyy")</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+
+                            <td width="50%" style="border:hidden;"></td>
+                            <td width="50%" style="border-top:hidden; border-left:hidden; border-bottom:hidden;"></td>
+                            <td ></td>
+                            <td style="font-weight: bolder; background-color:lightgray">IGP ReffNo</td>
+                            <td>@Model.GateReffId</td>
+                            <td></td>
+                        </tr>
+
+                    </table>
+
+                    <div style="height:15px;"></div>
+
+</span>
+
+
+
+                    <div style="margin-top:20px; font-size:medium; text-align:center ">
+                        <table width="100%">
+                            <tr style="line-height:30px">
+
+                                <td style="font-weight: bolder;">FROM</td>
+                                <td>@Model.GateTr?.Party?.Name</td>
+                                <td ></td>
+                                @if (Model.IsYarn == false)
+                                {
+
+                                    <td style="font-weight: bolder; ">Buyer</td>
+                                    <td>@Model.Buyer?.Name</td>
+                                }
+
+                                <td style="font-weight: bolder; ">Bility No</td>
+                                <td>@Model.BilityNo</td>
+                            </tr>
+                            <tr style="line-height: 30px">
+
+                                <td style="font-weight: bolder; ">Driver Name</td>
+                                <td>@Model.GateTr?.DriverName</td>
+                                <td ></td>
+                                <td style="font-weight: bolder;">Vehicle No</td>
+                                <td>@Model.GateTr?.VehicleNo</td>
+
+                                <td style="font-weight: bolder; ">Employee No</td>
+                                <td>@Model.GateTr?.EmpNo</td>
+
+
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>*@
+
+<div class="any">
+
+    <div style="margin:initial; font-family:'Bookman Old Style';  " class="card user-activity-card">
+
+        <div class="card-header d-flex justify-content-between align-items-center no-print">
+            <button class="btn btn-sm btn-info " onclick="window.print()"><i class="ti-printer"></i></button>
+        </div>
+        <div style="height:15px;"></div>
+        <div style="height:15px;"></div>
+        <div class="card-block" style=" margin-left: 30px; margin-right: 30px;">
+            <div class="w-100 text-center" style="line-height:2px; margin-bottom:30px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+                <img src="~/images/logo.png" width="80" height="45" style="padding-top:10px;  " />
+
+
+
+                @if (Model.IsYarn == true)
+                {
+
+                    <h3 style="font-weight:bold; justify-content:center; font-family:'Times New Roman'">COMFORT SURGICAL COTTON &amp; YARN DYEING</h3>
+                }
+                else
+                {
+
+
+                    <h4 style="font-weight:bold; justify-content:center;font-family:'Times New Roman'">COMFORT KNITWARE FABRIC DYEING &nbsp;</h4>
+
+                }
+
+
+                <div class="m-grid">
+                    <div class="row m-g-head">
+                        <div class="col-2"></div>
+                        <div class="col-7" style="line-height:2 ">
+                            <h4 style="font-family: 'Times New Roman'; font-weight:bold">INWARD GATE PASS</h4>
+
+
+                            @if (Model.IsYarn == true)
+                            {
+                                <h5 style="font-family: 'Times New Roman';  ">COMMERCIAL YARN DYEING</h5>
+                            }
+                            else
+                            {
+
+                                <h5 style="font-family: 'Times New Roman';  justify-content: center">COMMERCIAL Fabric DYEING</h5>
+
+                            }
+
+                            @if (Model.IsCancel == true)
+                            {
+                                <h4 style="color: RED; font-family:'Times New Roman'">This OGP is cancled </h4>}
+
+
+                            @if (Model.IsAfterFinishing == true)
+                            {
+
+                                <h6 style="color:dimgrey; font-family:'Times New Roman'"> Return After Finishing</h6>
+
+                            }
+
+                            @if (Model.IsReprocessed == true)
+                            {
+
+                                <h6 style="color:dimgrey; font-family:'Times New Roman'"> Reprocessed </h6>
+
+                            }
+                        </div>
+                        @*<div class="col-3"></div>*@
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+            <span id="span01">
+                <div style="margin-top:10px; font-size:medium ">
+                    <table width="100%">
+                        <tr style="margin-top:20px; font-size:medium; text-align:center; ">
+
+                            <td width="50%" style="border:hidden;margin-top:20px "></td>
+                            <td width="50%" style="border-top:hidden; border-left:hidden; border-bottom:hidden;margin-top:20px"></td>
+                            <td style="font-weight: bolder; background-color:lightgray; margin-top:20px">Sr No  :  </td>
+                            <td>@Model.Id</td>
+
+            
+                        </tr>
+                        <tr style="margin-top:20px; font-size:medium; text-align:center; ">
+
+                            <td width="50%" style="border:hidden;"></td>
+                            <td width="50%" style="border-top:hidden; border-left:hidden; border-bottom:hidden;"></td>
+
+                            <td style="font-weight: bolder; background-color:lightgray">DATE  :  </td>
+                            <td>@Model.IgpDate.ToString("dd-MMM-yyyy")</td>
+                        </tr> 
+                        <tr style="margin-top:20px; font-size:medium; text-align:center; ">
+
+                            <td width="50%" style="border:hidden;"></td>
+                            <td width="50%" style="border-top:hidden; border-left:hidden; border-bottom:hidden;"></td>
+
+                            <td style="font-weight: bolder; background-color:lightgray">BookIGP  :  </td>
+                            <td>@Model.GateReffId</td>
+                        </tr>
+                        
+                    </table>
+
+                </div>
+            </span>
+
+
+            @*<div style="height:15px;"></div>*@
+
+            <div style=" font-size:medium;text-align:center">
+                <table width="100%">
+                    <tr style="line-height:30px">
+
+                        <td width="14%" style="font-weight: bolder;">FROM</td>
+                        <td width="20%">@Model.Party?.Name</td>
+                        @*<td ></td>*@
+
+
+                        <td width="14%" style="font-weight: bolder; ">Bility No</td>
+                        <td width="14%">@Model.BilityNo</td>
+
+
+                        <td width="14%" style="font-weight: bolder; ">Driver</td>
+                        <td width="14%">@Model.GateTr?.DriverName</td>
+
+                    </tr>
+                    <tr style="line-height: 30px">
+
+                        <td width="14%" style="font-weight: bolder; ">Employee No</td>
+                        <td width="14%">@Model.GateTr?.EmpNo</td>
+
+
+                        <td width="14%" style="font-weight: bolder;">Vehicle No</td>
+                        <td width="14%">@Model.GateTr?.VehicleNo</td>
+
+                        <td width="14%" style="font-weight: bolder; "> ID No</td>
+                        <td width="14%">@Model.GateTr.NICNo></td>
+
+                      
+                    </tr>
+                </table>
+            </div>
+
+
+            <div style="margin-top:20px; font-size:medium">
+                <table width="100%">
+                    <thead>
+                        <tr style="border-bottom: 1px solid black; text-align:center; line-height:40px; background-color:lightgray">
+                            @*<div>&nbsp;&nbsp;</div>*@
+                            @if (Model.IsYarn == true)
+                            {
+                                <td width="16%" style="font-weight:bold;">Yarn Type</td>
+                                <td width="16%" style="font-weight:bold;">Yarn Quality</td>
+                                <td width="16%" style="font-weight:bold;">Bags</td>
+                            }
+                            else
+                            {
+                                <td width="16%" style="font-weight:bold;">Fabric Type</td>
+                                <td width="16%" style="font-weight:bold;">Fabric Quality</td>
+                                <td width="16%" style="font-weight:bold;">NoOfRolls</td>
+                                @*<td width="16%" style="font-weight:bold;">Dia</td>
+                                    <td width="16%" style="font-weight:bold;">GSM</td>*@
+                            }
+                            <td width="16%" style="font-weight:bold;">G Weight</td>
+                            <td width="16%" style="font-weight:bold;">T Weight</td>
+                            <td width="16%" style="font-weight:bold;">Net Weight</td>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var igp in Model.InwardGatePassDetails.Where(x => !x.IsDeleted))
+                            {
+
+                                <tr style="border-bottom:1px solid black; text-align:center; line-height:30px">
+
+                                    @*<td>&nbsp;&nbsp;</td>*@
+                                    @if (Model.IsYarn == true)
+                                    {
+
+                                        <td width="16%" style="border-right:1px solid black; ">@igp.YarnType?.Name</td>
+                                        <td width="16%">@igp.YarnQuality?.Name</td>
+                                        <td width="16%">@igp.Bags</td>
+                                    }
+                                    else
+                                    {
+
+                                        <td width="16%" style="border-right:1px solid black; ">@igp.FabricTypes?.Name</td>
+                                        <td width="16%">@igp.FabricQuality?.Name</td>
+                                        <td width="16%">@igp.NoOfRolls</td>
+                                        @*<td width="16%">@igp.Dia</td>
+                                            <td width="16%">@igp.GSM</td>*@}
+
+                                    <td width="16%">@igp.GrossWeightInKg</td>
+                                    <td width="16%">@igp.TearWeightInKg</td>
+                                    <td width="16%">@igp.NetWeightInKg</td>
+
+
+
+                                </tr>
+
+                            }
+                        }
+
+
+                        <tr style=" text-align:center; line-height:30px">
+
+                            @*<td width="12.5%"></td>*@
+                            <td width="12.5%" style="font-weight:bolder;">Total</td>
+                            <td width="12.5%"></td>
+
+                            @if (Model.IsYarn == true)
+                            {
+                                <td width="12.5%" style="font-weight: bolder;@*margin-left:8px;*@">@Model.InwardGatePassDetails.Sum(x => x.Bags)</td>
+                            }
+                            else
+                            {
+                                <td width="12.5%" style="font-weight: bolder;@*margin-left:8px;*@">@Model.InwardGatePassDetails.Sum(x => x.NoOfRolls)</td>
+                            }
+
+                            <td width="12.5%" style="font-weight: bolder;">@Model.InwardGatePassDetails.Sum(x => x.GrossWeightInKg)</td>
+                            <td width="12.5%" style="font-weight: bolder;">@Model.InwardGatePassDetails.Sum(x => x.TearWeightInKg)</td>
+
+                            <td width="12.5%" style="font-weight: bolder;">@Model.InwardGatePassDetails.Sum(x => x.NetWeightInKg)</td>
+                            @*<td width="12.5%"></td>*@
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>

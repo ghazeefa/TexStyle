@@ -1,0 +1,248 @@
+﻿@model IEnumerable<TexStyle.ViewModels.CS.Reports.StoreRecipeChemicalConsumptionReport_ViewModel>
+@{
+    ViewData["Title"] = "Dyes + Chemical Consumption Report";
+    Layout = "_LayoutPrint";
+
+
+}
+
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .borders > tbody > tr > td, .borders > thead > tr > td {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }
+
+    th, td {
+        width: 800px;
+        text-align: center;
+        font-size: 15px;
+        padding: 100px;
+        white-space: pre-line;
+    }
+
+
+
+    /*
+    th, td {
+        width: 150px;
+        text-align: center;
+        border: 1px solid black;
+        padding: 5px
+    }*/
+
+
+
+</style>
+
+
+
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+<div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+    <p>@Model.FirstOrDefault().CompanyBranch</p>
+</div>}
+        </div>
+        <div class="text-center" style=" line-height:10px;float:right">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                C-8
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div><br/>
+
+    <div class="table-responsive">
+        <table class="table table-responsive borders">
+
+            <thead>
+                <tr class="report-detailheader" style=" font-size:15px;">
+                    <th width="20%">Item</th>
+                    <th width="20%" colspan="2">Name</th>
+
+                    <th width="20%" colspan="2">CKL 5</th>
+                    <th width="20%" colspan="2">CKL 6</th>
+                    @*<th width="20%">Rate</th>*@
+
+                </tr>
+                <tr class="report-detailheader">
+                    <td width="20%" colspan="3" style="border:1px solid black;"></td>
+
+                    <td width="20%">Qty</td>
+                    <td width="20%">Amount</td>
+                    <td width="20%">Qty</td>
+                    <td width="20%">Amount</td>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detail in Model)
+                {
+                    <tr style="height: 10px; letter-spacing: 1px; font-size: large; background-color: lightgray">
+                        <td colspan="1" class="report-detail-footer" style="font-size:large;">
+                            @detail.Status
+                        </td>
+                        <td colspan="2" class="report-detail-footer"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+
+                    @foreach (var d in detail.StoreRecipeChemicalConsumptionReportDetail_ViewModel)
+                    {
+
+                        <tr style="height: 10px; letter-spacing: 2px; line-height: 50px;">
+
+                            <td colspan="1" class="report-detail-footer"></td>
+
+
+
+                            <td colspan="2" class="report-detail-footer">
+                                @d.Name
+                            </td>
+                            @if (d.Qty != 0)
+                            {
+                                <td>
+                                    @d.Qty.ToString("0,0.00")
+                                </td>
+                            }
+                            else
+                            {
+
+                                <td>
+                                    -
+                                </td>
+                            }
+
+                            @if (d.Amount != 0)
+                            {
+                                <td>
+                                    @d.Amount.ToString("0.00")
+                                </td>
+                            }
+                            else
+                            {
+
+                                <td style="border:1px solid black;">
+                                    -
+                                </td>
+                            }
+                            @if (d.CKL6Qty != 0)
+                            {
+                                <td style="border:1px solid black;">
+                                    @d.CKL6Qty.ToString("0.00")
+                                </td>
+                            }
+                            else
+                            {
+
+                                <td style="border:1px solid black;">
+                                    -
+                                </td>
+                            }
+                            @if (d.CKL6Amount != 0)
+                            {
+                                <td style="border:1px solid black;">
+                                    @d.CKL6Amount.ToString("0.00")
+                                </td>
+                            }
+                            else
+                            {
+
+                                <td style="border:1px solid black;">
+                                    -
+                                </td>
+                            }
+
+
+
+
+
+                        </tr>
+                    }
+                }
+
+
+
+                @*<tr style="border:1px solid black;">
+                        <td></td>
+                        <td colspan="2" style="font-size: larger; font-weight:500">Total</td>
+
+
+                        <td colspan="1" style="background-color:lightgray">@Model.FirstOrDefault().KgsSum.ToString("#,0.00")</td>
+
+                        <td colspan="1" style="background-color:lightgray">@Model.FirstOrDefault().AmountSum.ToString("#,0.00")</td>
+                    </tr>*@
+            </tbody>
+            <tfoot>
+                <tr>
+
+                    <td colspan="5"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <br />
+    <br />
+    <br />
+    @*<table>
+            <thead>
+                <tr class="report-detailheader">
+             <th></th>
+             <th></th>
+             <th></th>
+             <th></th>
+                    <th width="20%">QtyTotal</th>
+                    <th width="20%">AmountTotal</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            <tr style="border:1px solid black;">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+                <td colspan="1">@Model.FirstOrDefault().KgsSum.ToString("0.00")</td>
+
+                <td colspan="1">@Model.FirstOrDefault().AmountSum.ToString("0.00")</td>
+
+
+
+            </tr>
+            </tbody>
+        </table>*@
+
+
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>
+}
+
+

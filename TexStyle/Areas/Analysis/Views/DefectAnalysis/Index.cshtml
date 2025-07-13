@@ -1,0 +1,75 @@
+﻿@using TexStyle.Common
+@model IEnumerable<TexStyle.Core.Analysis.DefectAnalysis>
+
+@{
+    var title = $"Defect Analysis";
+    ViewData["Title"] = $"{title}s";
+    var AddOrUpdateAction = "/Analysis/DefectAnalysis/AddOrUpdate/";
+    var DeleteAction = "/Analysis/DefectAnalysis/Delete/";
+
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title</h5>
+                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.ANALYSIS_DEFECT_ANALYSIS_CREATE)){<button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW</button>}
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting">Id</th>
+                                            <th class="sorting">Analyse Type</th>
+                                            <th class="sorting">Defect</th>
+                                            <th class="sorting">No Of Defect</th>
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                                            <tr role="row">
+                                                <td class="sorting_1">@c.Id</td>
+                                                <td class="sorting_3">@c.AnalysisType.Name</td>
+                                                <td class="sorting_3">@c.Defect.Name</td>
+                                                <td class="sorting_3">@c.NoOfDefects</td>
+                                                <td style="width:150px;">
+                                                    @if (User.Claims.Any(x => x.Value == AccountClaimKeys.ANALYSIS_DEFECT_ANALYSIS_EDIT)){<button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdateAction@c.Id" data-title="Update @title">Edit</button>}
+                                                     @if (User.Claims.Any(x => x.Value == AccountClaimKeys.ANALYSIS_DEFECT_ANALYSIS_DELETE)){<button disabled class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>}
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th class="sorting">Id</th>
+                                            <th class="sorting">Analyse Type</th>
+                                            <th class="sorting">Defect</th>
+                                            <th class="sorting">No Of Defect</th>
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        var modal = "#adminModal";
+    </script>
+}

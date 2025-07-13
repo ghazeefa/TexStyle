@@ -1,0 +1,36 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.Analysis.DefectAnalysisViewModel
+
+@{
+    ViewData["Title"] = "Add Or Updaste";
+    List<SelectListItem> typelist = ViewBag.analysistypelist;
+    List<SelectListItem> defectlist = ViewBag.defectlist;
+}
+
+<form asp-area="Analysis" asp-controller="DefectAnalysis" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+
+
+        <div class="form-group">
+            <label class="control-label">Analysis Type</label>
+            <select asp-for="AnalysisTypeID" select2="@(typelist)" select2-ph="Select Buyer" class="form-control select2"></select>
+            <span asp-validation-for="AnalysisTypeID" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Defect Type</label>
+            <select asp-for="DefectId" select2="@(defectlist)" select2-ph="Select Buyer" class="form-control select2"></select>
+            <span asp-validation-for="DefectId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label  class="control-label">No Of Defects</label>
+            <input asp-for="NoOfDefects" class="form-control" />
+            <span asp-validation-for="NoOfDefects" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

@@ -1,0 +1,111 @@
+﻿@model IEnumerable<ManualRateUpdate>
+
+@{
+    var title = $"Manual Rate Update";
+    ViewData["Title"] = $"{title}s";
+    var AddOrUpdateAction = "/cs/ManualRateUpdate/AddOrUpdate/";
+
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+              
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Id</th>
+                                            <th class="sorting_asc">Name</th>
+                                            <th class="sorting_asc">Sno</th>
+                                            <th class="sorting_asc">Transaction Type</th>
+                                            <th class="sorting">Date</th>
+                                            <th class="sorting">QtyDr</th>
+                                            <th class="sorting">Rate</th>
+                                            <th class="sorting">Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                                        <tr role="row">
+                              
+                                            <td class="sorting_3">@c.Id</td>
+                                            <td class="sorting_3">@c.Name</td>
+                                            <td class="sorting_3">@c.Sno</td>
+
+                                            @if (c.TrType == 3)
+                                            {
+
+                                                <td class="sorting_3">LC Import In</td>
+
+                                            }
+                                            @if (c.TrType == 6)
+                                            {
+
+                                                <td class="sorting_3">Local Purchase</td>
+
+                                            }  @if (c.TrType == 5)
+                                            {
+
+                                                <td class="sorting_3">Loan Taken In</td>
+
+                                            }  @if (c.TrType == 13)
+                                            {
+
+                                                <td class="sorting_3">Opening</td>
+
+                                            }
+                                            @if (c.TrType == 4)
+                                            {
+
+                                                <td class="sorting_3">Loan Party Return In</td>
+
+                                            }
+
+                                            <td class="sorting_3">@c.TransactionDate.ToString("dd MMM yyyy")</td>
+                                            <td class="sorting_3">@c.QtyDr</td>
+                                            <td class="sorting_3">@c.TakenRate</td>
+                                            <td style="width:150px;">
+
+                                                <button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdateAction@(c.Id)" data-title="Update @title">Edit</button>
+
+
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Id</th>
+                                            <th class="sorting_asc">Name</th>
+                                            <th class="sorting_asc">Sno</th>
+                                            <th class="sorting_asc">Transaction Type</th>
+                                            <th class="sorting">Date</th>
+                                            <th class="sorting">QtyDr</th>
+                                            <th class="sorting">Rate</th>
+                                            <th class="sorting">Action</th>
+
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

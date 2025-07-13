@@ -1,0 +1,216 @@
+﻿@model TexStyle.ViewModels.PPC.OGPViewModel
+@{
+    List<SelectListItem> YarnTypeList = ViewBag.YarnTypeList;
+    List<SelectListItem> PartyList = ViewBag.PartyList;
+    List<SelectListItem> ProcessTypeList = ViewBag.ProcessTypeList;
+    List<SelectListItem> FabricTypeList = ViewBag.fabricTypeList;
+    var filter = ViewBag.filter;
+    List<SelectListItem> buyerlist = ViewBag.buyerlist;
+    var buyerSl = new SelectListItemViewModel
+    {
+        Name = "BuyerId",
+        PlaceHolder = "Select Buyer",
+        UseDefault = false,
+        Reqired = true,
+        SelectList = buyerlist
+    };
+
+}
+    <form asp-area="ProductionPlaningControl" asp-controller="OGP" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+        <div class="form-horizontal">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(m => m.Id)
+
+
+            <div class="row">
+                <div class="form-group col-6">
+                    <label asp-for="OGPDate" class="control-label"></label>
+                    <input asp-for="OGPDate" class="form-control" type="date" />
+                    <span asp-validation-for="OGPDate" class="text-danger"></span>
+                </div>
+                @*<div class="row">*@
+                <div class="form-group col-6">
+                    <label asp-for="ActivityTypeId" class="control-label"></label>
+                    <select asp-for="ActivityTypeId" select2="@(ProcessTypeList)" select2-ph="Select Activity Type" class="form-control select2"></select>
+                    <span asp-validation-for="ActivityTypeId" class="text-danger"></span>
+                </div>
+                @if (filter.IsYarn == true)
+                {
+                    <div class="form-group col-4">
+                        <label asp-for="YarnTypeId" class="control-label"></label>
+                        <select asp-for="YarnTypeId" select2="@(YarnTypeList)" select2-ph="Select Yarn Type" class="form-control select2"></select>
+                        <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+                    </div>
+
+
+                }
+
+                <div class="form-group col-6">
+                    <label asp-for="PartyId" class="control-label"></label>
+                    <select asp-for="PartyId" select2="@(PartyList)" select2-ph="Select Party" class="form-control select2"></select>
+                    <span asp-validation-for="PartyId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <label asp-for="ReceivingPerson" class="control-label"></label>
+                    <input asp-for="ReceivingPerson" class="form-control" />
+                    <span asp-validation-for="ReceivingPerson" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <label asp-for="IDCard" class="control-label"></label>
+                    <input asp-for="IDCard" class="form-control" />
+                    <span asp-validation-for="IDCard" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <label asp-for="VehicleNo" class="control-label"></label>
+                    <input asp-for="VehicleNo" class="form-control" />
+                    <span asp-validation-for="VehicleNo" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <label asp-for="SerialNo" class="control-label"></label>
+                    <input asp-for="SerialNo" class="form-control" />
+                    <span asp-validation-for="SerialNo" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <label class="control-label">OGP Reff No</label>
+                    <input asp-for="OGPReffNO" class="form-control" />
+                    <span asp-validation-for="OGPReffNO" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <label class="control-label">Bility No</label>
+                    <input asp-for="BilityNo" class="form-control" />
+                    <span asp-validation-for="BilityNo" class="text-danger"></span>
+                </div>
+
+
+
+            </div>
+            @if (filter.IsYarn == true)
+            {
+
+                <div class="form-group form-check col-2">
+                    <div class="border-checkbox-section">
+                        <div class="row">
+                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                <input class="border-checkbox" type="checkbox" asp-for="IsReturnToParty">
+                                <label class="border-checkbox-label" asp-for="IsReturnToParty"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group form-check col-2">
+                    <div class="border-checkbox-section">
+                        <div class="row">
+                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                <input class="border-checkbox" type="checkbox" asp-for="IsReCheck">
+                                <label class="border-checkbox-label" asp-for="IsReCheck"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+            <div class="form-group form-check col-2">
+                <div class="border-checkbox-section">
+                    <div class="row">
+                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                            <input class="border-checkbox" type="checkbox" asp-for="IsReprocessed">
+                            <label class="border-checkbox-label" asp-for="IsReprocessed"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (filter.IsYarn == false)
+            {
+
+                <div class="form-group form-check col-2">
+                    <div class="border-checkbox-section">
+                        <div class="row">
+                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                <input class="border-checkbox" type="checkbox" asp-for="IsAfterFinishing">
+                                <label class="border-checkbox-label" asp-for="IsAfterFinishing"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-check col-2">
+                    <div class="border-checkbox-section">
+                        <div class="row">
+                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                <input class="border-checkbox" type="checkbox" asp-for="IsReturnToParty">
+                                <label class="border-checkbox-label" asp-for="IsReturnToParty"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group form-check col-2">
+                    <div class="border-checkbox-section">
+                        <div class="row">
+                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                <input class="border-checkbox" type="checkbox" asp-for="IsForFinishing">
+                                <label class="border-checkbox-label" asp-for="IsForFinishing"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            }
+
+
+
+            <div class="form-group form-check col-2">
+                @*<label asp-for="IsReturnToParty" class="control-label"></label>*@
+                <div class="border-checkbox-section">
+                    <div class="row">
+                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                            <input class="border-checkbox" type="checkbox" asp-for="IsConfirm">
+                            <label class="border-checkbox-label" asp-for="IsConfirm"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-check col-4">
+                <div class="border-checkbox-section">
+                    <div class="row">
+                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                            <input class="border-checkbox" type="checkbox" value="@Model.IsCancled">
+                            <label class="border-checkbox-label" asp-for="IsCancled"> Is Cancled</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="modal-footer">
+            <button id=" #btn" type="submit" class="btn btn-primary" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+
+
+    </form>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#btn").on("click", function () {
+            $(this).attr("disabled", "disabled");
+            doWork();
+        });
+    });
+
+    function doWork() {
+        alert("doing work");
+        setTimeout('$("#btn").removeAttr("disabled")', 1500);
+    }
+</script>

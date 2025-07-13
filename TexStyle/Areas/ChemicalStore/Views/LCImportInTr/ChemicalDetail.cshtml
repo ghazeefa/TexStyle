@@ -1,0 +1,306 @@
+﻿@model IEnumerable<TexStyle.Core.Gate.GateTrDetail>
+
+@{
+    var AddOrUpdateAction = "/cs/LCImportInTrDetail/AddOrUpdate/";
+    var DeleteAction = "/cs/LCImportInTrDetail/Delete/";
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Details</h5>
+                @*<button href="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" data-title="Create @title Detail">ADD NEW</button>*@
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                        <div class="col-xs-12 col-sm-12 m-dT">
+                            <h6 class="text-danger" style="display:none" id="msg">Please Enter Rate</h6>
+                            @*dataTable*@
+                            <div class="form-group modal-dialog-scrollable" style="overflow-y:auto; height:200px;">
+                                <table id="datatbl" class="table table-bordered table-hover table-striped overflow-hidden" style="overflow:scroll; height:100px;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:10%">No</th>
+                                            <th class="sorting" style="width:12%">Chemical</th>
+                                            <th class="sorting" style="width:12%">Dye</th>
+                                            <th class="sorting" style="width:12%">Debit</th>
+                                            <th class="sorting" style="width:12%">Credit</th>
+                                            <th class="sorting" style="width:12%">Packet</th>
+                                            <th class="sorting" style="width:12%">Rate</th>
+                                            <th class="sorting" style="width:12%">Amount</th>
+                                            <th class="sorting" style="width:4%"></th>
+
+
+                                        </tr>
+                                    </thead>
+
+
+
+
+                                    <tbody>
+                                        @foreach (var c in Model.Where(x => !x.IsDeleted))
+                                        {
+                                            <tr>
+                                                <td style="width:7%">@c.Id <input style="width:5%" type="text" id="hidid" value="@c.Id" class="invisible" />  @*<input type="text" class="invisible" id="index" />*@</td>
+                                                <td class="sorting_asc" style="width:12%">@c.Chemical?.Name</td>
+                                                <td class="sorting_asc" style="width:12%">@c.Dye?.Name</td>
+                                                <td class="sorting_asc" style="width:12%">@c.QtyDr</td>
+                                                <td class="sorting_asc" style="width:12%">@c.QtyCr</td>
+                                                <td class="sorting_asc" style="width:12%">@c.Packet</td>
+                                                <td class="sorting_asc" style="width:12%"><input type="text" id="rate" onchange="check()" value="@c.Rate" onkeypress="return event.charCode > 0 || event.charCode < 1" pattern="(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)" title="Rate is Required" required /><img src="~/images/ticks.png" style="display:none;" width="30" height="30" id="msg" /><img src="~/images/loader2.gif" width="30" height="30" style="display:none;" id="msg2" /> </td>
+                                                <td class="sorting_asc" style="width:12%"></td>
+                                                <td class="sorting_asc" style="width:4%"></td>
+
+                                            </tr>
+                                        }
+                                        @*<td class="sorting_asc" style="width:12%"><input type="text" id="rate" value="@c.Rate" onkeypress="return event.charCode > 0 || event.charCode < 1" pattern="(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)" required /><img src="~/images/ticks.png" style="display:none;" width="30" height="30" id="msg" /><img src="~/images/loader2.gif" width="30" height="30" style="display:none;" id="msg2" /> </td>*@
+                                    </tbody>
+
+                                    <tr>
+                                        <th class="sorting_asc">No</th>
+                                        <th class="sorting">Chemical</th>
+                                        <th class="sorting">Dye</th>
+                                        <th class="sorting">Debit</th>
+                                        <th class="sorting">Credit</th>
+                                        <th class="sorting">Packet</th>
+                                        <th class="sorting">Rate</th>
+                                        <th class="sorting">Amount</th>
+
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+
+
+
+                            @*<div id="datatbl" class="container table table-bordered table-hover table-striped w-100">
+                        <div class="row header" style="font-weight:700">
+                            <div class="sorting col-1">No</div>
+
+                            <div class="sorting col-1" style="text-align:center;">Chemical</div>
+                            <div class="sorting col-4" style="text-align:center">Dye</div>
+                            <div class="sorting col-1">Debit</div>
+                            <div class="sorting col-1">Credit</div>
+                            <div class="sorting col-1">Packet</div>
+
+                            <div class="sorting col-2" style="text-align:center">Rate</div>
+                            <div class="sorting col-1"></div>*@
+                            @*<div class="sorting col-1">Amount</div>
+                        <div class="sorting col-1">Actions</div>
+
+                        <div class="sorting col-2"></div>*@
+
+                            @*</div>
+                        <div style="height:29px;"></div>
+
+                        title="Rate is Required" required
+
+                        <div class="row">
+                            @foreach (var c in Model.Where(x => !x.IsDeleted))
+                            {
+
+                                <div class="sorting_asc col-1">@c.Id <input type="text" id="hidid" value="@c.Id" class="invisible" />  <input type="text" class="invisible" id="index" /></div>
+                                <div class="sorting_asc col-1">@c.Chemical?.Name</div>
+                                <div class="sorting_asc col-4" style="text-align:center">@c.Dye?.Name</div>
+                                <div class="sorting_asc col-1">@c.QtyDr</div>
+                                <div class="sorting_asc col-1">@c.QtyCr</div>
+                                <div class="sorting_asc col-1">@c.Packet</div>
+
+                                <div class="sorting_asc col-2" style="text-align:center"><input type="text" id="rate" value="@c.Rate" onkeypress="return event.charCode > 0 || event.charCode < 1" pattern="(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)" required /><img src="~/images/ticks.png" style="display:none;" width="30" height="30" id="msg" /><img src="~/images/loader2.gif" width="30" height="30" style="display:none;" id="msg2" /> </div>
+                                <div class="sorting_asc col-1"></div>*@
+
+                            @*<div class="sorting_asc col-1"></div>
+                        <div class="sorting_asc col-1"></div>
+                        <div class="sorting_asc col-2"></div>*@
+
+                            @*}
+                            </div>
+
+
+
+
+                        </div>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <button class="btn btn-primary" id="btnUpdate" onclick="sub()">Update</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/global/vendor/datatables/jquery.dataTables.min.js"></script>
+
+
+<script>
+
+    function sub() {
+        debugger;
+        var table = $('#datatbl').DataTable();
+        var arr = [];
+        for (var i = 0; i < table.rows().count(); i++) {
+            var id = 0;
+            var rate = 0;
+            table.cell(i, 6).nodes().to$().find('#msg2').show();
+            id = table.cell(i, 0).nodes().to$().find('#hidid').val();
+            rate = table.cell(i, 6).nodes().to$().find('#rate').val();
+            //if (isNaN(rate) || x < 1) {
+            //    jQuery.noop();
+            //}
+
+            
+
+
+
+            if (rate == "0" || rate == "0.00" || rate == '' || rate == 'undefined' || rate == null ) {
+                alert("please input valid rate");
+              
+                $('#btnUpdate').attr("disabled", true); 
+            }
+            else {
+                arr.push({
+                'id': id, 
+                'rate': rate,
+                
+                });
+               // $('#btnUpdate').attr("disabled", false);
+            }
+            // data(i);
+        }
+
+        //rate = table.cell(i, 6).nodes().to$().find('#rate').val();
+
+        
+
+
+       //  $(document).on("change", "#DyeId", function (e) {
+        
+
+       //         $('#savebtn').attr("disabled", false);
+
+       //})
+
+        $(document).on("change", "#rate", function (e) {
+            for (var i = 0; i < table.rows().count(); i++) {
+
+                if (arr[i] == "0" || arr[i] == "0.00" || arr[i] == '') {
+                $('#btnUpdate').attr("disabled", true);
+            }
+            else {
+                $('#btnUpdate').attr("disabled", false);
+            }
+
+            }
+
+        });
+         
+
+                
+
+
+     // When your element is already rendered   // 1st  
+      //$("#rate").change(function(){  
+   
+        
+      //     $('#btnUpdate').attr("disabled", false);
+      //  });
+
+
+
+        //var list = JSON.stringify(arr);
+        // var RateDetail = JSON.stringify({ 'RateDetail': arr });
+
+        debugger;
+        var list = 'abcdhnasjd';
+
+        //console.log(list);
+        if (id != -1) {
+            $.ajax({
+                //dataType: 'json',
+
+                method: 'POST',
+                //data:{
+                //'id': id,
+                //'rate': rate
+                ////
+                //}
+                data: {
+                    list: JSON.stringify(arr)
+                },
+                url: `/cs/LCImportInTr/UpdateRatess`
+            }).done(function (res) {
+                if (res.msg != '') {
+                    table.cell(i, 6).nodes().to$().find('#msg').show();
+                    table.cell(i, 6).nodes().to$().find('#msg2').hide();
+                    setTimeout(function () { table.cell(i, 6).nodes().to$().find('#msg').hide(); }, 2000);
+                }
+                table.cell(i, 0).nodes().to$().find('#hidid').prop("disabled", true);
+                table.cell(i, 6).nodes().to$().find('#rate').prop("disabled", true);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert("error");
+            });
+        }
+        if ($('#rate').val() != 0) {
+            $('#msg').hide();
+        }
+        else {
+            $('#msg').show();
+            
+        }
+        var a = 1;
+        partialfunction(a);
+    }
+    function data(i) {
+        debugger;
+        var table = $('#datatbl').DataTable();
+        var id = 0;
+        var rate = 0;
+        table.cell(i, 6).nodes().to$().find('#msg2').show();
+        id = table.cell(i, 0).nodes().to$().find('#hidid').val();
+        rate = table.cell(i, 6).nodes().to$().find('#rate').val();
+        if (id != -1) {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    Id: id,
+                    rate: rate
+                },
+                url: `/cs/LCImportInTr/UpdateRatess`
+            }).done(function (res) {
+                if (res.msg != '') {
+                    table.cell(i, 6).nodes().to$().find('#msg').show();
+                    table.cell(i, 6).nodes().to$().find('#msg2').hide();
+                    setTimeout(function () { table.cell(i, 6).nodes().to$().find('#msg').hide(); }, 2000);
+                }
+                table.cell(i, 0).nodes().to$().find('#hidid').prop("disabled", true);
+                table.cell(i, 6).nodes().to$().find('#rate').prop("disabled", true);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert("error");
+            });
+        }
+    }
+</script>

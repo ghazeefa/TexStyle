@@ -1,0 +1,1099 @@
+﻿@*@model IEnumerable<RecipeViewModel>
+
+    @{
+        var title = $"Recipe";
+        ViewData["Title"] = $"{title}s";
+        var CopyAction = "/yd/Recipe/CopyRecipe/";
+        var AddOrUpdateAction = "/yd/Recipe/AddOrUpdate/";
+        var AddOrUpdateReprocessAction = "/yd/Recipe/AddOrUpdateReprocess/";
+        var RecipieReportAction = "/yd/Recipe/DyeingRecipe_D2Report/";
+        var DeleteAction = "/yd/Recipe/Delete/";
+    }
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>@title Management</h5>
+                    <div>
+                        <button data-action="#@CopyAction" href="#@CopyAction" class="btn btn-default create-js" data-title="Copy @title">Copy Recipe</button>
+                        <a data-action="#@AddOrUpdateReprocessAction" class="btn btn-default create-js" data-title="Create @title">ADD Reprocess Recipe</a>
+                        @if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_CREATE))
+                        {
+                            <button data-action="#@AddOrUpdateAction" href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-title="Create @title">ADD NEW</button>
+
+                        }
+                    </div>
+                </div>
+                <div class="card-block">
+                    <div class="dt-responsive table-responsive">
+                        <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                            <div class="">
+                                <div class="col-xs-12 col-sm-12">
+                                    <table id="BrandsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting">Actions</th>
+                                                <th class="sorting">Recipe For</th>
+                                                <th class="sorting">Recipe Type</th>
+                                                <th class="sorting_asc">Recipe No</th>
+                                                <th class="sorting_asc">Date</th>
+                                                <th class="sorting_asc">Machine Type</th>
+                                                <th class="sorting_asc">Format No</th>
+                                                <th class="sorting_asc">Liquor Rate</th>
+                                                <th class="sorting_asc" style="width:50px;">LPS NO</th>
+                                                <th class="sorting_asc">Party</th>
+                                                <th class="sorting_asc">Buyer </th>
+                                                <th class="sorting_asc">Buyer Color</th>
+
+                                                <th class="sorting_asc">LotNo</th>
+
+                                                <th class="sorting_asc">Return To Party</th>
+                                                <th class="sorting_asc">Weight</th>
+                                                <th class="sorting_asc">Cones</th>
+                                                <th class="sorting_asc">Color</th>
+                                                <th class="sorting_asc">Confirmed?</th>
+                                                <th class="sorting_asc">Print</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var c in Model)
+                                            {
+                                                if (c.IsWithoutLPS == true)
+                                                {
+                                            <tr role="row" style="        background-color: #FFEDEB
+        ">
+                                                <td style="width:150px;">
+                                                    <a class="btn btn-primary" href="/yd/Recipe/Details/@c.Id">Details</a>
+                                                    @if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_EDIT))
+                                                    {
+                                                    <button data-action="#@AddOrUpdateAction@c.Id" href="#@AddOrUpdateAction@c.Id" class="btn btn-primary update-js" data-title="Create @title">Edit</button>}
+
+
+
+                                                    @if (c.RecipeLPs.Count() != 0)
+                                                    {
+                                                        var i = 0;
+                                                        var j = 0;
+                                                    @foreach (var t in c.RecipeLPs)
+                                                        {
+                                                            if (t.IsDeleted == false)
+                                                            {
+                                                                i++;
+                                                            }
+                                                            else
+                                                            {
+                                                                j++;
+                                                            }
+                                                        }
+
+                                                        if (i > 0)
+                                                        {
+                                                        }
+                                                        else
+                                                        {<button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    { <button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                                                    }
+
+                                                </td>
+                                                @if (c.IsYarn == true)
+
+                                                {
+                                                <td class="sorting_1"> CKL 5 </td>
+
+                                                }
+                                                @if (c.IsYarn == false)
+                                                {
+                                                <td class="sorting_1">
+                                                    CKL 6
+                                                </td>
+                                                }
+
+
+
+                                                @if (c.IsWithoutLPS == true)
+
+                                                {
+                                                <td class="sorting_1"> Machine wash </td>
+
+                                                }
+                                                @if (c.IsWithoutLPS == false)
+                                                {
+                                                <td class="sorting_1">
+                                                    Dyeing
+                                                </td>
+                                                }
+
+                                                <td class="sorting_1">@c.No</td>
+                                                <td class="sorting_1">@c.Date.ToShortDateString()</td>
+
+
+                                                <td class="sorting_1">@c.MachineType?.Name</td>
+                                                <td class="sorting_1">@c.RecipeFormat?.Id</td>
+                                                <td class="sorting_1">@c.LiquorRate</td>
+                                                @{ var a = "";
+                                                    foreach (var lps in c.RecipeLPs)
+                                                    {
+                                                    @if(lps.IsDeleted==false){
+                                                    a = a + "|" + lps.LPSId + "|";
+                                            }
+                                                    }
+
+                                                }
+
+                                                <td class="sorting_1" style="width:50px;">@a</td>
+                                                <td class="sorting_1">@c.Party?.Name</td>
+                                                <td class="sorting_1">@c.BuyerColor?.Buyer?.Name</td>
+                                                <td class="sorting_1">@c.BuyerColor?.Name</td>
+                                                <td class="sorting_1">@c.LotNo</td>
+                                                <td class="sorting_1">
+                                                    <div class="border-checkbox-section">
+                                                        <div class="row">
+                                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                                <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsReprocessed ? "checked" : "")>
+                                                                <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="sorting_1">@c.Weight</td>
+                                                <td class="sorting_1">@c.Cones</td>
+                                                <td class="sorting_1" style="background-color:@(c.Color)">
+                                                </td>
+                                                <td class="sorting_1">
+                                                    <div class="border-checkbox-section">
+                                                        <div class="row">
+                                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                                <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsConfirmed ? "checked" : "")>
+                                                                <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="sorting_1"><a class="btn btn-info" target="_blank" href="@RecipieReportAction@c.Id">Recipe Print</a></td>
+
+
+                                            </tr>
+                                                    }
+                                                    else if (c.IsYarn == false)
+                                                    {
+                                        <tr role="row" style="        background-color: #FCFADE
+        ">
+                                            <td style="width:150px;">
+                                                <a class="btn btn-primary" href="/yd/Recipe/Details/@c.Id">Details</a>
+                                                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_EDIT))
+                                                {
+                                                    <button data-action="#@AddOrUpdateAction@c.Id" href="#@AddOrUpdateAction@c.Id" class="btn btn-primary update-js" data-title="Create @title">Edit</button>}
+
+
+                                                @if (c.RecipeLPs.Count() != 0)
+                                                {
+                                                    var i = 0;
+                                                    var j = 0;
+                                                    @foreach (var t in c.RecipeLPs)
+                                                    {
+                                                        if (t.IsDeleted == false)
+                                                        {
+                                                            i++;
+
+                                                        }
+                                                        else
+                                                        {
+                                                            j++;
+
+                                                        }
+                                                    }
+
+                                                    if (i > 0)
+                                                    {
+
+
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                                                    }
+
+
+                                                }
+                                                else
+                                                { <button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                                                }
+
+
+                                            </td>
+
+
+                                            @if (c.IsYarn == true)
+
+                                            {
+                                        <td class="sorting_1"> CKL 5 </td>}
+                                            @if (c.IsYarn == false)
+                                            {
+                                        <td class="sorting_1">
+                                            CKL 6
+                                        </td>}
+
+
+
+                                            @if (c.IsWithoutLPS == true)
+
+                                            {
+                                        <td class="sorting_1"> Machine wash </td>}
+                                            @if (c.IsWithoutLPS == false)
+                                            {
+                                        <td class="sorting_1">
+                                            Dyeing*@
+@*</td> }*@
+@*<td class="sorting_1">
+        <div class="border-checkbox-section">
+            <div class="row">
+                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                    <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsYarn ? "checked" : "")>
+                    <label class="border-checkbox-label" for="IsClosed"> </label>
+                </div>
+            </div>
+        </div>
+    </td>
+    <td class="sorting_1">
+        <div class="border-checkbox-section">
+            <div class="row">
+                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                    <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsWithoutLPS ? "checked" : "")>
+                    <label class="border-checkbox-label" for="IsClosed"> </label>
+                </div>
+            </div>
+        </div>
+    </td>*@
+
+@*<td class="sorting_1">@c.No</td>
+                                            <td class="sorting_1">@c.Date.ToShortDateString()</td>
+                                            <td class="sorting_1">@c.MachineType?.Name</td>
+                                            <td class="sorting_1">@c.RecipeFormat?.Id</td>
+                                            <td class="sorting_1">@c.LiquorRate</td>
+                                            @{ var a = "";
+                                                foreach (var lps in c.RecipeLPs)
+                                                {
+                                            @if(lps.IsDeleted==false){
+                                                    a = a + "|" + lps.LPSId + "|";
+                                            }
+
+                                                } }
+
+                                            <td class="sorting_1" style="width:50px;">@a</td>
+                                            <td class="sorting_1">@c.Party?.Name</td>
+                                            <td class="sorting_1">@c.BuyerColor?.Buyer?.Name</td>
+                                            <td class="sorting_1">@c.BuyerColor?.Name</td>
+                                            <td class="sorting_1">@c.LotNo</td>
+                                            <td class="sorting_1">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsReprocessed ? "checked" : "")>
+                                                            <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="sorting_1">@c.Weight</td>
+                                            <td class="sorting_1">@c.Cones</td>
+                                            <td class="sorting_1" style="background-color:@(c.Color)">
+                                            </td>
+                                            <td class="sorting_1">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsConfirmed ? "checked" : "")>
+                                                            <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="sorting_1"><a class="btn btn-info" target="_blank" href="@RecipieReportAction@c.Id">Recipe Print</a></td>
+
+
+                                        </tr>
+                                                }
+
+                                                else
+                                                {
+
+
+                                        <tr role="row" style="background-color: #E3E3FF">
+                                            <td style="width:150px;">
+                                                <a class="btn btn-primary" href="/yd/Recipe/Details/@c.Id">Details</a>
+                                                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_EDIT))
+                                                {
+                                                    <button data-action="#@AddOrUpdateAction@c.Id" href="#@AddOrUpdateAction@c.Id" class="btn btn-primary update-js" data-title="Create @title">Edit</button>}
+
+                                                @if (c.RecipeLPs.Count() != 0)
+                                                {
+                                                    var i = 0;
+                                                    var j = 0;
+                                                    @foreach (var t in c.RecipeLPs)
+                                                    {
+                                                        if (t.IsDeleted == false)
+                                                        {
+                                                            i++;
+
+                                                        }
+                                                        else
+                                                        {
+                                                            j++;
+
+                                                        }
+                                                    }
+
+                                                    if (i > 0)
+                                                    {
+
+
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                                                    }
+
+
+                                                }
+                                                else
+                                                { <button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                                                }
+
+
+
+
+                                            </td>
+                                            @if (c.IsYarn == true)
+
+                                            {
+                                        <td class="sorting_1"> CKL 5 </td>}
+                                            @if (c.IsYarn == false)
+                                            {
+                                        <td class="sorting_1">
+                                            CKL 6
+                                        </td>}
+
+
+
+                                            @if (c.IsWithoutLPS == true)
+
+                                            {
+                                        <td class="sorting_1"> Machine wash </td>}
+                                            @if (c.IsWithoutLPS == false)
+                                            {
+                                        <td class="sorting_1">
+                                            Dyeing
+                                        </td>}
+
+                                            <td class="sorting_1">@c.No</td>
+                                            <td class="sorting_1">@c.Date.ToShortDateString()</td>
+                                            <td class="sorting_1">@c.MachineType?.Name</td>
+                                            <td class="sorting_1">@c.RecipeFormat?.Id</td>
+                                            <td class="sorting_1">@c.LiquorRate</td>
+                                            @{ var a = "";
+                                                foreach (var lps in c.RecipeLPs)
+                                                {
+                                                    a = a + "|" + lps.Id + "|";
+                                                } }
+
+                                            <td class="sorting_1" style="width:50px;">@a</td>
+                                            <td class="sorting_1">@c.Party?.Name</td>
+                                            <td class="sorting_1">@c.BuyerColor?.Buyer?.Name</td>
+                                            <td class="sorting_1">@c.BuyerColor?.Name</td>
+                                            <td class="sorting_1">@c.LotNo</td>
+                                            <td class="sorting_1">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsReprocessed ? "checked" : "")>
+                                                            <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="sorting_1">@c.Weight</td>
+                                            <td class="sorting_1">@c.Cones</td>
+                                            <td class="sorting_1" style="background-color:@(c.Color)">
+                                            </td>
+                                            <td class="sorting_1">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsConfirmed ? "checked" : "")>
+                                                            <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="sorting_1"><a class="btn btn-info" target="_blank" href="@RecipieReportAction@c.Id">Recipe Print</a></td>
+
+
+                                        </tr>}
+                                                    }
+
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr role="row">
+                                                <th class="sorting">Actions</th>
+                                                <th class="sorting">Recipe For</th>
+                                                <th class="sorting">Recipe Type</th>
+                                                <th class="sorting_asc">Recipe No</th>
+                                                <th class="sorting_asc">Date</th>
+                                                <th class="sorting_asc">Machine Type</th>
+                                                <th class="sorting_asc">Format No</th>
+                                                <th class="sorting_asc">Liquor Rate</th>
+                                                <th class="sorting_asc" style="width:50px;">LPS NO</th>
+                                                <th class="sorting_asc">Party</th>
+                                                <th class="sorting_asc">Buyer </th>
+                                                <th class="sorting_asc">Buyer Color</th>
+                                                <th class="sorting_asc">LotNo</th>
+                                                <th class="sorting_asc">Return To Party</th>
+                                                <th class="sorting_asc">Weight</th>
+                                                <th class="sorting_asc">Cones</th>
+                                                <th class="sorting_asc">Color</th>
+                                                <th class="sorting_asc">Print</th>
+                                                <th class="sorting_asc">Confirmed?</th>
+
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>*@
+@model IEnumerable<TexStyle.Core.ReportsViewModel.YD.RecipeIndexViewModelRepository>
+
+@{
+    var title = $"Recipe";
+    ViewData["Title"] = $"{title}s";
+    var CopyAction = "/yd/Recipe/CopyRecipe/";
+    var AddOrUpdateAction = "/yd/Recipe/AddOrUpdate/";
+    var AddOrUpdateReprocessAction = "/yd/Recipe/AddOrUpdateReprocess/";
+    var RecipieReportAction = "/yd/Recipe/DyeingRecipe_D2Report/";
+    var DeleteAction = "/yd/Recipe/Delete/";
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+
+        @if (!string.IsNullOrEmpty(ViewBag.PendigMessage))
+        {
+            <div class="alert alert-danger" style="background-color:red; text-align:center; color: white; font-weight:bold;">
+                @ViewBag.PendigMessage
+            </div>
+        }
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                <div>
+                    <button data-action="#@CopyAction" href="#@CopyAction" class="btn btn-default create-js" data-title="Copy @title">Copy Recipe</button>
+                    <a data-action="#@AddOrUpdateReprocessAction" class="btn btn-default create-js" data-title="Create @title">ADD Reprocess Recipe</a>
+                    @if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_CREATE))
+                    {
+                        <button data-action="#@AddOrUpdateAction" href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-title="Create @title">ADD NEW</button>
+
+                    }
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Print</th>
+                                            <th class="sorting">Actions</th>
+                                            <th class="sorting">Recipe For</th>
+                                            <th class="sorting">Recipe Type</th>
+                                            <th class="sorting_asc">Recipe No</th>
+                                            <th class="sorting_asc">Date</th>
+                                            <th class="sorting_asc">Machine Type</th>
+                                            <th class="sorting_asc">Format No</th>
+                                            <th class="sorting_asc">Liquor Rate</th>
+                                            <th class="sorting_asc" style="width:50px;">LPS NO</th>
+                                            <th class="sorting_asc">Party</th>
+                                            <th class="sorting_asc">Buyer </th>
+                                            <th class="sorting_asc">Buyer Color</th>
+
+                                            <th class="sorting_asc">LotNo</th>
+
+                                            <th class="sorting_asc">Return To Party</th>
+                                            <th class="sorting_asc">Weight/Pcs</th>
+                                            <th class="sorting_asc">Cones</th>
+                                            <th class="sorting_asc">Color</th>
+                                            <th class="sorting_asc">Confirmed?</th>
+
+
+
+                                        </tr>
+                                    </thead>
+                                    @if (Model.Count() > 0)
+                                    {
+                                <tbody>
+                                    @foreach (var c in Model)
+                                    {
+                                        if (c.IsGarmentPrinting == true)
+                                        {
+                                    <tr role="row" style=" background-color: #FCFADE">
+                                        <td class="sorting_1"><a class="btn btn-info" target="_blank" href="@RecipieReportAction@c.Id">Recipe Print</a></td>
+                                        <td style="width:150px;">
+                                            <a class="btn btn-primary" href="/yd/Recipe/Details/@c.Id">Details</a>
+                                            @if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_EDIT))
+                                            {
+                                                <button data-action="#@AddOrUpdateAction@c.Id" href="#@AddOrUpdateAction@c.Id" class="btn btn-primary update-js" data-title="Create @title">Edit</button>}
+
+
+                                            @if (c.LPS == null && !c.IsConfirmed == true)
+                                            {
+                                                <button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                                            }
+
+
+                                        </td>
+
+                                        <td class="sorting_1">ZKAP</td>
+
+                                        @if (c.IsGarmentPrinting == true)
+
+                                        {
+                                            <td class="sorting_1">Printing</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="sorting_1">
+                                                Dyeing
+                                            </td>
+                                        }
+
+                                        <td class="sorting_1">@c.No</td>
+                                        <td class="sorting_1">@c.Date</td>
+                                        <td class="sorting_1">@c.MachineType</td>
+                                        <td class="sorting_1">@c.RecipeFormatId</td>
+                                        <td class="sorting_1">@c.LiquorRate</td>
+
+
+                                        <td class="sorting_1" style="width:50px;">-</td>
+                                        <td class="sorting_1">@c.Party</td>
+                                        <td class="sorting_1">@c.Buyer</td>
+                                        <td class="sorting_1">@c.BuyerColor</td>
+                                        <td class="sorting_1">@c.LotNo</td>
+                                        <td class="sorting_1">
+                                            <div class="border-checkbox-section">
+                                                <div class="row">
+                                                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                        <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsReprocessed ? "checked" : "")>
+                                                        <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="sorting_1">@c.Pcs</td>
+                                        <td class="sorting_1">@c.Cones</td>
+                                        <td class="sorting_1" style="background-color:@(c.Color)">
+                                        </td>
+                                        <td class="sorting_1">
+                                            <div class="border-checkbox-section">
+                                                <div class="row">
+                                                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                        <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsConfirmed ? "checked" : "")>
+                                                        <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+
+
+                                    </tr>
+                                        }
+                                        else
+                                        {
+
+                                            if (c.IsWithoutLPS == true)
+                                            {
+                                <tr role="row" style="background-color: #FFEDEB">
+                                    <td class="sorting_1"><a class="btn btn-info" target="_blank" href="@RecipieReportAction@c.Id">Recipe Print</a></td>
+                                    <td style="width:150px;">
+                                        <a class="btn btn-primary" href="/yd/Recipe/Details/@c.Id">Details</a>
+                                        @if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_EDIT))
+                                        {
+                                            <button data-action="#@AddOrUpdateAction@c.Id" href="#@AddOrUpdateAction@c.Id" class="btn btn-primary update-js" data-title="Create @title">Edit</button>}
+
+
+
+                                        @*@if (c.RecipeLPs.Count() != 0)
+            {
+                var i = 0;
+                var j = 0;
+                @foreach (var t in c.RecipeLPs)
+                {
+                    if (t.IsDeleted == false)
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        j++;
+                    }
+                }
+
+                if (i > 0)
+                {
+                }
+                else
+                {<button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                }
+
+            }
+            else*@
+                                        @if (c.LPS == null && !c.IsConfirmed == true)
+                                        {
+                                            <button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                                        }
+
+                                    </td>
+                                    @if (c.IsYarn == true)
+
+                                    {
+                                        <td class="sorting_1">Yarn Dyeing</td>
+
+                                    }
+                                    @if (c.IsYarn == false)
+                                    {
+                                        <td class="sorting_1">Fabric Dyeing</td>
+                                    }
+
+
+
+                                    @if (c.IsWithoutLPS == true)
+
+                                    {
+                                        <td class="sorting_1"> Machine wash </td>
+
+                                    }
+                                    @if (c.IsWithoutLPS == false)
+                                    {
+                                        <td class="sorting_1">
+                                            Dyeing
+                                        </td>
+                                    }
+
+                                    <td class="sorting_1">@c.No</td>
+                                    <td class="sorting_1">@c.Date</td>
+
+
+                                    <td class="sorting_1">@c.MachineType</td>
+                                    <td class="sorting_1">@c.RecipeFormatId</td>
+                                    <td class="sorting_1">@c.LiquorRate</td>
+                                    @*@{ var a = "";
+            foreach (var lps in c.RecipeLPs)
+            {
+                @if (lps.IsDeleted == false)
+                {
+                    a = a + "|" + lps.LPSId + "|";
+                }
+            }
+
+        }*@
+
+                                    <td class="sorting_1" style="width:50px;">-</td>
+                                    <td class="sorting_1">@c.Party</td>
+                                    <td class="sorting_1">@c.Buyer</td>
+                                    <td class="sorting_1">@c.BuyerColor</td>
+                                    <td class="sorting_1">@c.LotNo</td>
+                                    <td class="sorting_1">
+                                        <div class="border-checkbox-section">
+                                            <div class="row">
+                                                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                    <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsReprocessed ? "checked" : "")>
+                                                    <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="sorting_1">@c.Weight</td>
+                                    <td class="sorting_1">@c.Cones</td>
+                                    <td class="sorting_1" style="background-color:@(c.Color)">
+                                    </td>
+                                    <td class="sorting_1">
+                                        <div class="border-checkbox-section">
+                                            <div class="row">
+                                                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                    <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsConfirmed ? "checked" : "")>
+                                                    <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+                                            }
+
+                                            else if (c.IsYarn == false)
+                                            {
+                                <tr role="row" style=" background-color: #FCFADE">
+                                    <td class="sorting_1"><a class="btn btn-info" target="_blank" href="@RecipieReportAction@c.Id">Recipe Print</a></td>
+                                    <td style="width:150px;">
+                                        <a class="btn btn-primary" href="/yd/Recipe/Details/@c.Id">Details</a>
+                                        @if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_EDIT))
+                                        {
+                                            <button data-action="#@AddOrUpdateAction@c.Id" href="#@AddOrUpdateAction@c.Id" class="btn btn-primary update-js" data-title="Create @title">Edit</button>}
+
+
+                                        @*@if (c.RecipeLPs.Count() != 0)
+            {
+                var i = 0;
+                var j = 0;
+                @foreach (var t in c.RecipeLPs)
+                {
+                    if (t.IsDeleted == false)
+                    {
+                        i++;
+
+                    }
+                    else
+                    {
+                        j++;
+
+                    }
+                }
+
+                if (i > 0)
+                {
+
+
+                }
+                else
+                {
+
+                    <button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                }
+
+
+            }
+            else*@
+                                        @if (c.LPS == null && !c.IsConfirmed == true)
+                                        {
+                                            <button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                                        }
+
+
+                                    </td>
+
+
+                                    @if (c.IsYarn == true)
+
+                                    {
+                                        <td class="sorting_1">Yarn Dyeing</td>
+                                    }
+                                    @if (c.IsYarn == false)
+                                    {
+                                        <td class="sorting_1">Fabric Dyeing</td>
+                                    }
+
+
+
+                                    @if (c.IsWithoutLPS == true)
+
+                                    {
+                                        <td class="sorting_1"> Machine wash </td>
+                                    }
+                                    @if (c.IsWithoutLPS == false)
+                                    {
+                                        <td class="sorting_1">
+                                            Dyeing
+                                        </td>
+                                    } @*<td class="sorting_1">
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsYarn ? "checked" : "")>
+                        <label class="border-checkbox-label" for="IsClosed"> </label>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="sorting_1">
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsWithoutLPS ? "checked" : "")>
+                        <label class="border-checkbox-label" for="IsClosed"> </label>
+                    </div>
+                </div>
+            </div>
+        </td>*@
+
+                                    <td class="sorting_1">@c.No</td>
+                                    <td class="sorting_1">@c.Date</td>
+                                    <td class="sorting_1">@c.MachineType</td>
+                                    <td class="sorting_1">@c.RecipeFormatId</td>
+                                    <td class="sorting_1">@c.LiquorRate</td>
+                                    @*@{ var a = "";
+        foreach (var lps in c.RecipeLPs)
+        {
+            @if (lps.IsDeleted == false)
+            {
+                a = a + "|" + lps.LPSId + "|";
+            }
+
+        } }*@
+
+                                    <td class="sorting_1" style="width:50px;">-</td>
+                                    <td class="sorting_1">@c.Party</td>
+                                    <td class="sorting_1">@c.Buyer</td>
+                                    <td class="sorting_1">@c.BuyerColor</td>
+                                    <td class="sorting_1">@c.LotNo</td>
+                                    <td class="sorting_1">
+                                        <div class="border-checkbox-section">
+                                            <div class="row">
+                                                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                    <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsReprocessed ? "checked" : "")>
+                                                    <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="sorting_1">@c.Weight</td>
+                                    <td class="sorting_1">@c.Cones</td>
+                                    <td class="sorting_1" style="background-color:@(c.Color)">
+                                    </td>
+                                    <td class="sorting_1">
+                                        <div class="border-checkbox-section">
+                                            <div class="row">
+                                                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                    <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsConfirmed ? "checked" : "")>
+                                                    <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+                                            }
+
+                                            else
+                                            {
+
+
+                                <tr role="row" style="background-color: #E3E3FF">
+                                    <td class="sorting_1"><a class="btn btn-info" target="_blank" href="@RecipieReportAction@c.Id">Recipe Print</a></td>
+                                    <td style="width:150px;">
+
+                                        <a class="btn btn-primary" href="/yd/Recipe/Details/@c.Id">Details</a>
+                                        @if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_EDIT))
+                                        {
+                                            <button data-action="#@AddOrUpdateAction@c.Id" href="#@AddOrUpdateAction@c.Id" class="btn btn-primary update-js" data-title="Create @title">Edit</button>}
+
+                                        @*@if (c.RecipeLPs.Count() != 0)
+            {
+                var i = 0;
+                var j = 0;
+                @foreach (var t in c.RecipeLPs)
+                {
+                    if (t.IsDeleted == false)
+                    {
+                        i++;
+
+                    }
+                    else
+                    {
+                        j++;
+
+                    }
+                }
+
+                if (i > 0)
+                {
+
+
+                }
+                else
+                {
+
+                    <button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                }
+
+
+            }
+            else*@
+                                        @if (c.LPS == null && !c.IsConfirmed == true)
+                                        {
+                                            <button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+                                        }
+
+
+
+
+                                    </td>
+                                    @if (c.IsYarn == true)
+
+                                    {
+                                        <td class="sorting_1">Yarn Dyeing</td>
+                                    }
+                                    @if (c.IsYarn == false)
+                                    {
+                                        <td class="sorting_1">Fabric Dyeing</td>
+                                    }
+
+
+
+                                    @if (c.IsWithoutLPS == true)
+
+                                    {
+                                        <td class="sorting_1"> Machine wash </td>
+                                    }
+                                    @if (c.IsWithoutLPS == false)
+                                    {
+                                        <td class="sorting_1">
+                                            Dyeing
+                                        </td>
+                                    }
+
+                                    <td class="sorting_1">@c.No</td>
+                                    <td class="sorting_1">@c.Date</td>
+                                    <td class="sorting_1">@c.MachineType</td>
+                                    <td class="sorting_1">@c.RecipeFormatId</td>
+                                    <td class="sorting_1">@c.LiquorRate</td>
+                                    @*@{ var a = "";
+        foreach (var lps in c.RecipeLPs)
+        {
+            a = a + "|" + lps.Id + "|";
+        } }*@
+
+                                    <td class="sorting_1" style="width:50px;">-</td>
+                                    <td class="sorting_1">@c.Party</td>
+                                    <td class="sorting_1">@c.Buyer</td>
+                                    <td class="sorting_1">@c.BuyerColor</td>
+                                    <td class="sorting_1">@c.LotNo</td>
+                                    <td class="sorting_1">
+                                        <div class="border-checkbox-section">
+                                            <div class="row">
+                                                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                    <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsReprocessed ? "checked" : "")>
+                                                    <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="sorting_1">@c.Weight</td>
+                                    <td class="sorting_1">@c.Cones</td>
+                                    <td class="sorting_1" style="background-color:@(c.Color)">
+                                    </td>
+                                    <td class="sorting_1">
+                                        <div class="border-checkbox-section">
+                                            <div class="row">
+                                                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                    <input class="border-checkbox" type="checkbox" disabled="disabled" @(c.IsConfirmed ? "checked" : "")>
+                                                    <label class="border-checkbox-label" for="IsClosed"> </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+                                            }
+                                        }
+                                    }
+
+
+                                </tbody>
+                                    }
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th class="sorting">Actions</th>
+                                            <th class="sorting">Recipe For</th>
+                                            <th class="sorting">Recipe Type</th>
+                                            <th class="sorting_asc">Recipe No</th>
+                                            <th class="sorting_asc">Date</th>
+                                            <th class="sorting_asc">Machine Type</th>
+                                            <th class="sorting_asc">Format No</th>
+                                            <th class="sorting_asc">Liquor Rate</th>
+                                            <th class="sorting_asc" style="width:50px;">LPS NO</th>
+                                            <th class="sorting_asc">Party</th>
+                                            <th class="sorting_asc">Buyer </th>
+                                            <th class="sorting_asc">Buyer Color</th>
+                                            <th class="sorting_asc">LotNo</th>
+                                            <th class="sorting_asc">Return To Party</th>
+                                            <th class="sorting_asc">Weight/Pcs</th>
+                                            <th class="sorting_asc">Cones</th>
+                                            <th class="sorting_asc">Color</th>
+                                            <th class="sorting_asc">Print</th>
+                                            <th class="sorting_asc">Confirmed?</th>
+
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+
+        //$(document).ready(function () {
+        //    var table = $('#BrandsTable').DataTable({
+        //        fixedHeader: true
+        //    });
+        //});
+        var modal = "#igpModal";
+    </script>
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var pendingMessage = @Json.Serialize(ViewBag.PendigMessage); // Serialize ViewBag message to JavaScript
+
+        if (pendingMessage.trim() !== "") {
+            // If pendingMessage is not empty, disable all buttons with class "btn"
+            var buttons = document.querySelectorAll(".create-js");
+            if (buttons) {
+                buttons.forEach(function (button) {
+                    button.disabled = true;
+                });
+            }
+        }
+    });
+    </script>
+
+
+}
+
+
+
+
+

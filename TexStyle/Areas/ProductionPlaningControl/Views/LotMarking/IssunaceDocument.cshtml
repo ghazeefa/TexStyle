@@ -1,0 +1,122 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.Reports.P9IssunaceRecordReportlViewModel>
+@{
+    ViewData["Title"] = "Ecru Yarn Stock Report";
+    Layout = "_LayoutPrint";
+    var noData = "No Data Available";
+    var abc = @ViewBag.Message;
+}
+
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    /*    .borders > tbody > tr > td, .borders > thead > tr > td {
+        border: 1px solid black !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }*/
+</style>
+@if (Model.Count() > 0)
+{
+
+
+    <div class="card user-activity-card">
+
+        <div class="row">
+            <div class="col-2 report-numberheading" style="font-size:30px; ">LotNo:@Model.FirstOrDefault().LotNo </div>
+            <div class="col-11"></div>
+        </div>
+        <div class="card-block">
+            <div class="w-100 text-center">
+                <h3 style="font-family: 'Times New Roman'"><strong>COMFORT KNITWEARS (PVT.) LTD. (Fabric DYEING DIV.)</strong></h3>
+                <h4 style="font-family: 'Times New Roman'">Lot Wise LPS Issuance </h4>
+                <h6 style="font-family: 'Times New Roman'">  DATE: @Model.FirstOrDefault().DateFrom </h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-responsive" style="line-height:1px; letter-spacing:1; font-family: 'Times New Roman'; font-size:15px;">
+
+                    <thead>
+                        <tr class="report-detailheader">
+                     
+                            <th width="20%"></th>
+                            <th width="20%">LPSNo</th>
+                            <th width="20%">Status</th>
+                            <th width="20%">No of Rolls</th>
+                            <th width="50%">Kgs</th>
+                            <th width="50%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var grp in Model)
+                        {
+
+                           
+                            @foreach (var detail in grp.P9IssunaceRecordReportDetailViewModel)
+                            {
+                                if (detail.Status == "Issued")
+                                {
+                        <tr style="line-height:1px; border:1px solid black">
+                            <td>
+                                
+                            </td>
+                            <td>
+                                @detail.LPSNo
+                            </td>
+                            <td>
+                                @detail.Status
+                            </td>
+
+                            <td>
+                                @detail.NoOfRolls
+                            </td>
+                            <td>
+                                @detail.Kgs
+                            </td>
+                            <td></td>
+
+
+                        </tr>
+                                }
+                                else
+                                {
+
+                                    <tr style="line-height:1px; border:1px solid black; background-color:#e8acac">
+                                        <td>
+                                        </td>
+                                        <td>
+                                            @detail.LPSNo
+                                        </td>
+                                        <td>
+                                            @detail.Status
+                                        </td>
+
+                                        <td>
+                                            @detail.NoOfRolls
+                                        </td>
+                                        <td>
+                                            @detail.Kgs
+                                        </td>
+                                        <td></td>
+
+                                    </tr>
+
+                                }
+
+                            }
+                        }
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>
+}

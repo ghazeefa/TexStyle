@@ -1,0 +1,227 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.PPC.ReturnNoteDetailViewModel
+@{
+    //var returnType = IssueTypes.ReturnTypeList.Single(t => t.Id == Model.ReturnTypeId);
+
+    var title = $"Update Production Recieved Detail";
+    ViewData["Title"] = $"{title}";
+
+    var AddOrUpdateAction = "/ppc/ReturnNoteDetail/AddOrUpdate/";
+
+    var CopyPPCAction = "/ppc/ReturnNoteDetail/CopyPPCData/";
+    var CopyReprocessAction = "/ppc/ReturnNoteDetail/CopyReprocessData/";
+    var CopyIssueAction = "/ppc/ReturnNoteDetail/CopyIssueData/";
+
+    List<SelectListItem> storeLocationList = ViewBag.storeLocationList;
+    List<SelectListItem> yarnTypeList = ViewBag.yarnTypeList;
+    List<SelectListItem> yarnQualityList = ViewBag.yarnQualityList;
+    List<SelectListItem> yarnManufacturerList = ViewBag.yarnManufacturerList;
+    var filter = ViewBag.filter;
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @*@if (returnType.Id == IssueTypes.ReturnToWinding.Id)
+                    {
+                        <button href="#@CopyIssueAction" class="btn btn-primary IgpRef-js" data-action="#@CopyIssueAction" data-title="Create @title">Copy Issue Reference</button>
+                    }
+                    else
+                    {
+                        <button href="#@CopyPPCAction" class="btn btn-primary IgpRef-js" data-action="#@CopyPPCAction" data-title="Create @title">Copy LPS Reference</button>
+                    }*@
+
+                @if (ViewBag.reprocessed == true)
+                {
+                    <button href="#@CopyReprocessAction" class="btn btn-primary IgpRef-js" data-action="#@CopyReprocessAction" data-title="Create @title">Copy Reprocess Reference</button>
+                }
+                else
+                {
+                    <button href="#@CopyPPCAction" class="btn btn-primary IgpRef-js" data-action="#@CopyPPCAction" data-title="Create @title">Copy LPS Reference</button>
+                }
+
+
+            </div>
+            <form asp-area="ProductionPlaningControl" asp-controller="ReturnNoteDetail" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+                <div class="card-block">
+                    <div class="form-horizontal">
+                        <div class="form-horizontal">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            @Html.HiddenFor(m => m.Id)
+                            @Html.HiddenFor(m => m.ReprocessId)
+                            <div class="row">
+
+                                <div class="form-group col-3">
+                                    <label asp-for="ReturnNoteId" class="control-label"></label>
+                                    <input asp-for="ReturnNoteId" class="form-control" readonly />
+                                    <span asp-validation-for="ReturnNoteId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label asp-for="PPCPlanningId" class="control-label"></label>
+                                    <input asp-for="PPCPlanningId" class="form-control" />
+                                    <span asp-validation-for="PPCPlanningId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="StoreLocationId"></label>
+                                    <select asp-for="StoreLocationId" select2="@(storeLocationList)" select2-ph="Select Store Location" class="form-control select2"></select>
+                                    <span asp-validation-for="StoreLocationId" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-3">
+                                    <label class="control-label">
+                                        Kgs
+
+                                        @*@*<span class="text-warning"> <small>Available: </small><span id="availableKgs">@{var availablekgs = Model.AvailableLpsKgs != 0 ? Model.AvailableLpsKgs : 0; } @availablekgs</span></span>*@
+
+
+
+                                    </label>
+                                    <input asp-for="Kgs" class="form-control" type="number" />
+                                    @*max="@availablekgs !=0? @availablekgs :0" step="0.01" />*@
+                                    <span asp-validation-for="Kgs" class="text-danger"></span>
+                                </div>
+                                @*<div class="form-group col-3">
+                                        <label asp-for="EcurKgs" class="control-label"></label>
+                                        <input asp-for="EcurKgs" class="form-control" />
+                                        <span asp-validation-for="EcurKgs" class="text-danger"></span>
+                                    </div>*@
+
+
+
+
+
+                                @if (filter.IsYarn == true)
+                                {
+
+                                    <div class="form-group col-3">
+                                        <label asp-for="Bags" class="control-label"></label>
+                                        <input asp-for="Bags" class="form-control" />
+                                        <span asp-validation-for="Bags" class="text-danger"></span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group col-3">
+                                        <label asp-for="NoOfRolls" class="control-label"></label>
+                                        <input asp-for="NoOfRolls" class="form-control" />
+                                        <span asp-validation-for="NoOfRolls" class="text-danger"></span>
+                                    </div>
+
+
+                                }
+
+
+
+
+                                <div class="form-group col-3">
+                                    <label asp-for="Status" class="control-label"></label>
+                                    <input asp-for="Status" class="form-control" />
+                                    <span asp-validation-for="Status" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row d-none" id="partialWrapper">
+
+</div>
+
+
+
+
+
+
+   
+
+@section scripts {
+    <script type="text/javascript">
+
+        $(function () {
+            var igpNo = 0;
+            $("#ReturnNoteId").change(function (e) {
+                e.preventDefault();
+                igpNo = $(this).val();
+                console.log($(this).val());
+            });
+            $('.IgpRef-js').click(function (e) {
+                e.preventDefault();
+
+                var btn = $(this);
+                var BtnText = btn.text();
+                btn.html(`<i class="fa fa-refresh fa-spin text-white"></i>`);
+
+                var igpno = $("#PPCPlanningId").val();
+
+                @*@if (returnType.Id == IssueTypes.ReturnToParty.Id)
+                {
+                   <text>igpno = $("#LPSNO").val();</text>
+                }*@
+
+                var url = `${$(this).data('action').replace('#', '')}${igpno}`
+                $.ajax({
+                    method: 'GET',
+                    url: url
+                }).done(function (res) {
+         btn.text(BtnText);
+
+                    $('#partialWrapper').removeClass('d-none').addClass('d-block').html(res);
+                    $("#IGPDetailsTable").DataTable();
+                    $("#PPCDetailsTable").DataTable({
+                        scrollX: 600,
+                        scrollY: true,
+                        autoWidth: true,
+                    });
+
+                    $(".copy-js").click(function () {
+                        var btn = $(this);
+
+                        var tr = btn.parents("tr")
+                        tr.find("input[type='hidden']").each(function (i) {
+                            var input = $(this);
+                            $(`input[type='number']#${input.attr("name")},input[type='hidden']#${input.attr("name")},input[type='text']#${input.attr("name")}, select#${input.attr("name")}`).val(input.val());
+
+                            $('.select2').trigger('change');
+                        })
+
+                        $('.IgpRef-js').attr("disabled", true);
+                        $("#LPSNO").attr("disabled", true);
+
+                        //var maxKg = tr.find("input#AvailableLpsKgs").val();
+                        //$("input#Kgs").attr("max", maxKg);
+                        //$("#availableKgs").text(maxKg);
+
+                    })
+                    // script that will work on the partial view
+
+                }).fail(function () {
+                        btn.text(BtnText);
+                        swal("Failed", "Request Failed. Try later.", "error");
+                    });
+
+            });
+        });
+ $(document).ready(function () {
+
+            $("#btn").on("click", function () {
+                $(this).attr("disabled", "disabled");
+                doWork();
+            });
+    });
+
+    function doWork() {
+            alert("doing work");
+        setTimeout('$("#btn").removeAttr("disabled")', 1500);
+    }
+</script>
+}

@@ -1,0 +1,128 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.YarnReceivedReportViewModel>
+@{ ViewData["Title"] = "Yarn Received Report";
+                Layout = "_LayoutPrint";
+                var noData = "No Data Available";
+                var abc = @ViewBag.Message; }
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+@if (Model.Count() > 0)
+{
+
+
+<div class="container">
+    <div class="text-center" style=" line-height:16px;">
+        <div style="text-align:end; font-weight:bold; font-size:22px;">
+            <p>@Model.FirstOrDefault().CompanyName</p>
+        </div>
+        @if (Model.FirstOrDefault().CompanyBranch != null)
+        {
+<div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+    <p>@Model.FirstOrDefault().CompanyBranch</p>
+</div>}
+    </div>
+    <div class="text-center" style="float:right; line-height:10px;">
+        <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            Report No.
+        </div>
+        <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            P-1
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="w-100 text-center" style="margin-top:-110px">
+            <h4>@ViewData["Title"]</h4>
+            Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+        </div>
+    </div>
+
+</div><br />
+
+<div class="table-responsive">
+    <table class="table table-responsive borders" style=" line-height:15px; font-family: 'Times New Roman'; font-size:12px; letter-spacing:1px; color:black">
+
+        <thead>
+            <tr class="report-detailheader">
+                <th width="9%">Date</th>
+                @*<th width="9%"></th>*@
+                <th width="9%">IGP</th>
+                <th width="9%">Y.Type</th>
+                <th width="9%">Y.Quality</th>
+                <th width="9%">Party</th>
+                <th width="9%"></th>
+                <th width="9%">Y.Manufacturer</th>
+                <th width="9%">Bags</th>
+                <th width="9%">Gr.w</th>
+                <th width="9%">Net.W</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detail in Model)
+            {
+<tr>
+    <td colspan="2" class="report-detail-footer" style="font-size: medium; line-height:20px; background-color:lightcyan" data-format="DD/MM/yyyy">
+        @detail.Descriminator
+
+    </td>
+    <td colspan="8" style="font-size: medium; line-height:20px; background-color:lightcyan"></td>
+    @*<td colspan="2" class="report-detail-footer"></td>
+        <td></td>
+        <td></td>*@
+</tr>
+
+                    @foreach (var d in detail.Items)
+                    {
+
+<tr style="height: 10px; letter-spacing: 2px; border: 1px solid black; line-height: 15px;">
+
+    <td class="report-detail-footer"></td>
+
+    <td>
+        @d.No
+    </td>
+
+    <td>
+        @d.YarnType
+    </td>
+    <td>
+        @d.YarnQuality
+    </td>
+
+    <td colspan="2">
+        @d.Party
+    </td>
+
+
+
+    <td>
+        @d.YarnManufacturer
+    </td>
+    <td>
+        @d.Bags
+    </td>
+    <td>
+        @{var a = d.TearWeightInKg + d.NetKgs;} @a
+    </td>
+    <td>
+        @d.NetKgs
+    </td>
+
+</tr>}}
+
+        </tbody>
+        <tfoot>
+            <tr>
+
+                <td colspan="5"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div> }
+                                            else
+                                            {
+                                <h1><center> No Record in Report </center></h1>}

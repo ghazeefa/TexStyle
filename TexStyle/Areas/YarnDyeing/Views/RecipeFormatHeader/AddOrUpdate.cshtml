@@ -1,0 +1,71 @@
+﻿@model TexStyle.ViewModels.YD.RecipeFormatHeaderViewModel
+
+@{ List<SelectListItem> processTypeList = ViewBag.ProcessTypeList; }
+
+<form asp-area="@(AreaConstants.YARN_DYEING.Name)" asp-controller="@nameof(RecipeFormatHeader)" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <div class="row">
+            @Html.HiddenFor(x => x.Id)
+            <div class="form-group col-4">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="LiquorRate" class="control-label"></label>
+                <input asp-for="LiquorRate" class="form-control" />
+                <span asp-validation-for="LiquorRate" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="ProcessTypeId" class="control-label"></label>
+                <select asp-for="ProcessTypeId" select2="@(processTypeList)" select2-ph="Select Process Type" class="form-control select2"></select>
+                <span asp-validation-for="ProcessTypeId" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="border-checkbox-section">
+            <div class="row">
+                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                    <input class="border-checkbox" type="checkbox" asp-for="IsYarn">
+                    <label class="border-checkbox-label" asp-for="IsYarn"></label>
+                </div>
+            </div>
+        </div>
+        <div class="border-checkbox-section">
+            <div class="row">
+                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                    <input class="border-checkbox" type="checkbox" asp-for="IsFabric">
+                    <label class="border-checkbox-label" asp-for="IsFabric"></label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer ">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+
+</form>
+
+
+
+
+
+
+<script type="text/javascript">
+   
+
+
+        $("#IsFabric").click(function () {
+
+            $("#IsYarn").prop("disabled", true);
+        });
+
+        $("#IsYarn").click(function () {
+
+            $("#IsFabric").prop("disabled", true);
+        });
+
+   
+
+</script>

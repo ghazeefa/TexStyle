@@ -1,0 +1,223 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.YarnReceivedReportViewModel>
+@{
+    ViewData["Title"] = "DYED FABRIC DISPATCH REPORT";
+    Layout = "_LayoutPrint";
+    var noData = "No Data Available";
+    var abc = @ViewBag.Message;
+    decimal totalkgs = 0;
+    decimal grouptotalkgs = 0;
+}
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+                <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+                    <p>@Model.FirstOrDefault().CompanyBranch</p>
+                </div>}
+        </div>
+        <div class="text-center" style=" line-height:10px;float:right">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                D-5
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <div class="table-responsive">
+        <table class="table table-responsive">
+
+            <thead>
+
+                <tr class="report-detailheader" style="line-height:30px; border:1px solid black">
+                    <th width="14%">Date</th>
+                    <th width="12%">Party</th>
+                    <th width="12%">Buyer</th>
+                    <th width="12%">OGP</th>
+                    @if (Model.FirstOrDefault().IsYarn == true)
+                    {
+                        <th width="10%">LPS</th>
+                    }
+
+
+                    <th width="12%">LotNo</th>
+                    @if (Model.FirstOrDefault().IsYarn == true)
+                    {
+                        <th width="10%">Yarn</th>
+
+                        <th width="10%">Shade</th>
+
+                        <th width="10%">Manufacturer</th>
+
+                        <th width="10%">Bags</th>
+                    }
+                    else
+                    {
+                        <th width="12%">Fabric</th>
+                        <th width="15%" colspan="4">Desrciption</th>
+                    }
+
+
+
+                    <th width="12%">Kgs</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detail in Model)
+                {
+                    <tr>
+                        <td colspan="3" class="report-detail-footer" style="font-size:large;">
+                            @detail.Descriminator
+                        </td>
+                        <td colspan="2" class="report-detail-footer"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    @foreach (var d in detail.Items)
+                    {
+
+
+                        <tr style="line-height:30px;">
+
+                            <td colspan="1" class="report-detail-footer"></td>
+                            <td>
+                                @d.Party
+                            </td>
+
+                            <td>
+                                @d.Buyer
+                            </td>
+                            <td>
+                                @d.No
+                            </td>
+                            @if (d.IsYarn == true)
+                            {
+                                <td>
+                                    @d.LPSId
+                                </td>
+                            }
+
+
+
+                            <td>
+                                @d.LotNo
+                            </td>
+                            @if (d.IsYarn == true)
+                            {
+                                <td>
+                                    @d.YarnType &nbsp; @d.YarnQuality
+                                </td>
+
+                                <td>
+                                    @d.Shade
+                                </td>
+                                <td>
+                                    @d.YarnManufacturer
+                                </td>
+                                <td>
+                                    @d.Bags
+                                </td>
+                            }
+                            else
+                            {
+
+                                <td>
+                                    @d.FabricType
+
+
+                                </td>
+                                <td colspan="4">
+                                    @d.Description
+                                </td>
+                            }
+
+                            <td>
+                                @d.NetKgs
+                            </td>
+
+                        </tr>
+                        grouptotalkgs = grouptotalkgs + d.NetKgs;
+                    }
+
+                    <tr style="line-height:30px; border:1px solid black">
+
+                        <th scope="col" width="10%"></th>
+                        <th scope="col" width="10%"></th>
+                        <th scope="col" width="10%"></th>
+                        <th scope="col" width="10%"></th>
+                        <th scope="col" width="10%"></th>
+                        <th scope="col" width="10%"></th>
+                        <th scope="col" width="10%"></th>
+                        <th scope="col" width="10%"></th>
+                        <th scope="col" width="10%"></th>
+
+
+
+                        <td style="background-color:lightgray;">
+                            @*@detail.KgSum*@
+                            @grouptotalkgs
+                        </td>
+                        @{
+                            totalkgs = totalkgs + grouptotalkgs;
+                            grouptotalkgs = 0;
+                        }
+
+                        <td></td>
+
+                    </tr>
+                }
+
+                <tr style="font-size: 18px; font-weight: bold">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        Total Kgs:
+                    </td>
+                    <td style="background-color: lightgray;">
+                        @totalkgs
+                    </td>
+                </tr>
+
+
+
+            </tbody>
+            <tfoot>
+                <tr>
+
+                    <td colspan="5"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>
+}

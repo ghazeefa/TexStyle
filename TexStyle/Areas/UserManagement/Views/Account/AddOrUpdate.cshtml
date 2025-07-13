@@ -1,0 +1,135 @@
+﻿@model TexStyle.ViewModels.Accounts.AccountViewModel
+
+@{
+    ViewBag.Title = "Account";
+    //List<TexStyle.ViewModels.ClaimModuleViewModel> permissionsList = ViewBag.permissionsLST;
+
+    List<SelectListItem> rolesList = ViewBag.RoleList;
+    //var rolesListSl = new SelectListItemViewModel {
+    //    Name = "Role",
+    //    PlaceHolder = "Select Role",
+    //    UseDefault = false,
+    //    SelectList = rolesList
+    //};
+
+}
+
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Manage Accounts</h5>
+                @*<span class="text-danger">@Html.ValidationSummary()</span>*@
+                <span asp-validation-summary="ModelOnly" class="text-danger"></span>
+
+            </div>
+            <div class="card-block">
+                <form asp-area="UserManagement" asp-controller="ManageAccount" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+
+                    @Html.HiddenFor(m => m.Id)
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(m => m.UserName)
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(m => m.Email)
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label class="control-label">Password</label>
+                            <input class="form-control" type="password" id="Password" name="Password" />
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="control-label">ConfirmPassword</label>
+                            <input class="form-control" type="password" id="ConfirmPassword" name="ConfirmPassword" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label class="control-label" asp-for="RoleId">Role</label>
+                            <select asp-for="RoleId" select2="@(rolesList)" select2-ph="Select Role" class="form-control select2"></select>
+                            <span asp-validation-for="RoleId" class="text-danger"></span>
+                            @*<div>
+                    @if (rolesList != null) {
+                        <partial name="~/Views/Shared/_SelectList.cshtml" model="rolesListSl" />
+                    }
+                </div>*@
+                        </div>
+                        <div class="form-group col-3">
+                            @*<label class="control-label">Is Email Confirmed</label>*@
+                            <h4 class="sub-title">Is Email Confirmed</h4>
+                            <div class="border-checkbox-section">
+                                <div class="row">
+                                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                        <input class="border-checkbox" type="checkbox" id="EmailConfirmed" name="EmailConfirmed" @{var emailchcked = Model?.EmailConfirmed == true ? "checked" : ""; } @emailchcked>
+                                        <label class="border-checkbox-label" for="EmailConfirmed"> EmailConfirmed</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        
+                        <div class="form-group col-3">
+                            <h4 class="sub-title">Is Yarn User</h4>
+                            <div class="border-checkbox-section">
+                                <div class="row">
+                                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                        <input class="border-checkbox" type="checkbox" id="IsYarn" name="IsYarn" @{var isyarnchcked = Model?.IsYarn == true ? "checked" : ""; } @isyarnchcked>
+                                        <label class="border-checkbox-label" asp-for="IsYarn"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<div class="row mt-2 mb-3">
+            <div class="col-12">
+                <h5>Permissions</h5>
+            </div>
+        </div>*@
+
+                    @*<div class="row">
+            @foreach (var vm in permissionsList) {
+                <div class="col-sm-3 col-xl-3 m-b-20">
+                    <h4 class="sub-title">@vm.ModuleName</h4>
+                    <div class="border-checkbox-section">
+                        <div class="row">
+                            @foreach (var p in vm.ClaimsSelectList) {
+                                var name = $"check_{@p.Text}";
+                                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                    <input class="border-checkbox" type="checkbox" id="@name" name="@name" @{var chcked = p.Selected == true ? "checked" : ""; } @chcked>
+                                    <label class="border-checkbox-label" for="@name"> @p.Text</label>
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>*@
+
+                    <div class="card-footer justify-content-end" style="display:flex;">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+
+                @*@using (Html.BeginForm("AddOrUpdate", "ManageAccount", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "productForm" })) {
+
+                    }*@
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+
+    </script>
+}

@@ -1,0 +1,150 @@
+﻿@model DyeChemicalTr
+
+@{
+    var AddOrUpdateAction = "/cs/LCImportInTrDetail/AddOrUpdate/";
+    var DeleteAction = "/cs/LCImportInTrDetail/Delete/";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Details</h5>
+                @*<button href="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" data-title="Create @title Detail">ADD NEW</button>*@
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12 m-dT">
+                                @*dataTable*@
+                                <table id="tb" class="table table-bordered table-hover table-striped w-100">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc">No</th>
+                                            <th class="sorting">Chemical</th>
+                                            <th class="sorting">Dye</th>
+                                            <th class="sorting">Debit</th>
+                                            <th class="sorting">Credit</th>
+                                            <th class="sorting">Packet</th>
+                                            <th class="sorting">Rate</th>
+                                            <th class="sorting">Amount</th>
+                                            @*<th class="sorting">Description</th>*@
+
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model.DyeChemicalTrDetails.Where(x => !x.IsDeleted))
+                                        {
+                                            <tr>
+                                                <td class="sorting_asc">@c.Id <input type="text" id="hidid" value="@c.Id" class="invisible" />  <input type="text" class="invisible" id="index" /></td>
+                                                <td class="sorting_asc">@c.Chemical?.Name</td>
+                                                <td class="sorting_asc">@c.Dye?.Name</td>
+                                                <td class="sorting_asc">@c.QtyDr</td>
+                                                <td class="sorting_asc">@c.QtyCr</td>
+                                                <td class="sorting_asc">@c.Packet</td>
+                                                <td class="sorting_asc"><input type="text" id="rate" value="@c.Rate" /><img src="~/images/ticks.png" style="display:none;" width="30" height="30" id="msg" /><img src="~/images/loader2.gif" width="30" height="30" style="display:none;" id="msg2" /> </td>
+                                                <td class="sorting_asc">@c.Amount</td>
+                                                @*<td class="sorting_asc">@c.Description</td>*@
+
+                                                <td style="width:150px;">
+
+                                                    <button disabled class="btn btn-danger item-delete-btn" data-delete-url="@(DeleteAction)@(c.Id)/?ParentId=@(Model.Id)">Delete</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th class="sorting_asc">No</th>
+                                            <th class="sorting">Chemical</th>
+                                            <th class="sorting">Dye</th>
+                                            <th class="sorting">Debit</th>
+                                            <th class="sorting">Credit</th>
+                                            <th class="sorting">Packet</th>
+                                            <th class="sorting">Rate</th>
+                                            <th class="sorting">Amount</th>
+                                            @*<th class="sorting">Description</th>*@
+
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <button type="button" class="btn btn-primary" onclick="submit()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-header d-flex  align-items-end">
+                <h5 class="text-danger">Packets: @Model.DyeChemicalTrDetails.Where(x => !x.IsDeleted).Sum(x => x.Packet)</h5>
+
+                <h5 class="text-success">
+                    Qty:@{ var qty = Model.DyeChemicalTrDetails.Where(x => !x.IsDeleted).Sum(x => x.QtyCr) > 0 ? Model.DyeChemicalTrDetails.Where(x => !x.IsDeleted).Sum(x => x.QtyCr)
+: Model.DyeChemicalTrDetails.Where(x => !x.IsDeleted).Sum(x => x.QtyDr);} @qty
+</h5>
+
+<h5 class="text-info">
+    Amount: @{ var Amount = Model.DyeChemicalTrDetails.Where(x => !x.IsDeleted).Sum(x => x.QtyCr) > 0 ?
+Model.DyeChemicalTrDetails.Where(x => !x.IsDeleted).Sum(x => x.QtyCr * x.Rate)
+: Model.DyeChemicalTrDetails.Where(x => !x.IsDeleted).Sum(x => x.QtyDr * x.Rate);} @Amount
+</h5>
+</div>
+</div>
+
+</div>
+</div>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    //$('#tb tbody').on('click', 'tr', function () {
+    //    var table = $('#tb').DataTable();
+    //    var rowIdx = table.row(this).index();
+    //    $("#index").val(rowIdx);
+    //    table.cell(rowIdx, 0).nodes().to$().find('#hidid').prop("disabled", false);
+    //    table.cell(rowIdx, 6).nodes().to$().find('#rate').prop("disabled", false);
+    //});
+
+    function submit() {
+        debugger;
+        var table = $('#tb').DataTable();
+        for (var i = 0; i < table.rows().count(); i++) {
+            data(i);
+        }
+    }
+    function data(i) {
+        debugger;
+        var table = $('#tb').DataTable();
+        var id = 0;
+        var rate = 0;
+        table.cell(i, 6).nodes().to$().find('#msg2').show();
+        id = table.cell(i, 0).nodes().to$().find('#hidid').val();
+        rate = table.cell(i, 6).nodes().to$().find('#rate').val();
+
+        if (id != -1) {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    Id: id,
+                    rate: rate
+                },
+                url: `/cs/LCImportInTr/UpdateRatess`
+            }).done(function (res) {
+                if (res.msg != '') {
+                    table.cell(i, 6).nodes().to$().find('#msg').show();
+                    table.cell(i, 6).nodes().to$().find('#msg2').hide();
+                    setTimeout(function () { table.cell(i, 6).nodes().to$().find('#msg').hide(); }, 2000);
+                }
+                table.cell(i, 0).nodes().to$().find('#hidid').prop("disabled", true);
+                table.cell(i, 6).nodes().to$().find('#rate').prop("disabled", true);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert("error");
+            });
+        }
+    }
+
+
+</script>

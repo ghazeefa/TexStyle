@@ -1,0 +1,456 @@
+﻿@model RecipeViewModel
+
+@{
+    var title = "Recipe";
+    ViewData["Title"] = $"Add Or Update {title}";
+
+    List<SelectListItem> machineTypeList = ViewBag.machineTypeList;
+
+    List<SelectListItem> recipeFormatList = ViewBag.recipeFormatList;
+    List<SelectListItem> shiftList = ViewBag.shiftNameList;
+}
+
+<form asp-area="@AreaConstants.YARN_DYEING.Name" asp-controller="Recipe" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="card-block">
+        <div class="form-horizontal">
+            <div class="form-horizontal">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.No)
+                @Html.HiddenFor(m => m.LotNo)
+                @Html.HiddenFor(m => m.Weight)
+                @Html.HiddenFor(m => m.Pcs)
+                @Html.HiddenFor(m => m.Cones)
+                @Html.HiddenFor(m => m.PartyId)
+                @Html.HiddenFor(m => m.BuyerColorId)
+                @Html.HiddenFor(m => m.MachineStartTime)
+                @Html.HiddenFor(m => m.MachineUnloadTime)
+                @Html.HiddenFor(m => m.SoapingDrainTime)
+                @Html.HiddenFor(m => m.IsTimeAdded)
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label class="control-label">Recipe No</label>
+                                <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.No" />
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-12">
+                                <label asp-for="Date" class="control-label"></label>
+                                <input asp-for="Date" class="form-control" type="date" />
+                                <span asp-validation-for="Date" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-12">
+                                <label class="control-label" asp-for="MachineTypeId"></label>
+                                <select asp-for="MachineTypeId" select2="@(machineTypeList)" select2-ph="Select Machine Type" class="form-control select2"></select>
+                                <span asp-validation-for="MachineTypeId" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-12">
+                                <label class="control-label" asp-for="ShiftName"></label>
+                                <select asp-for="ShiftName" select2="@(shiftList)" select2-ph="Select Shift" class="form-control select2" required></select>
+                                <span asp-validation-for="ShiftName" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-group col-8">
+                                <label asp-for="ShiftInchargeName" class="control-label"></label>
+                                <input asp-for="ShiftInchargeName" class="form-control" required />
+                                <span asp-validation-for="ShiftInchargeName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-4">
+                                <label asp-for="ShiftInchargeCode" class="control-label"></label>
+                                <input asp-for="ShiftInchargeCode" class="form-control" required />
+                                <span asp-validation-for="ShiftInchargeCode" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-8">
+                                <label asp-for="MachineOperatorName" class="control-label"></label>
+                                <input asp-for="MachineOperatorName" class="form-control" required />
+                                <span asp-validation-for="MachineOperatorName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-4">
+                                <label asp-for="MachineOperatorCode" class="control-label"></label>
+                                <input asp-for="MachineOperatorCode" class="form-control" required />
+                                <span asp-validation-for="MachineOperatorCode" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-8">
+                                <label asp-for="HelperName" class="control-label"></label>
+                                <input asp-for="HelperName" class="form-control" required />
+                                <span asp-validation-for="HelperName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-4">
+                                <label asp-for="HelperCode" class="control-label"></label>
+                                <input asp-for="HelperCode" class="form-control" required />
+                                <span asp-validation-for="HelperCode" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-8">
+                                <label asp-for="CStoreOperatorName" class="control-label"></label>
+                                <input asp-for="CStoreOperatorName" class="form-control" required />
+                                <span asp-validation-for="CStoreOperatorName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-4">
+                                <label asp-for="CStoreOperatorCode" class="control-label"></label>
+                                <input asp-for="CStoreOperatorCode" class="form-control" required />
+                                <span asp-validation-for="CStoreOperatorCode" class="text-danger"></span>
+                            </div>
+
+                            @if (Model.Id != null)
+                            {
+                                @if (Model.IsConfirmed == false && Model.Id.Value != 0)
+                                {
+                                    <div class="form-group form-check col-2">
+                                        <div class="border-checkbox-section">
+                                            <div class="row">
+                                                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                    <input class="border-checkbox" type="checkbox" asp-for="IsConfirmed">
+                                                    <label class="border-checkbox-label" asp-for="IsConfirmed"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>}
+                                <input class="border-checkbox" type="checkbox" asp-for="IsConfirmed" hidden>
+
+                                @if (Model.IsConfirmed == true)
+                                {
+                                    <div class="form-group form-check col-2">
+                                        <div class="border-checkbox-section">
+                                            <div class="row">
+                                                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                    <label class="control-label" style="color:red;">Confirmed</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>}}
+
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label asp-for="LiquorRate" class="control-label"></label>
+                                <input asp-for="LiquorRate" class="form-control" />
+                                <span asp-validation-for="LiquorRate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-6">
+                                <label asp-for="Color" class="control-label">Color</label>
+                                <input asp-for="Color" class="form-control demo" />
+                                <span asp-validation-for="Color" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-6">
+                                <label asp-for="Cones" class="control-label"></label>
+                                <input asp-for="Cones" class="form-control" disabled />
+                                <span asp-validation-for="Cones" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-6" id="weightField">
+                                <label asp-for="Weight" class="control-label"></label>
+                                <input id="WeightInput" class="form-control" value="@Model.Weight" disabled />
+                                <span asp-validation-for="Weight" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-6" id="pcsField" style="display: none;">
+                                <label asp-for="Pcs" class="control-label"></label>
+                                <input asp-for="Pcs" class="form-control" disabled />
+                                <span asp-validation-for="Pcs" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-12">
+                                <label class="control-label" asp-for="RecipeFormatId"></label>
+                                <select asp-for="RecipeFormatId" select2="@(recipeFormatList)" select2-ph="Select Recipe Format" class="form-control select2"></select>
+                                <span asp-validation-for="RecipeFormatId" class="text-danger"></span>
+                            </div>
+
+
+
+                            @*<div class="form-group col-6">
+                                    <label class="control-label" asp-for="RecipeFormatId">Recipe Format</label>
+                                    <div id="gatetr">
+                                        <select asp-for="RecipeFormatId" select2="@(recipeFormatList)" class="form-control select2"></select>
+                                    </div>
+                                </div>*@
+                            @*<div class="form-group col-6">
+                                    <label class="control-label" asp-for="RecipeFormatId">Recipe Format</label>
+                                    <div id="gatetr">
+                                        <select asp-for="RecipeFormatId" select2="@(recipeFormatList)" class="form-control select2"></select>
+                                    </div>
+                                </div>*@
+                        <div class="col-12">
+                            <div class="form-group form-check">
+                                <label class="control-label">Mark Yarn or Fabric?</label>
+                            </div>
+                                <div class="row">
+                                    <div class="border-checkbox-section col-6">
+                                        <div class="border-checkbox-group border-checkbox-group-primary">
+                                            <input class="border-checkbox" type="checkbox" asp-for="IsFabric">
+                                            <label class="border-checkbox-label" asp-for="IsFabric"></label>
+                                        </div>
+                                    </div>
+                                    <div class="border-checkbox-section col-6">
+                                        <div class="border-checkbox-group border-checkbox-group-primary">
+                                            <input class="border-checkbox" type="checkbox" asp-for="IsYarn">
+                                            <label class="border-checkbox-label" asp-for="IsYarn"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            <hr />
+                        </div>
+
+                               
+                        <div id="FabricOperation" class="col-12" style="display:none;">
+                            <div class="form-group form-check">
+                                <label class="control-label">Mark if Garment Dyeing/Printing or Fabric Printing?</label>
+                            </div>
+                            <div class="row">
+                                <div class="border-checkbox-section col-4">
+                                    <div class="border-checkbox-group border-checkbox-group-primary">
+                                        <input class="border-checkbox" type="checkbox" asp-for="IsGarmentDyeing">
+                                        <label class="border-checkbox-label" asp-for="IsGarmentDyeing"></label>
+                                    </div>
+                                </div>
+                                <div class="border-checkbox-section col-4">
+                                    <div class="border-checkbox-group border-checkbox-group-primary">
+                                        <input class="border-checkbox" type="checkbox" asp-for="IsGarmentPrinting">
+                                        <label class="border-checkbox-label" asp-for="IsGarmentPrinting"></label>
+                                    </div>
+                                </div>
+                                <div class="border-checkbox-section col-4">
+                                    <div class="border-checkbox-group border-checkbox-group-primary">
+                                        <input class="border-checkbox" type="checkbox" asp-for="IsFabricPrinting">
+                                        <label class="border-checkbox-label" asp-for="IsFabricPrinting"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+
+                        <div class="col-12">
+                            <div class="border-checkbox-section col-4">
+                                <div class="row">
+                                    <div class="border-checkbox-group border-checkbox-group-primary">
+                                        <input class="border-checkbox" type="checkbox" asp-for="IsWithoutLPS">
+                                        <label class="border-checkbox-label" asp-for="IsWithoutLPS"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (Model.IsConfirmed == true)
+            {
+
+
+                <div class="form-group col-4">
+                    <input type="submit" value="Save" class="btn btn-primary" disabled />
+                </div> }
+            else
+            {
+                <div class="form-group col-4">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            }
+
+
+</form>
+
+<script type="text/javascript">
+    //$(function () {
+
+    //    $('#lpscheck').change(function (e) {
+    //        $("#Weight").removeAttr('disabled');
+    //        $("#Cones").removeAttr('disabled');
+    //    });
+
+    //});
+
+    //$("#IsWithoutLPS").click(function () {
+
+    //    $("#Weight").prop("enable", true);
+    //});
+    //$("#DyeChemicalXrefTrId").change(function () {
+    //    $.get("/cs/LoanTakenReturnOutTr/GetParty/" + $(this).val(),
+    //        function (d) {
+    //            //debugger;
+    //            console.log(d);
+    //            $("#RecipeFormatId").val(d.id);
+    //            $("#RecipeFormatName").val(d.name);
+
+    //        });
+    //$("#IsYarn").change(function () {
+    //    $.ajax({
+
+    //        method: 'GET',
+    //        data:1,
+    //        url: `/yd/Recipe/GetFormateByTypeYarn/`
+    //    }).done(function (res) {
+    //        $("#gatetr").html(res);
+    //        $("#gatetr .select2").parent.select2();
+    //    }).fail(function (jqXHR, textStatus, errorThrown) {
+    //        alert("error");
+    //    });
+
+    //});
+    //$("#IsFabric").change(function () {
+    //    $.ajax({
+
+    //        method: 'GET',
+    //        data: 1,
+    //        url: `/yd/Recipe/GetFormateByTypeFabric/`
+    //    }).done(function (res) {
+    //        $("#gatetr").html(res);
+    //        $("#gatetr .select2").parent.select2();
+    //    }).fail(function (jqXHR, textStatus, errorThrown) {
+    //        alert("error");
+    //    });
+
+    //});
+
+
+
+
+
+    //$("#IsFabric").click(function () {
+
+    //    $("#IsYarn").prop("disabled", true);
+    //});
+
+    //$("#IsYarn").click(function () {
+
+    //    $("#IsFabric").prop("disabled", true);
+    //});
+
+    var fabricCheckBoxs = document.getElementById('FabricOperation');
+
+    // When the 'IsFabric' checkbox is clicked
+    $("#IsFabric").click(function () {
+        // If 'IsFabric' is checked
+        if ($(this).is(":checked")) {
+            // Uncheck 'IsYarn'
+            $("#IsYarn").prop("checked", false);
+            fabricCheckBoxs.style.display = 'block';
+        }
+    });
+
+    // When the 'IsYarn' checkbox is clicked
+    $("#IsYarn").click(function () {
+        // If 'IsYarn' is checked
+        if ($(this).is(":checked")) {
+            // Uncheck 'IsFabric'
+            $("#IsFabric").prop("checked", false);
+            fabricCheckBoxs.style.display = 'none';
+            
+        }
+    });
+
+
+    var pcsField = document.getElementById('pcsField');
+    var weightField = document.getElementById('weightField');
+
+    $("#IsGarmentDyeing").click(function () {
+        if ($(this).is(":checked")) {
+            $("#IsFabricPrinting").prop("checked", false);
+            $("#IsGarmentPrinting").prop("checked", false);
+            pcsField.style.display = 'block';
+            weightField.style.display = 'none';
+        } else {
+            pcsField.style.display = 'none';
+            weightField.style.display = 'block';
+        }
+    });
+
+    $("#IsGarmentPrinting").click(function () {
+        if ($(this).is(":checked")) {
+            $("#IsGarmentDyeing").prop("checked", false);
+            $("#IsFabricPrinting").prop("checked", false);
+            pcsField.style.display = 'block';
+            weightField.style.display = 'none';
+        } else {
+            pcsField.style.display = 'none';
+            weightField.style.display = 'block';
+        }
+    });
+
+    $("#IsFabricPrinting").click(function () {
+        if ($(this).is(":checked")) {
+            $("#IsGarmentDyeing").prop("checked", false);
+            $("#IsGarmentPrinting").prop("checked", false);
+            pcsField.style.display = 'none';
+            weightField.style.display = 'block';
+        }
+    });
+
+    $("#IsWithoutLPS").click(function () {
+        if ($(this).is(":checked")) {
+            // If the checkbox is checked, enable the input field
+            $("#WeightInput").removeAttr('disabled');
+        } else {
+            // If the checkbox is not checked, disable the input field
+            $("#WeightInput").attr('disabled', 'disabled');
+        }
+    });
+
+    $("#WeightInput").change(function () {
+        $("#Weight").val($(this).val());
+    });
+    
+
+</script>
+
+@*<script>
+    $(document).ready(function () {
+        var checkbox = document.getElementById('IsGarmentPrinting');
+        var pcsField = document.getElementById('pcsField');
+        var weightField = document.getElementById('weightField');
+
+        // Function to toggle visibility of input fields based on checkbox state
+        function toggleFields() {
+            if (checkbox.checked) {
+                pcsField.style.display = 'block';
+                weightField.style.display = 'none';
+            } else {
+                pcsField.style.display = 'none';
+                weightField.style.display = 'block';
+            }
+        }
+
+        // Initial invocation of toggleFields() to set initial visibility
+        toggleFields();
+
+        // Event listener for checkbox change
+        checkbox.addEventListener('change', toggleFields);
+    });
+</script>*@
+
+
+@*<script>
+    // Function to handle checkbox change events
+    function handleCheckboxChange() {
+        // Get references to the checkboxes
+        var garmentCheckbox = document.getElementById("IsGarmentPrinting");
+        var fabricCheckbox = document.getElementById("IsFabricPrinting");
+
+        // If the garment checkbox is checked, uncheck the fabric checkbox
+        if (garmentCheckbox.checked) {
+            fabricCheckbox.checked = false;
+        }
+        // If the fabric checkbox is checked, uncheck the garment checkbox
+        else if (fabricCheckbox.checked) {
+            garmentCheckbox.checked = false;
+        }
+    }
+
+    // Attach change event listeners to the checkboxes
+    document.getElementById("IsGarmentPrinting").addEventListener("change", handleCheckboxChange);
+    document.getElementById("IsFabricPrinting").addEventListener("change", handleCheckboxChange);
+</script>*@
+
+
+
+
+
+

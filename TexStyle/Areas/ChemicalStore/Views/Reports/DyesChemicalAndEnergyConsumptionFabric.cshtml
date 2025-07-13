@@ -1,0 +1,355 @@
+﻿@model IEnumerable<TexStyle.ViewModels.CS.Reports.DyesChemicalAndEnergyConsumption_ReportViewModel>
+@{
+    ViewData["Title"] = "Dyes + Chemical + Energy + Salary Consumption";
+    Layout = "_LayoutPrint";
+
+    decimal? groupSumKgs = 0;
+    decimal? groupSumCost = 0;
+    decimal? netKgsSum = 0;
+    decimal? netCostSum = 0;
+
+    decimal? fabricKgs = 0;
+    decimal? dyesCost = 0;
+    decimal? chemCost = 0;
+    decimal? SalaryCost = 0;
+
+    decimal? electricCost = 0;
+    decimal? GassCost = 0;
+    decimal? CoalCost = 0;
+
+    decimal? totalDyeCostPerKg = 0;
+    decimal? totalChemCostPerKg = 0;
+    decimal? DyeAndChemCostPerKg = 0;
+
+    decimal? electricCostPerKg = 0;
+    decimal? GassCostPerKg = 0;
+    decimal? CoalCostPerKg = 0;
+    decimal? EnergyCostPerKg = 0;
+    decimal? SalaryCostPerKg = 0;
+
+
+    decimal? TotalConsumptinCostPerKg = 0;
+
+    decimal? TotalDispatchedKgs = 0;
+    decimal? TotalExpenses = 0;
+    decimal? TotalDispatchedAmount = 0;
+    decimal? BalanceKgs = 0;
+
+    if (Model.Count() > 0)
+    {
+        fabricKgs = Model.FirstOrDefault().FabricKGs;
+        dyesCost = Model.Where(x => x.IsChemical == 0).Sum(x => x.Cost);
+        chemCost = Model.Where(x => x.IsChemical == 1).Sum(x => x.Cost);
+        SalaryCost = Model.FirstOrDefault().SalaryCost;
+        electricCost = Model.FirstOrDefault().ElectricityCost;
+        GassCost = Model.FirstOrDefault().GassCost;
+        CoalCost = Model.FirstOrDefault().CoalCost;
+
+        if (dyesCost > 0)
+        {
+            totalDyeCostPerKg = dyesCost / fabricKgs;
+        }
+        if (chemCost > 0)
+        {
+            totalChemCostPerKg = chemCost / fabricKgs;
+        }
+        if (SalaryCost > 0)
+        {
+            SalaryCostPerKg = SalaryCost / fabricKgs;
+        }
+        if (Model.FirstOrDefault().ElectricityCost > 0)
+        {
+            electricCostPerKg = electricCost / fabricKgs;
+        }
+        if (Model.FirstOrDefault().GassCost > 0)
+        {
+            GassCostPerKg = GassCost / fabricKgs;
+        }
+        if (Model.FirstOrDefault().CoalCost > 0)
+        {
+            CoalCostPerKg = CoalCost / fabricKgs;
+        }
+
+        DyeAndChemCostPerKg = totalDyeCostPerKg + totalChemCostPerKg;
+        EnergyCostPerKg = electricCostPerKg + GassCostPerKg + CoalCostPerKg;
+        TotalConsumptinCostPerKg = EnergyCostPerKg + DyeAndChemCostPerKg + DyeAndChemCostPerKg;
+
+        if (Model.FirstOrDefault().FabricKGs > 0 && Model.FirstOrDefault().DispatchedKgs > 0)
+        {
+            TotalDispatchedKgs = Model.FirstOrDefault().DispatchedKgs;
+            BalanceKgs = fabricKgs - TotalDispatchedKgs;
+            TotalDispatchedAmount = Model.FirstOrDefault().DispatchedAmount;
+        }
+
+        TotalExpenses = (dyesCost ?? 0) + (chemCost ?? 0) + (SalaryCost ?? 0) + (electricCost ?? 0) + (GassCost ?? 0) + (CoalCost ?? 0);
+    }
+
+}
+
+<style>
+    body {
+        font-family: Arial;
+        font-size: 12px;
+    }
+
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .borders > tbody > tr > td, .borders > thead > tr > td {
+        border: 1px solid black !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }
+
+    .report-header {
+        font-weight: bold;
+        /*background-color: lightgray;*/
+    }
+
+    .report-summary {
+        font-weight: bold;
+        border-top: 1px solid black;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+</style>
+
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:20px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>            
+                <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+                    <p>Fabric Dyeing</p>
+                </div>
+        </div>
+        <div class="text-center" style=" line-height:10px;float:right">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                C-18
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div>
+    <div class="card-block">
+
+        <div class="table-responsive full-width">
+            <table class="table full-width" style="line-height:15px;">
+                <thead>
+                    <tr style="font-size:16px;">
+                        <th width="40%">Item Name</th>
+                        <th width="20%">Qty Used</th>
+                        <th width="20%">Rate/Kg</th>
+                        <th width="20%">Cost Incurred (Rs.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var groupPO in Model.OrderBy(x => x.IsChemical).GroupBy(x => x.IsChemical))
+                    {
+                        groupSumCost = 0;
+                        groupSumKgs = 0;
+                        <tr style="font-size:12px;">
+                            <td colspan="4" style=" font-size: 18px">
+                                @if (groupPO.Key == 0)
+                                {
+                                    <text>A - Dyes Consumed</text>
+                                }
+                                else if (groupPO.Key == 1)
+                                {
+                                    <text>B - Chemicals Consumed</text>
+                                }
+                            </td>
+                        </tr>
+
+                        @foreach (var item in groupPO.OrderBy(x => x.ItemName))
+                        {
+                            <tr>
+                                <td>@item.ItemName</td>
+                                <td>@Math.Round(item.WeightUsed ?? 0, 2)</td>
+                                <td>@Math.Round(item.RatePerKg ?? 0, 2)</td>
+                                <td>@Math.Round(item.Cost ?? 0, 2)</td>
+                            </tr>
+                            groupSumKgs += Math.Round(item.WeightUsed ?? 0, 2);
+                            groupSumCost += Math.Round(item.Cost ?? 0, 2);
+                        }
+
+                        <tr style="font-weight:bold; font-size:14px;">
+                            <td></td>
+                            <td>@groupSumKgs</td>
+                            <td style="text-align:right;">Total Cost (Rs.):</td>
+                            <td>@groupSumCost</td>
+                        </tr>
+                        netKgsSum += groupSumKgs;
+                        netCostSum += groupSumCost;
+                    }
+                <tr style="font-weight:bold; font-size:14px;">
+                    <td></td>
+                    <td>@netKgsSum</td>
+                    <td style="text-align:right;">Dyes + Chemical Total Cost (Rs.):</td>
+                    <td>@netCostSum</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="margin:30px">
+        <table style="width:60%">
+            <tr>
+                <h2>Summary</h2>
+            </tr>
+            <tr><td colspan="2"><hr /></td></tr>
+            <tr>
+                <td colspan="2"><h3>A- Dyes and Chemical Cost</h3></td>
+            </tr>
+            <tr>
+                <td>
+                    <b>1- Total Fabric Dyed:</b>
+                </td>
+                <td> @Math.Round(fabricKgs ?? 0, 2) Kg</td>
+            </tr>
+            <tr>
+                <td><b>2- Total Dyes Cost:</b></td>
+                <td>Rs. @Math.Round(dyesCost ?? 0, 2)</td>
+            </tr>
+            <tr>
+                <td><b>3- Total Chemical Cost:</b></td>
+                <td>Rs. @Math.Round(chemCost ?? 0, 2)</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>4- Total Dyes Cost per KG of Fabric:</b>
+                </td>
+                <td>Rs. @Math.Round(totalDyeCostPerKg ?? 0, 2) /Kg</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>5- Total Chemical Cost per KG of Fabric:</b>
+                </td>
+                <td>Rs. @Math.Round(totalChemCostPerKg ?? 0, 2) /Kg</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>6- Total Cost (Dyes + Chemical) per KG of Fabric:</b>
+                </td>
+                <td>Rs. @Math.Round(DyeAndChemCostPerKg ?? 0, 2) /Kg</td>
+            </tr>
+            <tr><td colspan="2"><hr /></td></tr>
+            <tr>
+                <td colspan="2"><h3>B- Energy Cost</h3></td>
+            </tr>
+            <tr>
+                <td>
+                    <b>7- Total Electricity Cost per KG of Fabric:</b>
+                </td>
+                <td>Rs. @Math.Round(electricCostPerKg ?? 0, 2) /Kg</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>8- Total Gas Cost per KG of Fabric:</b>
+                </td>
+                <td>Rs. @Math.Round(GassCostPerKg ?? 0, 2) /Kg</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>9- Total Coal Cost per KG of Fabric:</b>
+                </td>
+                <td>Rs. @Math.Round(CoalCostPerKg ?? 0, 2) /Kg</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>10- Total Energy Cost per KG of Fabric:</b>
+                </td>
+                <td>Rs. @Math.Round(EnergyCostPerKg ?? 0, 2) /Kg</td>
+            </tr>
+            <tr><td colspan="2"><hr /></td></tr>
+            <tr>
+                <td colspan="2"><h3>C- Salary Cost</h3></td>
+            </tr>
+            <tr>
+                <td>
+                    <b>11- Total Salary Cost:</b>
+                </td>
+                <td>Rs. @Math.Round(SalaryCost ?? 0, 2) </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>12- Total Salary Cost per KG of Fabric:</b>
+                </td>
+                <td>Rs. @Math.Round(SalaryCostPerKg ?? 0, 2) /Kg</td>
+            </tr>
+            <tr><td colspan="2"><hr /></td></tr>
+            <tr>
+                <td>
+                    <b>Total Consumption Cost per KG of Fabric (A + B + C):</b>
+                </td>
+                <td>Rs. @Math.Round(TotalConsumptinCostPerKg ?? 0, 2) /Kg</td>
+            </tr>
+
+            <tr><td colspan="2"><hr /></td></tr>
+            <tr>
+                <td colspan="2"><h3>D- Dispatch</h3></td>
+            </tr>
+            <tr>
+                <td>
+                    <b>13- Total Fabric Dyed:</b>
+                </td>
+                <td>@Math.Round(fabricKgs ?? 0, 2) Kg </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>14- Total Dispatched Kgs of Fabric:</b>
+                </td>
+                <td>@Math.Round(TotalDispatchedKgs ?? 0, 2) Kg</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>15- Total Balance Kgs of Fabric:</b>
+                </td>
+                <td>@Math.Round(BalanceKgs ?? 0, 2) Kg</td>
+            </tr>
+            <tr><td colspan="2"><hr /></td></tr>
+            <tr>
+                <td colspan="2"><h3>E- Profit/Loss</h3></td>
+            </tr>
+            <tr>
+                <td>
+                    <b>17- Total Expenses:</b>
+                </td>
+                <td>Rs. @Math.Round(TotalExpenses ?? 0, 2)</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>16- Total Dispatched Kgs Amount:</b>
+                </td>
+                <td>Rs. @Math.Round(TotalDispatchedAmount ?? 0, 2)</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Profit/Loss:</b>
+                </td>
+                <td>Rs. @Math.Round((TotalDispatchedAmount - TotalExpenses) ?? 0, 2)</td>
+            </tr>
+        </table>
+    </div>
+
+}
+else
+{
+    <h1><center>No Record in Report</center></h1>
+}

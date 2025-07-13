@@ -1,0 +1,200 @@
+﻿@model IEnumerable<TexStyle.ViewModels.CS.Reports.DyesAndChemicalConsumption_ReportViewModel>
+@{
+    ViewData["Title"] = "Dyes and Chemical Consumption";
+    Layout = "_LayoutPrint";
+
+    decimal? groupSumKgs = 0;
+    decimal? groupSumCost = 0;
+    decimal? netKgsSum = 0;
+    decimal? netCostSum = 0;
+    decimal? fabricKgs = 0;
+    decimal? dyesCost = 0;
+    decimal? chemCost = 0;
+    decimal? totalDyeCostPerKg = 0;
+    decimal? totalChemCostPerKg = 0;
+    decimal? DyeAndChemCostPerKg = 0;
+
+    if (Model.Count() > 0)
+    {
+        fabricKgs = Model.FirstOrDefault().FabricKGs;
+        dyesCost = Model.Where(x => x.IsChemical == 0).Sum(x => x.Cost);
+        chemCost = Model.Where(x => x.IsChemical == 1).Sum(x => x.Cost);
+
+        totalDyeCostPerKg = dyesCost / fabricKgs;
+        totalChemCostPerKg = chemCost / fabricKgs;
+        DyeAndChemCostPerKg = totalDyeCostPerKg + totalChemCostPerKg;
+    }
+ }
+
+<style>
+    body {
+        font-family: Arial;
+        font-size: 12px;
+    }
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .borders > tbody > tr > td, .borders > thead > tr > td {
+        border: 1px solid black !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }
+
+    .report-header {
+        font-weight: bold;
+        /*background-color: lightgray;*/
+    }
+
+    .report-summary {
+        font-weight: bold;
+        border-top: 1px solid black;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+</style>
+
+@if (Model.Count() > 0)
+{
+<div class="container">
+    <div class="text-center" style=" line-height:16px;">
+        <div style="text-align:end; font-weight:bold; font-size:22px;">
+            <p>@Model.FirstOrDefault().CompanyName</p>
+        </div>
+        <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+            <p>Yarn Dyeing</p>
+        </div>
+    </div>
+    <div class="text-center" style=" line-height:10px;float:right">
+        <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            Report No.
+        </div>
+        <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            C-15
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="w-100 text-center" style="margin-top:-110px">
+            <h4>@ViewData["Title"]</h4>
+            Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+        </div>
+    </div>
+
+</div>
+
+    <div class="card-block">
+
+        <div class="table-responsive full-width">
+            <table class="table full-width" style="line-height:15px; font-family: 'Trebuchet MS', 'Lucida Grande', Arial, sans-serif; font-size:10px;">
+                <thead>
+                    <tr style="font-size:16px;">
+                        <th width="40%">Item Name</th>
+                        <th width="20%">Qty Used</th>
+                        <th width="20%">Rate/Kg</th>
+                        <th width="20%">Cost Incurred (Rs.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var groupPO in Model.OrderBy(x => x.IsChemical).GroupBy(x => x.IsChemical))
+                    {
+                        groupSumCost = 0;
+                        groupSumKgs = 0;
+                        <tr style="font-size:12px;">
+                            <td colspan="4" style=" font-size: 18px">
+                                @if (groupPO.Key == 0)
+                                {
+                                    <text>A - Dyes Consumed</text>
+                                }
+                                else if (groupPO.Key == 1)
+                                {
+                                    <text>B - Chemicals Consumed</text>
+                                }
+                            </td>
+                        </tr>
+
+                        @foreach (var item in groupPO.OrderBy(x => x.ItemName))
+                        {
+                            <tr>
+                                <td>@item.ItemName</td>
+                                <td>@Math.Round(item.WeightUsed ?? 0, 2)</td>
+                                <td>@Math.Round(item.RatePerKg ?? 0, 2)</td>
+                                <td>@Math.Round(item.Cost ?? 0, 2)</td>
+                            </tr>
+                            groupSumKgs += Math.Round(item.WeightUsed ?? 0, 2);
+                            groupSumCost += Math.Round(item.Cost ?? 0, 2);
+                        }
+
+                        <tr style="font-weight:bold; font-size:14px;">
+                            <td></td>
+                            <td>@groupSumKgs</td>
+                            <td style="text-align:right;">Total Cost (Rs.):</td>
+                            <td>@groupSumCost</td>
+                        </tr>
+                        netKgsSum += groupSumKgs;
+                        netCostSum += groupSumCost;
+                    }
+                    <tr style="font-weight:bold; font-size:14px;">
+                        <td></td>
+                        <td>@netKgsSum</td>
+                        <td style="text-align:right;">Dyes + Chemical Total Cost (Rs.):</td>
+                        <td>@netCostSum</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+<div style="margin:30px">
+    <table style="width:60%">
+        <tr>
+            <h2>Summary</h2>
+        </tr>
+        <tr><td colspan="2"><hr /></td></tr>
+        <tr>
+            <td colspan="2"><h3>Dyes and Chemical Cost</h3></td>
+        </tr>
+        <tr>
+            <td>
+                <b>1- Total Yarn Dyed:</b>
+            </td>
+            <td> @Math.Round(fabricKgs ?? 0, 2) Kg</td>
+        </tr>
+        <tr>
+            <td><b>2- Total Dyes Cost:</b></td>
+            <td>Rs. @Math.Round(dyesCost ?? 0, 2)</td>
+        </tr>
+        <tr>
+            <td><b>3- Total Chemical Cost:</b></td>
+            <td>Rs. @Math.Round(chemCost ?? 0, 2)</td>
+        </tr>
+        <tr>
+            <td>
+                <b>4- Total Dyes Cost per KG of Yarn:</b>
+            </td>
+            <td>Rs. @Math.Round(totalDyeCostPerKg ?? 0, 2) /Kg</td>
+        </tr>
+        <tr>
+            <td>
+                <b>5- Total Chemical Cost per KG of Yarn:</b>
+            </td>
+            <td>Rs. @Math.Round(totalChemCostPerKg ?? 0, 2) /Kg</td>
+        </tr>
+        <tr>
+            <td>
+                <b>6- Total Cost (Dyes + Chemical) per KG of Yarn:</b>
+            </td>
+            <td>Rs. @Math.Round(DyeAndChemCostPerKg ?? 0, 2) /Kg</td>
+        </tr>
+    </table>
+</div>
+
+    }
+    else
+    {
+    <h1><center>No Record in Report</center></h1>
+    }

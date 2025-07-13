@@ -1,0 +1,271 @@
+﻿@model RecipeDetailViewModel
+@{
+    var title = $"Update Recipe Detail";
+    ViewData["Title"] = $"{title}";
+    var CopyPPCAction = "/ppc/IssueNote/CopyPPCData/";
+
+    List<SelectListItem> recipeStepList = ViewBag.recipeStepList;
+
+    List<SelectListItem> dyeList = ViewBag.dyeList;
+    List<SelectListItem> chemicalList = ViewBag.chemicalList;
+    var filter = ViewBag.filter;
+
+    var recp = ViewBag.recp;
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @*<button href="#@CopyPPCAction" class="btn btn-primary IgpRef-js" data-action="#@CopyPPCAction?isreprocess=@(ViewBag.isreprocessed)&id=" data-title="Create @title">Copy LPS Reference</button>*@
+            </div>
+            <form asp-area="@AreaConstants.YARN_DYEING.Name" asp-controller="Recipe" asp-action="AddOrUpdateDetail" method="post" enctype="multipart/form-data">
+                <div class="card-block">
+                    <div class="form-horizontal">
+                        <div class="form-horizontal">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            @Html.HiddenFor(m => m.Id)
+                            <div class="row">
+                                @*<div class="form-group col-3">
+                                    <label asp-for="LPSNO" class="control-label"></label>
+                                    <input asp-for="LPSNO" class="form-control" />
+                                </div>*@
+                                <div class="form-group col-4">
+                                    <label asp-for="RecipeId" class="control-label"></label>
+                                    <input asp-for="RecipeId" class="form-control" readonly />
+                                    <span asp-validation-for="RecipeId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label asp-for="Sno" class="control-label"></label>
+                                    <input asp-for="Sno" class="form-control" />
+                                    <span asp-validation-for="Sno" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-radio col-4">
+                                    <div class="radio radiofill radio-primary radio-inline">
+                                        <label>
+                                            <input type="radio" name="detail" id="detail" value="Head" data-bv-field="member">
+                                            <i class="helper"></i>Head
+                                        </label>
+                                    </div>
+                                    <div class="radio radiofill radio-primary radio-inline">
+                                        <label>
+                                            <input type="radio" name="detail" id="detail" value="Dye" data-bv-field="member">
+                                            <i class="helper"></i>Dye
+                                        </label>
+                                    </div>
+                                    <div class="radio radiofill radio-primary radio-inline">
+                                        <label>
+                                            <input type="radio" name="detail" id="detail" value="Chemical" data-bv-field="member">
+                                            <i class="helper"></i>Chemical
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label class="control-label" asp-for="RecipeStepId"></label>
+
+                                    <div id="headSelectCont">
+                                        <select asp-for="RecipeStepId" select2="@(recipeStepList)" select2-ph="Select Recipe Step" class="form-control select2"></select>
+                                    </div>
+                                    <span asp-validation-for="RecipeStepId" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label class="control-label" asp-for="DyeId"></label>
+
+                                    <div id="dyeSelectCont">
+                                        <select asp-for="DyeId" select2="@(dyeList)" select2-ph="Select Dye" class="form-control select2"></select>
+                                    </div>
+                                    <span asp-validation-for="DyeId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label class="control-label" asp-for="ChemicalId"></label>
+
+                                    <div id="chemicalSelectCont">
+                                        <select asp-for="ChemicalId" select2="@(chemicalList)" select2-ph="Select Chemical" class="form-control select2"></select>
+                                    </div>
+                                    <span asp-validation-for="ChemicalId" class="text-danger"></span>
+                                </div>
+                                @if (recp.IsWithoutLPS == true || recp.IsGarmentPrinting == true)
+                                             
+                                {
+                                    <div class="form-group col-4">
+                                        <label asp-for="Weight" class="control-label"></label>
+                                        <input asp-for="Weight" class="form-control" />
+                                        <span asp-validation-for="Weight" class="text-danger"></span>
+                                    </div>
+                                                }
+
+
+                                <div class="form-group col-4">
+                                    <label asp-for="Gpl" class="control-label"></label>
+                                    <input asp-for="Gpl" class="form-control" />
+                                    <span asp-validation-for="Gpl" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label asp-for="Percentage" class="control-label"></label>
+                                    <input asp-for="Percentage" class="form-control" />
+                                    <span asp-validation-for="Percentage" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row d-none" id="partialWrapper">
+
+</div>
+
+
+
+
+@section scripts {
+    <script type="text/javascript">
+
+
+
+        $(function () {
+
+             $('#Gpl').change(function (e) {
+            $("#Percentage").val(0);
+            $("#Percentage").trigger('change');
+            $('#Percentage').attr("disabled", true);
+        });
+         $('#Percentage').change(function (e) {
+            $("#GPL").val(0);
+            $("#GPL").trigger('change');
+            $('#GPL').attr("disabled", true);
+        });
+        $('input[type=radio][name=detail]').change(function () {
+
+            var val = $('input[name=detail]:checked').val()
+            if (val == 'Head') {
+
+                       $("#DyeId").val(-1);
+            $("#DyeId").trigger('change');
+            $("#ChemicalId").val(-1);
+            $("#ChemicalId").trigger('change');
+                $.ajax({
+                    method: 'GET',
+                    url: `/yd/RecipeFormatHeader/GetHead/`
+                }).done(function (res) {
+                    console.log(res)
+                    $("#ChemicalId").attr("disabled", true);
+                    $("#DyeId").attr("disabled", true);
+                    $("#headSelectCont").html(res);
+                    $("#headSelectCont .select2").select2({dropdownParent: $("#headSelectCont")});
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert("error");
+                });
+
+
+
+            }
+            else if (val == 'Dye') {
+             $("#ChemicalId").val(-1);
+              $("#ChemicalId").trigger('change');
+             $("#RecipeStepId").val(-1);
+            $("#RecipeStepId").trigger('change');
+                $.ajax({
+                    method: 'GET',
+                    url: `/yd/RecipeFormatHeader/Getdyes/`
+                }).done(function (res) {
+                     $("#RecipeStepId").attr("disabled", true);
+                    $("#ChemicalId").attr("disabled", true);
+                    $("#dyeSelectCont").html(res);
+                    $("#dyeSelectCont .select2").select2({dropdownParent: $("#dyeSelectCont")});
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert("error");
+                });
+            }
+            else {
+             $("#RecipeStepId").val(-1);
+            $("#RecipeStepId").trigger('change');
+           $("#DyeId").val(-1);
+            $("#DyeId").trigger('change');
+                $.ajax({
+                    method: 'GET',
+                    url: `/yd/RecipeFormatHeader/Getchemicals/`
+                }).done(function (res) {
+                     $("#DyeId").trigger('change').val=-1;
+                     $("#RecipeStepId").trigger('change').val=-1;
+                     $("#RecipeStepId").attr("disabled", true);
+                     $("#DyeId").attr("disabled", true);
+                    $("#chemicalSelectCont").html(res);
+                    $("#chemicalSelectCont .select2").select2({dropdownParent: $("#chemicalSelectCont")});
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert("error");
+                });
+            }
+            });
+
+
+
+            var igpNo = 0;
+            $("#LPSNO").change(function (e) {
+                e.preventDefault();
+                igpNo = $(this).val();
+                console.log($(this).val());
+            });
+            $('.IgpRef-js').click(function (e) {
+                e.preventDefault();
+                var igpno = $("#LPSNO").val();
+                //alert(igpno)
+        
+                var btn = $(this);
+                var BtnText = btn.text();
+                btn.html(`<i class="fa fa-refresh fa-spin text-white"></i>`);
+
+                var url = `${$(this).data('action').replace('#', '')}${igpno}`
+                //alert(url)
+                console.log(url);
+                $.ajax({
+                    method: 'GET',
+                    url: url
+                }).done(function (res) {
+                    btn.text(BtnText);
+
+
+                    $('#partialWrapper').removeClass('d-none').addClass('d-block').html(res);
+                    $("#IGPDetailsTable").DataTable({
+                        scrollX: 300,
+                        scrollY: true,
+                        autoWidth: true,
+                    });
+                    // script that will work on the partial view
+                    $(".copy-js").click(function () {
+                        var btn = $(this);
+
+
+                        var tr = btn.parents("tr")
+                        tr.find("input[type='hidden']").each(function (i) {
+                            var input = $(this);
+                            $(`input[type='number']#${input.attr("name")},input[type='hidden']#${input.attr("name")}, select#${input.attr("name")}`).val(input.val());
+                            $('.select2').trigger('change');
+                        })
+                    })
+
+                }).fail(function () {
+                    btn.text(BtnText);
+                    console.log(
+                        swal("Failed", "Request Failed. Try later.", "error"));
+                    });
+
+            });
+        });
+                                    
+    </script>
+}

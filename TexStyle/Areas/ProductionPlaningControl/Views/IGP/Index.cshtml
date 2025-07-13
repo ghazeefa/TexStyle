@@ -1,0 +1,233 @@
+﻿@model IEnumerable<TexStyle.Core.PPC.InwardGatePass>
+@{
+    var title = $"Inward Gate Pass";
+    ViewData["Title"] = $"{title}es";
+    var AddOrUpdateAction = "/ppc/IGP/AddOrUpdate/";
+    var IGPDetailReportAction = "/ppc/IGP/IGPDetailReport/";
+
+    // var AddDetailsAction = "/ppc/IGP/AddOrUpdateDetails/";
+    var DeleteAction = "/ppc/IGP/Delete/";
+
+    Layout = "_Layout";
+    var filter = ViewBag.filter;
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_IGP_CREATE))
+                {
+                    <button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW </button>
+
+                }*@
+
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                @* <table id="BrandsTable" data-order="[[ 2, &quot;asc&quot; ]]" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="simpletable_info">
+                                *@
+                                <table id="BrandsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting">Actions</th>
+                                            <th class="sorting">Is Cancel?</th>
+                                            <th class="sorting_asc">SNo</th>
+                                            @*<th class="sorting_asc" >IGP No</th>*@
+                                            <th class="sorting_asc">Book IGPReff</th>
+                                            <th class="sorting">Date</th>
+                                            @*<th class="sorting">Activity Type</th>*@
+                                            @*<th class="sorting">Yarn Type</th>
+        <th class="sorting">Yarn Quality</th>*@
+                                            <th class="sorting">Party</th>
+                                            @if (filter.IsYarn == false)
+                                            {
+
+                                                <th>Buyer</th>
+
+                                            }
+                                            <th class="sorting">Bility No</th>
+                                            <th class="sorting">Reprocess?</th>
+                                            <th class="sorting">ReCheck/ ReWind?</th>
+                                            @if (filter.IsYarn == false)
+                                            {
+                                                <th>Comercial Finishing?</th>
+                                                <th>Return  Finishing?</th>
+                                                <th>Reprocess Finishing?</th>
+
+
+                                            }
+
+                                            <th class="sorting">Is Confirmed</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                                        <tr role="row">
+                                            <td class="sorting">
+                                                <a href="@IGPDetailReportAction@c.Id" class="btn btn-outline-secondary">IGP Detail Report</a>
+                                                <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-primary">Details</a>
+                                                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_IGP_EDIT))
+                                                {<button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdateAction@c.Id" data-title="Update @title">Edit</button>} @*<button type="button" class="btn btn-primary update-js" data-action="#@AddDetailsAction@c.Id" data-title="Detail @title">Details</button>
+            @if (User.Claims.Any(x => x.Value == AccountClaimKeys.Something)){<button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>}*@
+                                            </td>
+                                            <td class="sorting">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @{var isCancel = c.IsCancel == true ? "checked" : ""; } @isCancel>
+                                                            <label class="border-checkbox-label" for="IsCancel"> </label>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+
+                                            </td>
+                                            <td class="sorting_asc">@c.Id</td>
+                                            @*<td class="sorting_asc">@c.GateTr?.Sno</td>*@
+                                            <td class="sorting_asc">@c.GateTr?.IGPReffNo</td>
+                                            <td class="sorting">@c.IgpDate.ToString("dd MMM yyyy")</td>
+                                            @*<td class="sorting">@c.ActivityType?.Name</td>*@
+                                            @*<td class="sorting">@c.InwardGatePassDetails.FirstOrDefault().YarnType.Name</td>
+        <td class="sorting">@c.InwardGatePassDetails.FirstOrDefault().YarnQuality.Name</td>*@
+                                            <td class="sorting">@c.Party?.Name</td>
+
+                                            @if (filter.IsYarn == false)
+                                            {
+                                                <td>@c.Buyer?.Name</td>
+
+                                            }
+                                            <td class="sorting">@c.BilityNo</td>
+
+
+
+                                            <td class="sorting">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @{var isReprocess = c.IsReprocessed == true ? "checked" : ""; } @isReprocess>
+                                                            <label class="border-checkbox-label" for="IsReprocessed"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="sorting">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @{var isReCheck = c.IsReWaxRecheck == true ? "checked" : ""; } @isReCheck>
+                                                            <label class="border-checkbox-label" for="IsReCheck"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+
+
+                                            @if (filter.IsYarn == false)
+                                            {
+
+
+                                                <td class="sorting">
+                                                    <div class="border-checkbox-section">
+                                                        <div class="row">
+                                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                                <input class="border-checkbox" type="checkbox" disabled="disabled" @{var IsForComercialFinishing = c.IsForComercialFinishing == true ? "checked" : ""; } @IsForComercialFinishing>
+                                                                <label class="border-checkbox-label" for="IsReprocessed"> </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="sorting">
+                                                    <div class="border-checkbox-section">
+                                                        <div class="row">
+                                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                                <input class="border-checkbox" type="checkbox" disabled="disabled" @{var IsAfterFinishing = c.IsAfterFinishing == true ? "checked" : ""; } @IsAfterFinishing>
+                                                                <label class="border-checkbox-label" for="IsReprocessed"> </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="sorting">
+                                                    <div class="border-checkbox-section">
+                                                        <div class="row">
+                                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                                <input class="border-checkbox" type="checkbox" disabled="disabled" @{var IsForFinishing = c.IsForFinishing == true ? "checked" : ""; } @IsForFinishing>
+                                                                <label class="border-checkbox-label" for="IsReprocessed"> </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+
+
+                                            <td class="sorting">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @{var isConfirmed = c.IsConfirm == true ? "checked" : ""; } @isConfirmed>
+                                                            <label class="border-checkbox-label" for="IsConfirmed"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+
+                                        <tr role="row">
+                                            <th class="sorting">Actions</th>
+                                            <th class="sorting">Is Cancel?</th>
+                                            <th class="sorting_asc">SNo</th>
+                                            @*<th class="sorting_asc">IGP No</th>*@
+                                            <th class="sorting_asc">IGP Reff</th>
+                                            <th class="sorting">Date</th>
+                                            @*<th class="sorting">Activity Type</th>*@
+                                            @*<th class="sorting">Yarn Type</th>
+        <th class="sorting">Yarn Quality</th>*@
+                                            <th class="sorting">Party</th>
+                                            @if (filter.IsYarn == false)
+                                            {
+
+                                                <th>Buyer</th>
+
+                                            }
+                                            <th class="sorting">Bility No</th>
+
+                                            <th class="sorting">Reprocess?</th>
+                                            <th class="sorting">ReCheck/ ReWind?</th>
+                                            @if (filter.IsYarn == false)
+                                            {
+                                                <th>Comercial Finishing?</th>
+                                                <th>Return  Finishing?</th>
+                                                <th>Reprocess Finishing?</th>
+
+
+                                            }
+                                            <th class="sorting">Is Confirmed</th>
+
+
+                                        </tr>
+
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

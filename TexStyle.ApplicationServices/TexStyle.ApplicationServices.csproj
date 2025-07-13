@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>%24/TexStyleZKAP/TexStyle/TexStyle.ApplicationServices</SccProjectName>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <SccAuxPath>https://dev.azure.com/comfortknitwear</SccAuxPath>
+    <SccLocalPath>.</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Implementation\CS\ChemicalDilutionTrDetailService.cs" />
+    <Compile Remove="Implementation\CS\ChemicalDilutionTrService.cs" />
+    <Compile Remove="Implementation\CS\ChemicalIssuanceRecipeTrDetailService.cs" />
+    <Compile Remove="Implementation\CS\ChemicalIssuanceRecipeTrService.cs" />
+    <Compile Remove="Implementation\CS\DyesChemicalOpenningDetailService.cs" />
+    <Compile Remove="Implementation\CS\DyesChemicalOpenningService.cs" />
+    <Compile Remove="Implementation\CS\InterUnitOutTrDetailService.cs" />
+    <Compile Remove="Implementation\CS\InterUnitOutTrService.cs" />
+    <Compile Remove="Implementation\CS\LCImportInTrDetailService.cs" />
+    <Compile Remove="Implementation\CS\LCImportInTrService.cs" />
+    <Compile Remove="Implementation\CS\LoanPartyGivenOutTrDetailService.cs" />
+    <Compile Remove="Implementation\CS\LoanPartyGivenOutTrService.cs" />
+    <Compile Remove="Implementation\CS\LoanPartyReturnInTrDetailService.cs" />
+    <Compile Remove="Implementation\CS\LoanPartyReturnInTrService.cs" />
+    <Compile Remove="Implementation\CS\LoanTakenInTrDetailService.cs" />
+    <Compile Remove="Implementation\CS\LoanTakenInTrService.cs" />
+    <Compile Remove="Implementation\CS\LoanTakenReturnOutTrDetailService.cs" />
+    <Compile Remove="Implementation\CS\LoanTakenReturnOutTrService.cs" />
+    <Compile Remove="Implementation\CS\LocalPurchaseInTrDetailService.cs" />
+    <Compile Remove="Implementation\CS\LocalPurchaseInTrService.cs" />
+    <Compile Remove="Implementation\CS\StoreReturnNoteDetailService.cs" />
+    <Compile Remove="Implementation\CS\StoreReturnNoteService.cs" />
+    <Compile Remove="Implementation\CS\SupplierService.cs" />
+    <Compile Remove="Implementation\CS\TrLinkerMasterService.cs" />
+    <Compile Remove="Interfaces\ICS\IChemicalDilutionTrDetailService.cs" />
+    <Compile Remove="Interfaces\ICS\IChemicalDilutionTrService.cs" />
+    <Compile Remove="Interfaces\ICS\IChemicalIssuanceRecipeTrDetailService.cs" />
+    <Compile Remove="Interfaces\ICS\IChemicalIssuanceRecipeTrService.cs" />
+    <Compile Remove="Interfaces\ICS\IDyesChemicalOpenningDetailService.cs" />
+    <Compile Remove="Interfaces\ICS\IDyesChemicalOpenningService.cs" />
+    <Compile Remove="Interfaces\ICS\IInterUnitOutTrDetailService.cs" />
+    <Compile Remove="Interfaces\ICS\IInterUnitOutTrService.cs" />
+    <Compile Remove="Interfaces\ICS\ILCImportInTrDetailService.cs" />
+    <Compile Remove="Interfaces\ICS\ILCImportInTrService.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanPartyGivenOutTrDetailService.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanPartyGivenOutTrService.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanPartyReturnInTrDetailService.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanPartyReturnInTrService.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanTakenInTrDetailService.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanTakenInTrService.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanTakenReturnOutTrDetailService.cs" />
+    <Compile Remove="Interfaces\ICS\ILoanTakenReturnOutTrService.cs" />
+    <Compile Remove="Interfaces\ICS\ILocalPurchaseInTrDetailService.cs" />
+    <Compile Remove="Interfaces\ICS\ILocalPurchaseInTrService.cs" />
+    <Compile Remove="Interfaces\ICS\IStoreReturnNoteDetailService.cs" />
+    <Compile Remove="Interfaces\ICS\IStoreReturnNoteService.cs" />
+    <Compile Remove="Interfaces\ICS\ISupplierService.cs" />
+    <Compile Remove="Interfaces\ICS\ITrLinkerMasterService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TexStyle.DomainServices\TexStyle.DomainServices.csproj" />
+  </ItemGroup>
+
+</Project>

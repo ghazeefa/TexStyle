@@ -1,0 +1,672 @@
+﻿@model TexStyle.ViewModels.CS.Reports.StockSummary2ViewModel
+@{ ViewData["Title"] = "";
+    Layout = "_LayoutPrint";
+    var m = Model.StockOutSummaryViewModel1.ToList();
+    decimal? val = 0;
+    decimal? val2 = 0;
+    decimal? w2 = 0;
+    decimal? p2 = 0;
+    decimal? c1 = 0;
+    decimal? wa1 = 0;
+    decimal? gweight = 0;
+    decimal? gcapacity = 0;
+    decimal? uw = 0;
+    decimal? uc = 0;
+    decimal? gtotalweight = 0;
+    decimal? reprocessweight = 0;
+}
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .borders > tbody > tr > td, .borders > thead > tr > td {
+        border: 1px solid black !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }
+
+</style>
+@if (Model.StockOutSummaryViewModel.Count() > 0)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-1 report-numberheading">C-9</div>
+
+
+
+        </div>
+        <div class="row">
+            <div class="col-12 report-header1">
+
+                @Model.StockOutSummaryViewModel.Select(x => x.CompanyName).FirstOrDefault()
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 report-header2">
+                Dyeing Efficiency Summary
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 report-header3">
+                DATE FROM:  @Model.StockOutSummaryViewModel.Select(x => x.DateFrom).FirstOrDefault() TO:  @Model.StockOutSummaryViewModel.Select(x => x.DateTo).FirstOrDefault()
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="table-responsive text-center justify-content-center center">
+        @if (Model.StockOutSummaryViewModel2.Count() > 0)
+        {
+            <h5 class="text-left" style="margin-top:-20px;"><span class="font-weight-bold">Dyeing</span></h5><br />
+
+            @foreach (var usr in Model.StockOutSummaryViewModel2.GroupBy(x => x.UserName))
+            {
+                @*<h4 class="font-weight-bold text-left">Daily Dyeing Report</h4><br />*@
+                <br /><h5 class="text-left" style="margin-top:-20px;">Supervisor Name: <span class="font-weight-bold">@usr.Select(x => x.UserName).FirstOrDefault()</span></h5>
+                @foreach (var de in usr.GroupBy(x => x.Date).OrderBy(x => x.Select(y => y.Date).FirstOrDefault()))
+                {
+                    <h6 class="text-left">@de.Select(x => x.Date).FirstOrDefault()?.ToString("dd-MMM-yyyy")</h6>
+                    <table class="table borders">
+                        <thead>
+                            <tr class="report-detailheader">
+                                <td colspan="1" width="12%">Recipe No</td>
+                                <td colspan="1" width="12%">LPSID</td>
+                                <td colspan="1" width="12%">Machine</td>
+                                <td colspan="1" width="12%">Color</td>
+                                <td colspan="1" width="12%">KGs</td>
+                                <td colspan="1" width="12%">Cost/KGs</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @{ c1 = 0; wa1 = 0;}
+                            @foreach (var d1 in de.GroupBy(z => z.machinename))
+                            {
+                                <tr>
+                                    <td colspan="4" width="12%" class="text-left" style="font-weight:bold;font-size:13px;">Machine : @d1.Select(x => x.machinename).FirstOrDefault() &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Capacity : @d1.Select(x => x.Capacity).FirstOrDefault()</td>
+
+                                    <td colspan="1" width="12%"></td>
+                                    <td colspan="1" width="12%"></td>
+                                </tr>
+                                @foreach (var dee in d1.GroupBy(z => z.No))
+                                {
+
+                                    <tr class="report-detail">
+                                        <td class="text-center" colspan="1"> @dee.Select(x => x.No).FirstOrDefault()</td>
+                                        <td class="text-center" colspan="1">
+                                            @foreach (var deee in Model.StockOutSummaryViewModel2.Where(x => x.No == dee.Select(y => y.No).FirstOrDefault()))
+                                            {
+                                                @deee.LPSId <span>,</span>
+                                            }
+                                        </td>
+                                        <td class="text-center" colspan="1">@dee.Select(x => x.machinename).FirstOrDefault()</td>
+                                        <td class="text-center" colspan="1">@dee.Select(x => x.color).FirstOrDefault()</td>
+                                        <td class="text-center" colspan="1">@dee.Select(x => Convert.ToInt32(x.Weight)).FirstOrDefault()</td>
+                                        <td class="text-center" colspan="1">@dee.Select(x => Convert.ToInt32(x.RatePerKG)).FirstOrDefault()</td>
+                                    </tr>
+                                    wa1 += dee.Select(x => Convert.ToInt32(x.Weight)).FirstOrDefault();
+
+                                }
+                                c1 += d1.Select(x => x.Capacity).FirstOrDefault();
+                            }
+
+                            <tr>
+                                <td colspan="2" width="12%">
+                                    <h6 style="border:1px solid black;margin-top:4px;">
+                                        Total Capacity :
+                                        @c1
+                                    </h6>
+                                </td>
+                                <td colspan="2" width="12%">
+                                    <h6 style="border:1px solid black;margin-top:4px;">
+                                        Total Weight :
+                                        @wa1
+                                        @{
+                                            val += c1;
+                                            val2 += wa1;
+                                        }
+                                    </h6>
+                                </td>
+                                <td colspan="2" width="12%">
+                                    <h6 style="border:1px solid black;margin-top:4px;">Per Day Efficiency : % @{decimal? per = 0; if (c1 != 0) { per = wa1 / c1 * 100; }} @Convert.ToInt32(per) </h6>
+                                </td>
+                            </tr>
+                            @*<tr>
+                                    <td colspan="1" width="12%"></td>
+                                    <td colspan="1" width="12%"></td>
+                                    <td colspan="1" width="12%"></td>
+                                    <td colspan="2" width="12%"><h6 style="border:1px solid black;margin-top:4px;">Diff @{decimal? per = val2 / val * 100;} %@Convert.ToInt32(per)</h6></td>
+                                    <td colspan="1" width="12%"></td>
+                                </tr>*@
+
+                        </tbody>
+                    </table>
+                }
+
+            }
+            <div class="container-fluid">
+                <div class="container pull-right text-right">
+                    <h6 class="font-weight-bold" style="font-size:15px;"><span style="background-color:lightgray"> Supervisor Name </span> &nbsp; <span style="background-color:lightgray">  Total Weight</span> &nbsp;<span style="background-color:lightgray"> % Efficiency</span></h6>
+                    @foreach (var u4 in Model.StockOutSummaryViewModel2.GroupBy(x => x.UserName))
+                    {
+                        uw = 0; uc = 0;
+                        @foreach (var u3 in u4.GroupBy(x => x.Date).OrderBy(x => x.Select(y => y.Date).FirstOrDefault()))
+                        {
+                            @foreach (var u2 in u3.GroupBy(z => z.machinename))
+                            {
+                                @foreach (var u1 in u2.GroupBy(z => z.No))
+                                {
+                                    uw += u1.Select(x => x.Weight).FirstOrDefault();
+                                }
+                                uc += u2.Select(x => x.Capacity).FirstOrDefault();
+                            }
+                        }
+                        <h6 style="font-size:15px;">@u4.Select(x => x.UserName).FirstOrDefault() &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;   @uw &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @{decimal? totper = 0; if (uc != 0) { totper = uw / uc * 100; }} @Convert.ToInt32(totper) &nbsp;&nbsp;&nbsp;&nbsp;</h6>
+                        gweight += uw; gcapacity += uc;
+                    }
+                </div>
+                <div class="container pull-right text-right">
+                    <span class="font-weight-bold" style="margin-right:3%"> Total % Efficiency </span><span class="font-weight-bold" style="margin-right:6%"> @gweight</span>
+                    <span class="font-weight-bold" style="margin-right:3%"> @{decimal? gtotper = 0; if (gcapacity != 0) { gtotper = gweight / gcapacity * 100; }}  @Convert.ToInt32(gtotper)</span>
+                </div>
+            </div>
+        }
+    </div>
+
+    <br />
+    <br />
+    <h4 class="text-left font-weight-bold">Reprocess Detail</h4>
+    <div class="table-responsive text-center justify-content-center center">
+        @if (Model.StockOutSummaryViewModel1.Count() > 0)
+        {
+            @foreach (var user in Model.StockOutSummaryViewModel1.GroupBy(x => x.UserName))
+            {
+                <br />
+                <h5 class="text-left" style="margin-top:-20px;">Supervisor Name: <span class="font-weight-bold">@user.Select(x => x.UserName).FirstOrDefault()</span></h5>
+
+                <table class="table borders">
+                    <thead>
+                        <tr class="report-detailheader">
+                            <td colspan="1" width="12%">Recipe No</td>
+                            <td colspan="1" width="12%">LPSID</td>
+                            <td colspan="1" width="12%">Supervisor Name</td>
+                            <td colspan="1" width="12%">Machine</td>
+                            <td colspan="1" width="12%">Color</td>
+                            <td colspan="1" width="12%">Weight</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var d in user)
+                        {
+                            <tr class="report-detail">
+                                <td class="text-center" colspan="1"> @d.No</td>
+                                <td class="text-center" colspan="1"> @d.LPSId</td>
+                                <td class="text-center" colspan="1"> @d.UserName</td>
+                                <td class="text-center" colspan="1"> @d.machinename</td>
+                                <td class="text-center" colspan="1"> @d.color</td>
+                                <td class="text-center" colspan="1"> @d.Weight</td>
+                            </tr>
+                        }
+                        <tr class="report-detail">
+                            <td class="text-center" colspan="1"> </td>
+                            <td class="text-center" colspan="1"> </td>
+                            <td class="text-center" colspan="1"> </td>
+                            <td class="text-center" colspan="1"> </td>
+                            <td class="text-center" colspan="2"> <h6 style="border:1px solid black;margin-top:4px;"> Total Weight: @user.Sum(x => x.Weight)</h6></td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+            <div class="container-fluid">
+                <div class="container pull-right text-right">
+                    <h6 class="font-weight-bold" style="font-size:15px;"><span style="background-color:lightgray"> Supervisor Name </span> &nbsp; <span style="background-color:lightgray">  Total Weight</span> &nbsp;<span style="background-color:lightgray">  Reprocess kg %</span></h6>
+                    @foreach (var data in Model.StockOutSummaryViewModel1.GroupBy(x => x.UserName))
+                    {
+                        w2 = 0;
+                        foreach (var dt1 in Model.StockOutSummaryViewModel2.Where(x => x.UserName == data.Select(z => z.UserName).FirstOrDefault()).GroupBy(z => z.No))
+                        {
+                            w2 += dt1.Select(x => x.Weight).FirstOrDefault();
+                        }
+                        <h6 style="font-size:15px;">
+                            <span style="margin-right:10%"> @data.Select(x => x.UserName).FirstOrDefault() </span><span style="margin-right:8%">@w2</span>
+                            <span style="margin-right:6%"> @{var d21 = data.Sum(z => z.Weight) / w2 * 100; p2 += d21;}@Convert.ToInt32(d21)</span>
+                        </h6>
+                        gtotalweight += w2;
+                        reprocessweight += data.Sum(z => z.Weight);
+                    }
+                </div>
+                <div class="container pull-right text-right">
+                    <h6 style="font-size:15px;">
+                        <span class="font-weight-bold" style="margin-right:3%"> Total Reprocess % </span><span class="font-weight-bold" style="margin-right:7%"> @gtotalweight</span>
+                        <span class="font-weight-bold" style="margin-right:6%"> @{var p3 = reprocessweight / gtotalweight * 100; }  @Convert.ToInt32(p3)</span>
+                    </h6>
+                </div>
+            </div>
+        }
+    </div>
+
+
+    <br />
+    <br />
+
+
+    <h4 class="text-left font-weight-bold">Chemical Consumption Including Loans</h4>
+    <div class="table-responsive">
+        <table class="table table-responsive borders">
+
+            <thead>
+            @*<thead style="border-bottom: hidden;">*@
+                <tr class="report-detailheader" style="border-bottom:hidden">
+                    <td colspan="1" width="10%" >Dye/Chmical</td>
+                    <td colspan="3" width="14%">CKL5 Consumption<br /></td>
+
+                    <td colspan="3" width="17%">Inter Unit Consumption<br /></td>
+
+                    <td colspan="3" width="14%">Dilution</td>
+                    <td colspan="3" width="14%">Loan Taken Return<br /></td>
+                    <td colspan="3" width="14%" style="border-bottom:hidden;">Rejection</td>
+                    <td colspan="1" width="14%" >TotalQty</td>
+                </tr>
+            @*</thead>*@
+            <tr class="report-detailheader">
+                <td colspan="1" width="10%"></td>
+                @*<td colspan="1" width="14%"><br />Qty/Rate/Amount</td>*@
+
+                <td colspan="1" width="4%">Qty</td>
+                <td colspan="1" width="4%">Rate</td>
+                <td colspan="1" width="4%">Amount</td>
+
+
+                @*<td colspan="1" width="17%"><br />Qty/Rate/Amount</td>*@
+                <td colspan="1" width="6%">Qty</td>
+                <td colspan="1" width="6%">Rate</td>
+                <td colspan="1" width="6%">Amount</td>
+
+                @*<td colspan="1" width="8%">Rate</td>*@
+                @*<td colspan="1" width="8%">Amount</td>*@
+                @*<td colspan="3" width="14%">Dilution<br />Qty/Rate/Amount</td>*@
+                <td colspan="1" width="4%">Qty</td>
+                <td colspan="1" width="4%">Rate</td>
+                <td colspan="1" width="4%">Amount</td>
+
+                @*<td colspan="1" width="14%"><br />Qty/Rate/Amount</td>*@
+                <td colspan="1" width="5%">Qty</td>
+                <td colspan="1" width="5%">Rate</td>
+                <td colspan="1" width="5%">Amount</td>
+
+
+                @*<td colspan="1" width="14%"></td>*@
+                <td colspan="1" width="5%">Qty</td>
+                <td colspan="1" width="5%">Rate</td>
+                <td colspan="1" width="5%">Amount</td>
+                <td colspan="1" width="14%"></td>
+            </tr>
+            </thead>
+            <tbody>
+                @if (Model.StockOutSummaryViewModel.Count() > 0)
+                {
+                    @foreach (var detail in Model.StockOutSummaryViewModel)
+                    {
+                <tr class="report-detail">
+                    <td class="text-center" colspan="1"> @detail.Item</td>
+                    @if (@detail.Issuance > 0)
+                    {
+                        @*<td class="text-center" colspan="1"> @detail.Issuance.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+                        <td class="text-center" colspan="1"> @detail.Issuance.ToString("0.00")</td>
+
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.Issuance > 0)
+                    {
+                        @*<td class="text-center" colspan="1"> @detail.Issuance.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+
+                        <td class="text-center" colspan="1"> @detail.ICRate.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.Issuance > 0)
+                    {
+                        @*<td class="text-center" colspan="1"> @detail.Issuance.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+                        <td class="text-center" colspan="1"> @detail.ICAmount.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.InterUnitOut > 0)
+                    {
+                        @*<td class="text-center" colspan="1"> @detail.InterUnitOut.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+                        <td class="text-center" colspan="1"> @detail.InterUnitOut.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.InterUnitOut > 0)
+                    {
+                        @*<td class="text-center" colspan="1"> @detail.InterUnitOut.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+                        <td class="text-center" colspan="1"> @detail.IUORate.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.InterUnitOut > 0)
+                    {
+                        @*<td class="text-center" colspan="1"> @detail.InterUnitOut.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+                        <td class="text-center" colspan="1"> @detail.IUOAmount.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.Diluation > 0)
+                    {
+
+
+                        @*<td class="text-center" colspan="1"> @detail.Diluation.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+                        <td class="text-center" colspan="1"> @detail.Diluation.ToString("0.00")</td>
+
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.Diluation > 0)
+                    {
+
+
+                        @*<td class="text-center" colspan="1"> @detail.Diluation.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+
+                        <td class="text-center" colspan="1"> @detail.DRate.ToString("0.00")</td>
+
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.Diluation > 0)
+                    {
+
+
+                        @*<td class="text-center" colspan="1"> @detail.Diluation.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+                        <td class="text-center" colspan="1"> @detail.DAmount.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.LoanReturn > 0)
+                    {
+                        @*<td class="text-center" colspan="1"> @detail.LoanReturn.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+                        <td class="text-center" colspan="1"> @detail.LoanReturn.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.LoanReturn > 0)
+                    {
+                        @*<td class="text-center" colspan="1"> @detail.LoanReturn.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+                        <td class="text-center" colspan="1"> @detail.LRCRate.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.LoanReturn > 0)
+                    {
+                        @*<td class="text-center" colspan="1"> @detail.LoanReturn.ToString("0.00")/@detail.Rate.ToString("0.00")/@detail.Amount.ToString("0.00")</td>*@
+                        <td class="text-center" colspan="1"> @detail.LRCAmount.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+
+                    @if (@detail.Rejection > 0)
+                    {
+                        <td class="text-center" colspan="1"> @detail.Rejection.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.Rejection > 0)
+                    {
+                        <td class="text-center" colspan="1"> @detail.RRate.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @if (@detail.Rejection > 0)
+                    {
+                        <td class="text-center" colspan="1"> @detail.RAmount.ToString("0.00")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center" colspan="1">
+                        </td>
+                    }
+                    @*<td colspan="8">@{(detail.ChemicalIssuanceRecipe + detail.InterUnitConsump + detail.Dilution + detail.LoanTakenReturnOut + detail.LoanPartyGivenOut)}</td>*@
+                    <td class="text-center" colspan="1"> @detail.Sum.ToString("0.00")</td>
+                </tr>
+                    }}
+            </tbody>
+        </table>
+    </div>
+   
+        <br />
+        <br />
+        <h4 class="text-left font-weight-bold">Chemical Taken on Loan</h4>
+        <div class="table-responsive">
+            <table class="table table-responsive borders">
+                <thead>
+                    <tr class="report-detailheader">
+                        <td colspan="1" width="12%">Date</td>
+                        <td colspan="1" width="12%">Party</td>
+                        <td colspan="1" width="12%">Chemical</td>
+                        <td colspan="1" width="12%">IGP</td>
+                        <td colspan="1" width="12%">Qty</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (Model.DyeChemicalDetailsTrTypeWise.Count() > 0 && Model.DyeChemicalDetailsTrTypeWise.FirstOrDefault().TrType==5)
+                    {
+                        @foreach (var detail in Model.DyeChemicalDetailsTrTypeWise.Where(x => x.TrType == 5 && x.QtyCr != null))
+                        {
+                            <tr class="report-detail">
+                                <td class="text-center" colspan="1"> @detail.TransactionDate</td>
+                                <td class="text-center" colspan="1"> @detail.PartyName</td>
+                                <td class="text-center" colspan="1"> @detail.DyeChemicalName</td>
+                                <td class="text-center" colspan="1"> @detail.IGPNO</td>
+                                <td class="text-center" colspan="1"> @Convert.ToInt32(detail.QtyCr)</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr class="report-detail">
+                            <td class="text-center" colspan="1"> N/A</td>
+                            <td class="text-center" colspan="1"> N/A</td>
+                            <td class="text-center" colspan="1"> N/A</td>
+                            <td class="text-center" colspan="1"> N/A</td>
+                            <td class="text-center" colspan="1"> N/A</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+
+    <br />
+    <br />
+    <h4 class="text-left font-weight-bold">Chemical Taken on Loan Returned</h4>
+    <div class="table-responsive">
+        <table class="table table-responsive borders">
+            <thead>
+                <tr class="report-detailheader">
+                    <td colspan="1" width="12%">Date</td>
+                    <td colspan="1" width="12%">Party</td>
+                    <td colspan="1" width="12%">Chemical</td>
+                    <td colspan="1" width="12%">OGP</td>
+                    <td colspan="1" width="12%">Qty</td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.DyeChemicalDetailsTrTypeWise.Count() > 0 && Model.DyeChemicalDetailsTrTypeWise.FirstOrDefault().TrType == 9)
+                {
+                    @foreach (var detail in Model.DyeChemicalDetailsTrTypeWise.Where(x => x.TrType == 9 && x.QtyCr != null))
+                    {
+                        <tr class="report-detail">
+                            <td class="text-center" colspan="1"> @detail.TransactionDate</td>
+                            <td class="text-center" colspan="1"> @detail.PartyName</td>
+                            <td class="text-center" colspan="1"> @detail.DyeChemicalName</td>
+                            <td class="text-center" colspan="1"> @detail.IGPNO</td>
+                            <td class="text-center" colspan="1"> @Convert.ToInt32(detail.QtyCr)</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr class="report-detail">
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <br />
+    <br />
+    <h4 class="text-left font-weight-bold">Chemical Given on Loan</h4>
+    <div class="table-responsive">
+        <table class="table table-responsive borders">
+            <thead>
+                <tr class="report-detailheader">
+                    <td colspan="1" width="12%">Date</td>
+                    <td colspan="1" width="12%">Party</td>
+                    <td colspan="1" width="12%">Chemical</td>
+                    <td colspan="1" width="12%">OGP</td>
+                    <td colspan="1" width="12%">Qty</td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.DyeChemicalDetailsTrTypeWise.Count() > 0 && Model.DyeChemicalDetailsTrTypeWise.FirstOrDefault().TrType == 8)
+                {
+                    @foreach (var detail in Model.DyeChemicalDetailsTrTypeWise.Where(x => x.TrType == 8 && x.QtyCr != null))
+                    {
+                        <tr class="report-detail">
+                            <td class="text-center" colspan="1"> @detail.TransactionDate</td>
+                            <td class="text-center" colspan="1"> @detail.PartyName</td>
+                            <td class="text-center" colspan="1"> @detail.DyeChemicalName</td>
+                            <td class="text-center" colspan="1"> @detail.IGPNO</td>
+                            <td class="text-center" colspan="1"> @Convert.ToInt32(detail.QtyCr)</td>
+                        </tr>
+                    }
+                }
+
+                else
+                {
+                    <tr class="report-detail">
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <br />
+    <br />
+    <h4 class="text-left font-weight-bold">Chemical Given on Loan Retuned</h4>
+    <div class="table-responsive">
+        <table class="table table-responsive borders">
+            <thead>
+                <tr class="report-detailheader">
+                    <td colspan="1" width="12%">Date</td>
+                    <td colspan="1" width="12%">Party</td>
+                    <td colspan="1" width="12%">Chemical</td>
+                    <td colspan="1" width="12%">IGP</td>
+                    <td colspan="1" width="12%">Qty</td>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model.DyeChemicalDetailsTrTypeWise.Count() > 0 && Model.DyeChemicalDetailsTrTypeWise.FirstOrDefault().TrType == 4)
+                {
+                    @foreach (var detail in Model.DyeChemicalDetailsTrTypeWise.Where(x => x.TrType == 4 && x.QtyDr != null))
+                    {
+                        <tr class="report-detail">
+                            <td class="text-center" colspan="1"> @detail.TransactionDate</td>
+                            <td class="text-center" colspan="1"> @detail.PartyName</td>
+                            <td class="text-center" colspan="1"> @detail.DyeChemicalName</td>
+                            <td class="text-center" colspan="1"> @detail.IGPNO</td>
+                            <td class="text-center" colspan="1"> @Convert.ToInt32(detail.QtyDr)</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr class="report-detail">
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                        <td class="text-center" colspan="1"> N/A</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+    </div>
+
+  @*}
+  
+}
+else
+{ <h1><center> No Record in Report </center></h1>}*@
+<div style="height:600px"></div>
+
+<footer\>
+    <h3 style="text-align:right">Prepared By:<span class="font-weight-bold">@Model.StockOutSummaryViewModel2.Select(x => x.UserName).FirstOrDefault()</span> </h3>
+</footer\>

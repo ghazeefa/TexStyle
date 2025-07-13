@@ -1,0 +1,131 @@
+﻿@model IEnumerable<TexStyle.Core.PPC.ActivityType>
+
+@{
+    var title = $"Order Activity Type";
+    ViewData["Title"] = $"{title}s";
+    var AddOrUpdateAction = "/ppc/OrderActivityType/AddOrUpdate/";
+    var DeleteAction = "/ppc/OrderActivityType/Delete/";
+
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_SETTINGS_ACTIVITY_TYPE_CREATE)){<button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW</button>}
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Name</th>
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                                            <tr role="row">
+                                                <td class="sorting_1">@c.Name</td>
+                                                <td style="width:150px;">
+                                                    @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_SETTINGS_ACTIVITY_TYPE_EDIT)){<button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdateAction@c.Id" data-title="Update @title">Edit</button>}
+                                                     @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_SETTINGS_ACTIVITY_TYPE_DELETE)){<button disabled class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>}
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Name</th>
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        //var BrandsTable = $("#BrandsTable").DataTable();
+        //$(function () {
+        //    $("#example1").DataTable();
+        //    $(".select2").select2();
+        //});
+
+        InitBrandScripts();
+
+        function InitBrandScripts() {
+            var modal = "#adminModal";
+
+            $('.create-js,.update-js').click(function (e) {
+                e.preventDefault();
+                var mtitle = $(modal).children().find(".modal-title");
+                var mbody = $(modal).children().find(".modal-body");
+                var url = $(this).data("action").replace('#', '');
+                mtitle.text($(this).data("title"))
+                $.ajax({
+                    url: url,
+                    method: 'GET'
+                }).done(function (res) {
+                    mbody.html(res);
+                    $(".select2").select2();
+                    $(modal).modal();
+                }).fail(function () {
+
+                });
+
+            });
+
+            $(".delete-js").click(function (e) {
+                e.preventDefault();
+                var mtitle = $(modal).children().find(".modal-title");
+                var mbody = $(modal).children().find(".modal-body");
+                var url = $(this).data("action");
+                var title = $(this).data('title');
+
+                $.ajax({
+                    url: url,
+                    method: 'GET'
+                }).done(function (data) {
+                    mtitle.text(title);
+                    mbody.html(data);
+                    var deletVarifyInterval = setInterval(function () {
+                        if ((mbody.find(".vtd-js").val() === mbody.find(".name-js").text()) == true) {
+                            mbody.find(".del-js").removeAttr("disabled");
+                            console.log("fuck")
+                        } else {
+                            mbody.find(".del-js").attr("disabled", "disabled");
+                            console.log("fuck")
+                        }
+                    }, 300);
+
+                    mbody.find(".close-modal-js").click(function (e) {
+                        e.preventDefault();
+                        console.log("delete interval cleared")
+                        clearInterval(deletVarifyInterval);
+                        $(modal).modal("hide");
+                    });
+
+                    $(modal).modal();
+                }).fail(function () {
+                    mtitle.text(title);
+                    mbody.html("Fail");
+                    $(modal).modal();
+                });
+
+            });
+        }
+    </script>
+}

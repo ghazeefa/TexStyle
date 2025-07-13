@@ -1,0 +1,158 @@
+﻿
+@model IEnumerable<TexStyle.Core.ReportsViewModel.PPC.CKL1POViewModelRepository>
+
+@{
+    @*var AddOrUpdateAction = "/cs/LoanTakenReturnOutTr/AddOrUpdate/";
+        var DeleteAction = "/cs/LCImportInTrDetail/Delete/";
+    *@
+
+    var a = 0;
+}
+
+<div class="row ">
+    <div class="col-sm-12" style=" >
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Details</h5>
+                @*<button href="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" data-title="Create @title Detail">ADD NEW</button>*@
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                        <div class="col-xs-20 col-sm-20 m-dT">
+                            <h6 class="text-danger" style="display:none" id="msg">Please Enter Rate</h6>
+                            @*dataTable*@
+                            <div class="form-group modal-dialog-scrollable" style="overflow-y: scroll; height: 200px;">
+                                <table id="datatbl" class="table table-bordered table-hover table-striped overflow-hidden" style="overflow:scroll; height:100px;">
+                                    <thead>
+                                        <tr>
+
+
+                                            <th class="sorting"> Factory Po </th>
+                                            <th class="sorting">Customer PO</th>
+                                            <th class="sorting_asc">ID</th>
+                                            <th class="sorting_asc">Detail ID</th>
+               
+                                            <th class="sorting">Branch</th>
+                                            <th class="sorting">Buyer</th>
+                                            <th class="sorting">Artical</th>
+                                            <th class="sorting">Brand</th>
+                                            <th class="sorting">Fabric</th>
+                                            <th class="sorting">Detail</th>
+                                            <th class="sorting">Fabric Color</th>
+                                            <th class="sorting">Main Color</th>
+                                            <th class="sorting">GSM</th>
+                                            <th class="sorting">Dia</th>
+                                            <th class="sorting">GrossKg</th>
+                                            <th class="sorting">NetKgs</th>
+                                            <th class="sorting">AvailableKgs</th>
+                                            <th class="sorting">ExKgs</th>
+                                            <th class="sorting">Po Quantity</th>
+                                            <th class="sorting">Pcs</th>
+                                            <th class="sorting">Mtrs</th>
+                                            <th class="sorting">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var c in Model)
+                                        {
+                                        <tr>
+
+                                            <td class="sorting_asc">@c.FactoryPO </td>
+                                            <td class="sorting_asc">@c.CustomerPO </td>
+                                            <td class="sorting_asc">
+                                                @c.DyeingWOID
+                                              <input type="hidden" name="DyeingWOID" value="@c.DyeingWOID" />
+                                          <input type="hidden" id="@nameof(c.DyeingWOID)" name="@nameof(c.DyeingWOID)" value="@c.DyeingWOID" />
+                                                      </td>
+                                            <td class="sorting_asc">
+                                                @c.DyeingWODetailID
+
+                                              <input type="hidden" name="DyeingWODetailID" value="@c.DyeingWODetailID" />
+                                              <input type="hidden" id="@nameof(c.DyeingWODetailID)" name="@nameof(c.DyeingWODetailID)" value="@c.DyeingWODetailID" />
+
+
+
+                                                                                    </td>
+                                            <td class="sorting_asc">@c.BranchName </td>
+                                            <td class="sorting_asc">@c.BuyerName </td>
+                                            <td class="sorting_asc">@c.ArticleName </td>
+                                            <td class="sorting_asc">@c.BrandName </td>
+                                            <td class="sorting_asc">@c.Fabric </td>
+                                            <td class="sorting_asc">@c.FabricDetail </td>
+                                            <td class="sorting_asc">@c.FabricColor</td>
+                                            <td class="sorting_asc">@c.MainColor</td>
+                                            <td class="sorting_asc">@c.GSM</td>
+                                            <td class="sorting_asc">@c.Dia</td>
+                                            <td class="sorting_asc">@c.GrossKgs</td>
+                                            <td class="sorting_asc">
+                                                @c.NetKgs </td> 
+                                            <td class="sorting_asc">
+                                                @c.AvailableKgs
+                                              <input type="hidden" name="Kgs" value="@c.AvailableKgs" />
+                                              <input type="hidden" id="@nameof(c.AvailableKgs)" name="@nameof(c.AvailableKgs)" value="@c.AvailableKgs" />
+
+                                                                                    </td>
+                                            <td class="sorting_asc">@c.ExKgs</td>
+                                            <td class="sorting_asc">@c.POQty</td>
+                                            <td class="sorting_asc">@c.Pcs</td>
+                                            <td class="sorting_asc">@c.Mtrs</td>
+                                            <td>
+                                                <a class="btn btn-primary copyPo-js">Copy</a>
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tr>
+                                        <th class="sorting"> Factory Po </th>
+                                        <th class="sorting">Customer PO</th>
+                                        <th class="sorting_asc">ID</th>
+                                        <th class="sorting_asc">Detail ID</th>
+                                        <th class="sorting">Branch</th>
+                                        <th class="sorting">Buyer</th>
+                                        <th class="sorting">Artical</th>
+                                        <th class="sorting">Brand</th>
+                                        <th class="sorting">Fabric</th>
+                                        <th class="sorting">Detail</th>
+                                        <th class="sorting">Fabric Color</th>
+                                        <th class="sorting">Main Color</th>
+                                        <th class="sorting">GSM</th>
+                                        <th class="sorting">Dia</th>
+                                        <th class="sorting">GrossKg</th>
+                                        <th class="sorting">NetKgs</th>
+                                        <th class="sorting">AvailableKgs</th>
+                                        <th class="sorting">ExKgs</th>
+                                        <th class="sorting">Po Quantity</th>
+                                        <th class="sorting">Pcs</th>
+                                        <th class="sorting">Mtrs</th>
+                                        <th class="sorting">Action</th>
+                                    </tr>
+
+                                </table>
+
+
+                            </div>
+                            <button class="btn btn-primary" onclick="sub()" id="btnUpdate">Ok</button>
+                        </div>
+                        <div>
+                          
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/global/vendor/datatables/jquery.dataTables.min.js"></script>
+
+
+

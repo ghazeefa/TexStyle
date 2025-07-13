@@ -1,0 +1,129 @@
+﻿@model IEnumerable<TexStyle.ViewModels.YD.Reports.DyeingDetailConsumption_ViewModel>
+@{
+    ViewData["Title"] = "Dyes and Chemicals wise Consumption Report";
+    Layout = "_LayoutPrint";
+
+}
+
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+
+
+
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-1 report-numberheading">D-4</div>
+            <div class="col-11"></div>
+        </div>
+        <div class="row">
+            <div class="col-12 report-header2">
+
+                @Model.FirstOrDefault().CompanyName
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 report-header2">
+                @ViewData["Title"]
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 report-header3">
+                DATE FROM: @Model.FirstOrDefault().DateFrom TO: @Model.FirstOrDefault().DateTo
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <div class="table-responsive">
+        <table class="table table-responsive">
+
+            <thead>
+                <tr class="report-detailheader">
+                    <th width="20%">Item</th>
+                    <th width="20%">Name</th>
+                    <th width="20%"></th>
+                    <th width="20%">QtyCkl5</th>
+                    <th width="20%">QtyCKL6</th>
+                    <th width="20%"></th>
+                    <th width="20%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detail in Model)
+                {
+                <tr>
+                    @if (detail.Status == 0)
+                    {
+                        <td colspan="2" class="report-detail-footer" style="font-size:large;">
+                            Chemical
+                        </td>
+                    }
+                    else
+                    {
+
+                        <td colspan="2" class="report-detail-footer" style="font-size:large;">
+                          Dyes  
+                        </td>
+
+                    }
+
+                    <td colspan="2" class="report-detail-footer"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                    @foreach (var d in detail.DyeingDetailConsumptionDetail_ViewModel)
+                    {
+                        if (d.CKL5 != 0 || d.CKL6 != 0)
+                        {
+
+            <tr tr style="line-height:20px; border:1px solid black">
+
+                <td colspan="1" class="report-detail-footer"></td>
+                <td colspan="2" class="report-detail-footer">
+                    @d.Name
+                </td>
+
+
+
+                <td>
+                    @d.CKL5.ToString("0.00")
+                </td>
+                <td>
+                    @d.CKL6.ToString("0.00")
+                </td>
+
+                <td></td>
+                <td></td>
+
+
+            </tr>
+                            }
+                        }
+                    }
+
+            </tbody>
+            <tfoot>
+                <tr>
+
+                    <td colspan="5"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>
+}

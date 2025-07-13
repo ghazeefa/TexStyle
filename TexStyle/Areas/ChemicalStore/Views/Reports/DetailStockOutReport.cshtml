@@ -1,0 +1,652 @@
+﻿@model IEnumerable<TexStyle.ViewModels.CS.Reports.DetailStockOutReportC_3ViewModel>
+@{
+    ViewData["Title"] = "Dyes & Chemical Issuance Detail";
+    Layout = "_LayoutPrint";
+
+}
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+@*<div class="table-responsive">
+        <table class="table table-responsive" style="border:1px solid black;">
+            <thead>
+                <tr>
+
+                    <th scope="col" width="7%" class="table-active report-numberheading">C-3</th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+                    <th scope="col" width="7%"></th>
+
+
+                </tr>
+            </thead>
+            <tbody style="border:1px solid black;">
+
+                <tr>
+                    <td class="report-header1" colspan="20">@Model.FirstOrDefault().CompanyName </td>
+                    <td class="report-header1" colspan="14">COMFORT KNITWEARS PVT </td>
+                </tr>
+
+                <tr>
+                    <td class="report-header2" colspan="20">@ViewData["Title"] </td>
+                </tr>
+
+                <tr>
+                    <td class="report-header3" colspan="20">DATE FROM: @Model.FirstOrDefault().DateFrom TO: @Model.FirstOrDefault().DateTo</td>
+
+                    <td class="report-header3" colspan="14">DATE FROM: 2020-01-01 TO: 2020-02-29</td>
+                </tr>
+                <tr>
+                    <td colspan="20"> </td>
+                </tr>
+                <tr>
+                    <td colspan="20"> </td>
+                </tr>
+
+
+                @if (Model.Count() > 0)
+                {
+
+            <tr class="report-detailheader">
+                <td colspan="2">Dye/Chmical</td>
+                <td colspan="3">Inter Unit Out</td>
+                <td colspan="3">Loan Taken Return Out</td>
+                <td colspan="3">Chemical Issuance</td>
+                <td colspan="3">Loan Party Given Out</td>
+                <td colspan="3">Store Return Note</td>
+                <td colspan="3">Chemical Dilution</td>
+                <td colspan="3"></td>
+            </tr>
+                            <tr class="report-detailSubheader">
+                                <td colspan="2"></td>
+                                <td>OGP No</td>
+                                <td>Date</td>
+                                <td>Qty</td>
+                                <td>OGP No</td>
+                                <td>Date</td>
+                                <td>Qty</td>
+                                <td>Tr No</td>
+                                <td>Date</td>
+                                <td>Qty</td>
+                                <td>OGP No</td>
+                                <td>Date</td>
+                                <td>Qty</td>
+                                <td>OGP No</td>
+                                <td>Date</td>
+                                <td>Qty</td>
+                                <td>Dilution No</td>
+                                <td>Date</td>
+                                <td>Qty</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+
+
+
+                                            @foreach (var detail in Model)
+                                            {
+                            <tr class="report-detail">
+                                <td colspan="20"> @detail.Item</td>
+
+                            </tr>
+
+                                                @for (int c = 0; c < detail.rowcount; c++)
+                                                {
+                            <tr class="report-detail">
+                                <td colspan="2"></td>
+
+                                @if (detail.c1 > c)
+                                {
+            <td>@detail.InterUnitOutDetailListViewModels[c].No</td>
+                                        <td>@detail.InterUnitOutDetailListViewModels[c].Date.ToShortDateString()</td>
+                                                                    <td>@detail.InterUnitOutDetailListViewModels[c].Qty</td> }
+                                                                                            else
+                                                                                            {
+                                                                    <td></td>
+                                                                                                <td></td>
+                                                                                                                            <td></td>}
+                                @if (detail.c2 > c)
+                                {
+            <td>@detail.LoanTakenOutDetailListViewModels[c].No</td>
+                                        <td>@detail.LoanTakenOutDetailListViewModels[c].Date.ToShortDateString()</td>
+                                                                    <td>@detail.LoanTakenOutDetailListViewModels[c].Qty</td> }
+                                                                                            else
+                                                                                            {
+                                                                    <td></td>
+                                                                                                <td></td>
+                                                                                                                            <td></td>}
+
+                                @if (detail.c3 > c)
+                                {
+            <td>@detail.ChemicalIssuanceDetailListViewModels[c].No</td>
+                                        <td>@detail.ChemicalIssuanceDetailListViewModels[c].Date.ToShortDateString()</td>
+                                                                    <td>@detail.ChemicalIssuanceDetailListViewModels[c].Qty</td> }
+                                                                                            else
+                                                                                            {
+                                                                    <td></td>
+                                                                                                <td></td>
+                                                                                                                            <td></td>}
+                                @if (detail.c4 > c)
+                                {
+            <td>@detail.LoanPartyGivenOutDetailListViewModels[c].Date.ToShortDateString()</td>
+                                        <td>@detail.LoanPartyGivenOutDetailListViewModels[c].Qty</td> }
+                                                                else
+                                                                {
+                                        <td></td>
+                                                                    <td></td>
+                                                                                                <td></td>}
+
+                                @if (detail.c5 > c)
+                                {
+            <td>@detail.StoreReturnNoteDetailListViewModels[c].No</td>
+                                        <td>@detail.StoreReturnNoteDetailListViewModels[c].Date.ToShortDateString()</td>
+                                                                    <td>@detail.StoreReturnNoteDetailListViewModels[c].Qty</td> }
+                                                                                            else
+                                                                                            {
+                                                                    <td></td>
+                                                                                                <td></td>
+                                                                                                                            <td></td>}
+                                @if (detail.c6 > c)
+                                {
+            <td>@detail.ChemicalDilutionDetailListViewModel[c].No</td>
+                                        <td>@detail.ChemicalDilutionDetailListViewModel[c].Date.ToShortDateString()</td>
+                                                                    <td>@detail.ChemicalDilutionDetailListViewModel[c].Qty</td> }
+                                                                                            else
+                                                                                            {
+                                                                    <td></td>
+                                                                                                <td></td>
+                                                                                                                            <td></td>}
+
+
+                            </tr>                    }
+                                                                    <tr class="report-detail-footer ">
+                                                                        <td colspan="2"></td>
+                                                                        @if (@detail.InterUnitOutDetailListViewModels.Sum(x => x.Qty) > 0)
+                                                                        {
+                                                    <td colspan="2">Total Balance:</td>
+                                                                            <td>@detail.InterUnitOutDetailListViewModels.Sum(x => x.Qty)</td> }
+                                                                                                else
+                                                                                                {
+                                                                            <td colspan="3"></td>}  @if (@detail.LoanTakenOutDetailListViewModels.Sum(x => x.Qty) > 0)
+                                                                        {
+                                                    <td colspan="2">Total Balance:</td>
+                                                                            <td>@detail.LoanTakenOutDetailListViewModels.Sum(x => x.Qty)</td> }
+                                                                                                else
+                                                                                                {
+                                                                            <td colspan="3"></td>}  @if (@detail.ChemicalIssuanceDetailListViewModels.Sum(x => x.Qty) > 0)
+                                                                            {
+                                                        <td colspan="2">Total Balance:</td>
+                                                                                <td>@detail.ChemicalIssuanceDetailListViewModels.Sum(x => x.Qty)</td> }
+                                                                                                    else
+                                                                                                    {
+                                                                                <td colspan="3"></td>}  @if (@detail.LoanPartyGivenOutDetailListViewModels.Sum(x => x.Qty) > 0)
+                                                                            {
+                                                        <td colspan="2">Total Balance:</td>
+                                                                                <td>@detail.LoanPartyGivenOutDetailListViewModels.Sum(x => x.Qty)</td> }
+                                                                                                    else
+                                                                                                    {
+                                                                                <td colspan="3"></td>}  @if (@detail.StoreReturnNoteDetailListViewModels.Sum(x => x.Qty) > 0)
+                                                                                {
+                                                            <td colspan="2">Total Balance:</td>
+                                                                                    <td>@detail.StoreReturnNoteDetailListViewModels.Sum(x => x.Qty)</td> }
+                                                                                                        else
+                                                                                                        {
+                                                                                    <td colspan="3"></td>}
+                                                                                @if (@detail.ChemicalDilutionDetailListViewModel.Sum(x => x.Qty) > 0)
+                                                                                {
+                                                            <td colspan="2">Total Balance:</td>
+                                                                                    <td>@detail.ChemicalDilutionDetailListViewModel.Sum(x => x.Qty)</td> }
+                                                                                                        else
+                                                                                                        {
+                                                                                    <td colspan="3"></td>}
+
+
+                                                                                <td colspan="3">Total Balance:@detail.LCImportDetailListViewModel.Sum(x=>x.Qty)</td>
+                                                                            <td colspan="3">Total Balance:@detail.LocalPurchaseDetailListViewModel.Sum(x=>x.Qty)</td>
+                                                                            <td colspan="3">Total Balance:@detail.LoanTakenInDetailListViewModel.Sum(x=>x.Qty)</td>
+                                                                            <td colspan="3">Total Balance:@detail.LoanPartyReturnInDetailListViewModel.Sum(x=>x.Qty)</td>
+                                                                            <td colspan="3">Total Balance:@detail.ChemicalDilutionDetailListViewModel.Sum(x=>x.Qty)</td>
+
+
+                                                                            </tr>                }            }
+
+
+
+
+
+            </tbody>
+        </table>
+    </div>*@
+
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+<div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+    <p>@Model.FirstOrDefault().CompanyBranch</p>
+</div>}
+        </div>
+        <div class="text-center" style=" line-height:10px;float:right">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                C-3
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div>
+                    <br />
+
+                    <div class="table-responsive">
+
+
+                        <table class="table table-responsive borders">
+                            <thead>
+
+                                <tr class="report-detailheader">
+                                    <td colspan="2">Dye/Chmical</td>
+                                    <td colspan="4">Inter Unit Out</td>
+                                    <td colspan="4">Loan Taken Return Out</td>
+                                    <td colspan="4">Issuance To Yarn Dyeing</td>
+                                    <td colspan="4">Loan Party Given Out</td>
+                                    <td colspan="4">Store Return Note</td>
+                                    <td colspan="4">Chemical Dilution</td>
+                                    <td colspan="4">General Consumption</td>
+                                    <td colspan="4">Issuance To Fabric Dyeing</td>
+                                </tr>
+
+
+
+
+
+                                <tr class="report-detailSubheader">
+                                    <td colspan="2"></td>
+                                    <td>OGP NO</td>
+                                    <td>Date</td>
+                                    <td>Qty</td>
+                                    <td>Amount</td>
+
+                                    <td>OGP No</td>
+                                    <td>Date</td>
+                                    <td>Qty</td>
+                                    <td>Amount</td>
+
+                                    <td>IOGP NO</td>
+                                    <td>Date</td>
+                                    <td>Qty</td>
+                                    <td>Amount</td>
+
+                                    <td>OGP No</td>
+                                    <td>Date</td>
+                                    <td>Qty</td>
+                                    <td>Amount</td>
+
+                                    <td>OGP No</td>
+                                    <td>Date</td>
+                                    <td>Qty</td>
+                                    <td>Amount</td>
+
+                                    <td> OGP No</td>
+                                    <td>Date</td>
+                                    <td>Qty</td>
+                                    <td>Amount</td>
+                                    <td> OGP No</td>
+                                    <td>Date</td>
+                                    <td>Qty</td>
+                                    <td>Amount</td>
+
+                                    <td> OGP No</td>
+                                    <td>Date</td>
+                                    <td>Qty</td>
+                                    <td>Amount</td>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+
+                                @foreach (var detail in Model)
+                                {
+
+                                    @if (detail.ChemicalDilutionDetailListViewModel.Count() > 0 || detail.ChemicalIssuanceDetailListViewModels.Count() > 0 || detail.GeneralConsumptionDetailListViewModel.Count() > 0 || detail.StoreReturnNoteDetailListViewModels.Count() > 0 || detail.LoanTakenOutDetailListViewModels.Count() > 0 || detail.LoanPartyGivenOutDetailListViewModels.Count() > 0 || detail.InterUnitOutDetailListViewModels.Count() > 0)
+                                    {
+                                        <tr class="report-detail">
+                                            <td colspan="20"> @detail.Item</td>
+
+                                        </tr>
+
+
+                                        @for (int c = 0; c < detail.rowcount; c++)
+                                        {
+                                            <tr class="report-detail">
+                                                <td colspan="2"></td>
+
+                                                @if (detail.c1 > c)
+                                                {
+                                                    <td>@detail.InterUnitOutDetailListViewModels[c].No</td>
+                                                    <td>@detail.InterUnitOutDetailListViewModels[c].Date.ToString("dd-MMM-yyyy")</td>
+                                                    <td>@detail.InterUnitOutDetailListViewModels[c].Qty.ToString("#,0.00")</td>
+
+                                                    @if (@detail.InterUnitOutDetailListViewModels[c].Rate == 0)
+                                                    {
+                                                        <td>Calculte Rate</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@detail.InterUnitOutDetailListViewModels[c].Amount.ToString("#,0.00")</td>
+                                                    } @*<td>
+
+                                                        @{var a = detail.OpeningDetailListViewModel[c].Qty * detail.OpeningDetailListViewModel[c].Rate;} @a.ToString("#,0.00") *@ }
+
+
+                                                else
+                                                {
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                }
+                                                @if (detail.c2 > c)
+                                                {
+                                                    <td>@detail.LoanTakenOutDetailListViewModels[c].No</td>
+                                                    <td>@detail.LoanTakenOutDetailListViewModels[c].Date.ToString("dd-MMM-yyyy")</td>
+                                                    <td>@detail.LoanTakenOutDetailListViewModels[c].Qty.ToString("#,0.00")</td>
+
+
+                                                    @if (@detail.LoanTakenOutDetailListViewModels[c].Rate == 0)
+                                                    {
+                                                        <td>Rate not Set</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@detail.LoanTakenOutDetailListViewModels[c].Amount.ToString("#,0.00")</td>
+                                                    } @*<td>
+
+                                                            @{var q = detail.LCImportDetailListViewModel[c].Qty * detail.LCImportDetailListViewModel[c].Rate;} @q.ToString("#,0.00")
+
+                                                        </td>*@ }
+                                                else
+                                                {
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                }
+
+                                                @if (detail.c3 > c)
+                                                {
+                                                    <td>@detail.ChemicalIssuanceDetailListViewModels[c].No</td>
+                                                    <td>@detail.ChemicalIssuanceDetailListViewModels[c].Date.ToString("dd-MMM-yyyy")</td>
+                                                    <td>@detail.ChemicalIssuanceDetailListViewModels[c].Qty.ToString("#,0.00")</td>
+
+
+
+
+
+                                                    @if (@detail.ChemicalIssuanceDetailListViewModels[c].Rate == 0)
+                                                    {
+                                                        <td>Rate not Set</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@detail.ChemicalIssuanceDetailListViewModels[c].Amount.ToString("#,0.00")</td>
+                                                    } @*<td>
+
+                                                            @{var w = detail.LocalPurchaseDetailListViewModel[c].Qty * detail.LocalPurchaseDetailListViewModel[c].Rate;} @w.ToString("#,0.00")
+
+                                                        </td>*@ }
+                                                else
+                                                {
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                }
+                                                @if (detail.c4 > c)
+                                                {
+                                                    <td>@detail.LoanPartyGivenOutDetailListViewModels[c].No</td>
+                                                    <td>@detail.LoanPartyGivenOutDetailListViewModels[c].Date.ToString("dd-MMM-yyyy")</td>
+                                                    <td>@detail.LoanPartyGivenOutDetailListViewModels[c].Qty.ToString("#,0.00")</td>
+                                                    @if (@detail.LoanPartyGivenOutDetailListViewModels[c].Rate == 0)
+                                                    {
+                                                        <td>Rate not Set</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@detail.LoanPartyGivenOutDetailListViewModels[c].Amount.ToString("#,0.00")</td>
+                                                    } @*<td>
+
+                                                            @{var r = detail.LoanTakenInDetailListViewModel[c].Qty * detail.LoanTakenInDetailListViewModel[c].Rate;} @r.ToString("#,0.00")
+
+                                                        </td>*@ }
+                                                else
+                                                {
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                }
+
+                                                @if (detail.c5 > c)
+                                                {
+                                                    <td>@detail.StoreReturnNoteDetailListViewModels[c].No</td>
+                                                    <td>@detail.StoreReturnNoteDetailListViewModels[c].Date.ToString("dd-MMM-yyyy")</td>
+                                                    <td>@detail.StoreReturnNoteDetailListViewModels[c].Qty.ToString("#,0.00")</td>
+
+
+
+                                                    @if (@detail.StoreReturnNoteDetailListViewModels[c].Rate == 0)
+                                                    {
+                                                        <td>Rate not Set</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@detail.StoreReturnNoteDetailListViewModels[c].Amount.ToString("#,0.00")</td>
+                                                    } @*<td>
+
+                                                            @{var e = detail.LoanPartyReturnInDetailListViewModel[c].Qty * detail.LoanPartyReturnInDetailListViewModel[c].Rate;} @e.ToString("#,0.00")
+
+                                                        </td>*@ }
+                                                else
+                                                {
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td></td>
+                                                }
+                                                @if (detail.c6 > c)
+                                                {
+                                                    <td>@detail.ChemicalDilutionDetailListViewModel[c].No</td>
+                                                    <td>@detail.ChemicalDilutionDetailListViewModel[c].Date.ToString("dd-MMM-yyyy")</td>
+                                                    <td>@detail.ChemicalDilutionDetailListViewModel[c].Qty.ToString("#,0.00")</td>
+                                                    @if (@detail.ChemicalDilutionDetailListViewModel[c].Rate == 0)
+                                                    {
+                                                        <td>Rate not Set</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@detail.ChemicalDilutionDetailListViewModel[c].Amount.ToString("#,0.00")</td>
+                                                    } @*<td>
+
+                                                            @{var y = detail.ChemicalDilutionDetailListViewModel[c].Qty * detail.ChemicalDilutionDetailListViewModel[c].Rate;} @y.ToString("#,0.00")
+
+                                                        </td>*@ }
+                                                else
+                                                {
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                }
+
+                                                @if (detail.c7 > c)
+                                                {
+                                                    <td>@detail.GeneralConsumptionDetailListViewModel[c].No</td>
+                                                    <td>@detail.GeneralConsumptionDetailListViewModel[c].Date.ToString("dd-MMM-yyyy")</td>
+                                                    <td>@detail.GeneralConsumptionDetailListViewModel[c].Qty.ToString("#,0.00")</td>
+                                                    @if (@detail.GeneralConsumptionDetailListViewModel[c].Rate == 0)
+                                                    {
+                                                        <td>Rate not Set</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@detail.GeneralConsumptionDetailListViewModel[c].Amount.ToString("#,0.00")</td>
+                                                    } @*<td>
+
+                                                            @{var y = detail.ChemicalDilutionDetailListViewModel[c].Qty * detail.ChemicalDilutionDetailListViewModel[c].Rate;} @y.ToString("#,0.00")
+
+                                                        </td>*@ }
+                                                else
+                                                {
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                }
+
+                                                @if (detail.c8 > c)
+                                                {
+                                                    <td>@detail.ChemicalIssuanceCKL6DetailListViewModel[c].No</td>
+                                                    <td>@detail.ChemicalIssuanceCKL6DetailListViewModel[c].Date.ToString("dd-MMM-yyyy")</td>
+                                                    <td>@detail.ChemicalIssuanceCKL6DetailListViewModel[c].Qty.ToString("#,0.00")</td>
+                                                    @if (@detail.ChemicalIssuanceCKL6DetailListViewModel[c].Rate == 0)
+                                                    {
+                                                        <td>Rate not Set</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@detail.ChemicalIssuanceCKL6DetailListViewModel[c].Amount.ToString("#,0.00")</td>
+                                                    } @*<td>
+
+                                                            @{var y = detail.ChemicalDilutionDetailListViewModel[c].Qty * detail.ChemicalDilutionDetailListViewModel[c].Rate;} @y.ToString("#,0.00")
+
+                                                        </td>*@ }
+                                                else
+                                                {
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                }
+
+                                            </tr>
+                                        }
+                                        <tr class="report-detail-footer ">
+                                            <td colspan="2"></td>
+                                            @if (@detail.InterUnitOutDetailListViewModels.Sum(x => x.Qty) > 0)
+                                            {
+
+
+                                                <td colspan="2">Total Balance:</td>
+                                                <td>@detail.InterUnitOutDetailListViewModels.Sum(x => x.Qty).ToString("#,0.00")</td>
+                                                <td>@detail.InterUnitOutDetailListViewModels.Sum(x => x.Amount).ToString("#,0.00")</td>
+                                            }
+                                            else
+                                            {
+                                                <td colspan="4"></td>
+                                            }  @if (@detail.LoanTakenOutDetailListViewModels.Sum(x => x.Qty) > 0)
+                                            {
+                                                <td colspan="2">Total Balance:</td>
+                                                <td>@detail.LoanTakenOutDetailListViewModels.Sum(x => x.Qty).ToString("#,0.00")</td>
+                                                <td>@detail.LoanTakenOutDetailListViewModels.Sum(x => x.Amount).ToString("#,0.00")</td>
+                                            }
+                                            else
+                                            {
+                                                <td colspan="4"></td>
+                                            }  @if (@detail.ChemicalIssuanceDetailListViewModels.Sum(x => x.Qty) > 0)
+                                            {
+                                                <td colspan="2">Total Balance:</td>
+                                                <td>@detail.ChemicalIssuanceDetailListViewModels.Sum(x => x.Qty).ToString("#,0.00")</td>
+                                                <td>@detail.ChemicalIssuanceDetailListViewModels.Sum(x => x.Amount).ToString("#,0.00")</td>
+                                            }
+                                            else
+                                            {
+                                                <td colspan="4"></td>
+                                            }  @if (@detail.LoanPartyGivenOutDetailListViewModels.Sum(x => x.Qty) > 0)
+                                            {
+                                                <td colspan="2">Total Balance:</td>
+                                                <td>@detail.LoanPartyGivenOutDetailListViewModels.Sum(x => x.Qty).ToString("#,0.00")</td>
+                                                <td>@detail.LoanPartyGivenOutDetailListViewModels.Sum(x => x.Amount).ToString("#,0.00")</td>
+                                            }
+                                            else
+                                            {
+                                                <td colspan="4"></td>
+                                            }  @if (@detail.StoreReturnNoteDetailListViewModels.Sum(x => x.Qty) > 0)
+                                            {
+                                                <td colspan="2">Total Balance:</td>
+                                                <td>@detail.StoreReturnNoteDetailListViewModels.Sum(x => x.Qty).ToString("#,0.00")</td>
+                                                <td>@detail.StoreReturnNoteDetailListViewModels.Sum(x => x.Amount).ToString("#,0.00")</td>
+                                            }
+                                            else
+                                            {
+                                                <td colspan="4"></td>
+                                            }  @if (@detail.ChemicalDilutionDetailListViewModel.Sum(x => x.Qty) > 0)
+                                            {
+                                                <td colspan="2">Total Balance:</td>
+                                                <td>@detail.ChemicalDilutionDetailListViewModel.Sum(x => x.Qty).ToString("#,0.00")</td>
+                                                <td>@detail.ChemicalDilutionDetailListViewModel.Sum(x => x.Amount).ToString("#,0.00")</td>
+                                            }
+                                            else
+                                            {
+                                                <td colspan="4"></td>
+                                            }
+
+                                            @if (@detail.GeneralConsumptionDetailListViewModel.Sum(x => x.Qty) > 0)
+                                            {
+                                                <td colspan="2">Total Balance:</td>
+                                                <td>@detail.GeneralConsumptionDetailListViewModel.Sum(x => x.Qty).ToString("#,0.00")</td>
+                                                <td>@detail.GeneralConsumptionDetailListViewModel.Sum(x => x.Amount).ToString("#,0.00")</td>
+                                            }
+                                            else
+                                            {
+                                                <td colspan="4"></td>
+                                            }
+                                            @if (@detail.ChemicalIssuanceCKL6DetailListViewModel.Sum(x => x.Qty) > 0)
+                                            {
+                                                <td colspan="2">Total Balance:</td>
+                                                <td>@detail.ChemicalIssuanceCKL6DetailListViewModel.Sum(x => x.Qty).ToString("#,0.00")</td>
+                                                <td>@detail.ChemicalIssuanceCKL6DetailListViewModel.Sum(x => x.Amount).ToString("#,0.00")</td>
+                                            }
+                                            else
+                                            {
+                                                <td colspan="4"></td>
+                                            }
+
+
+                                        </tr>
+                                    }}
+
+
+
+                            </tbody>
+                        </table>
+                    </div> }
+                else
+                { <h5>No Record Found</h5>}

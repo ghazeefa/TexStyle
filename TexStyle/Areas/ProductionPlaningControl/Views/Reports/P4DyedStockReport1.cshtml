@@ -1,0 +1,335 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.Reports.P3DailyProductionReportViewModel>
+@{
+    ViewData["Title"] = "Dyed Fabric Stock Report";
+    Layout = "_LayoutPrint";
+    decimal totalDyedKgs = 0;
+    decimal grouptotalDyedKgs = 0;
+    decimal grouptotalEcruKgs = 0;
+
+}
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+
+
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+                <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+                    <p>@Model.FirstOrDefault().CompanyBranch</p>
+                </div>}
+        </div>
+        <div class="text-center" style=" line-height:10px;float:right">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                D-4
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <div class="table-responsive">
+        <table class="table table-responsive">
+
+            <thead>
+
+                <tr class="report-detailheader">
+                    @*@if (Model.FirstOrDefault().Type == true)
+                        {*@
+
+                    <td style="line-height:30px; border:1px solid black">Buyer </td>
+                    @*else
+                                    {
+
+                        <td style="line-height:30px; border:1px solid black">LotNo </td>}*@
+
+                    <td style="line-height:30px; border:1px solid black">LPS</td>
+                    <td style="line-height:30px; border:1px solid black">PO.No</td>
+
+
+
+                    @*@if (Model.FirstOrDefault().Type == false)
+                            {
+
+                        <td style="line-height:30px; border:1px solid black">Buyer </td>
+                                    else
+                                    {*@
+
+                    <td style="line-height:30px; border:1px solid black">LotNo </td>
+
+
+
+
+                    <td style="line-height:30px; border:1px solid black">Shade</td>
+
+
+                    @if (Model.FirstOrDefault().Type == true)
+                    {
+                        <td style="line-height:30px; border:1px solid black; text-align:left">
+                            Yarn
+                        </td>
+                        <td style="line-height:30px; border:1px solid black">Dyed(Bags)</td>
+                    }
+
+                    else
+                    {
+
+                        <td style="line-height:30px; border:1px solid black" width="10%">
+                            Fabric Type
+                        </td>
+
+                        <td style="line-height:30px; border:1px solid black" width="10%">
+                            Dia
+                        </td>
+
+                        <td style="line-height:30px; border:1px solid black" width="10%">
+                            GSM
+                        </td>
+                    }
+                    <td style="line-height:30px; border:1px solid black">Ecru(Kgs)</td>
+                    <td style="line-height:30px; border:1px solid black">Dyed(Kgs)</td>
+
+                    <td style="line-height:30px; border:1px solid black" width="10%">Production Date</td>
+                    @if (Model.FirstOrDefault().Type == true)
+                    {
+                        <td style="line-height:30px; border:1px solid black">Loss%</td>
+                    }
+                    <td style="line-height:30px; border:1px solid black">Remarks</td>
+                    <td style="line-height:30px; border:1px solid black"></td>
+
+                    @if (Model.FirstOrDefault().Type == false)
+                    {
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    }
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    @if (Model.Count() > 0)
+                    {
+                        foreach (var grp in Model)
+                        {
+
+
+                            <tr style="font-family:serif">
+
+                                @*@if (Model.FirstOrDefault().Type == false)
+                                    {
+                                        <td colspan="13">
+                                            <strong>@grp.LotNo</strong>
+                                        </td>
+
+                                    }
+
+                                    else
+                                    {*@
+
+
+                                <td colspan="13">
+                                    <strong>@grp.Buyer</strong>
+                                </td>
+
+
+
+
+                            </tr>
+                            foreach (var item in grp.LPSDetail)
+                            {
+
+                                <tr style="line-height:10px;  font-family:'Times New Roman'; ">
+                                    <td></td>
+                                    <td>@item.LPSNo</td>
+
+
+
+
+                                    <td>@item.PurchaseOrderNo</td>
+
+                                    @*@if (item.IsYarn == true)
+                                        {*@
+                                    <td>@item.LotNo</td>
+                                    @*else
+                                                                    {
+                                        <td>@item.Buyer</td>}*@
+
+                                    @*<td>@item.Buyer</td>*@
+                                    <td style="text-align:center">@item.Shade</td>
+                                    @if (item.IsYarn == true)
+                                    {
+                                        <td style="text-align:left">
+                                            @item.YarnType &nbsp; @item.YarnQuality
+                                        </td>
+                                        <td>@item.DyedBags</td>
+                                    }
+
+                                    else
+                                    {
+
+                                        <td>
+                                            @item.FabricType
+                                        </td>
+
+                                        <td style="text-align:center">
+                                            @item.Dia
+                                        </td>
+
+                                        <td style="text-align:center">
+                                            @item.GSM
+                                        </td>
+                                    }
+                                    <td>@item.EcruKgs</td>
+
+                                    <td>@item.DyeKgs</td>
+
+                                    <td>@item.IssuedDate.Value.ToShortDateString()</td>
+
+                                    @if (item.IsYarn == true)
+                                    {
+                                        <td>@item.Loss</td>
+                                    }
+
+                                    <td>@item.Status</td>
+                                    <td></td>
+                                    @if (item.IsYarn == false)
+                                    {
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    }
+
+
+
+                                </tr>
+
+                                grouptotalDyedKgs = grouptotalDyedKgs + item.DyeKgs ?? 0;
+                                grouptotalEcruKgs = grouptotalEcruKgs + item.EcruKgs ?? 0;
+                            }
+
+                            <tr style="line-height:30px;">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                @if (grp.Type == false)
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                                @if (grp.Type == true)
+                                {
+                                    <td style="background-color:lightgray;line-height:30px; font-family:serif">
+
+                                        <strong>
+                                            @*@grp.DayedBagsSum*@
+                                            @grouptotalDyedKgs
+                                        </strong>
+                                    </td>
+                                }
+                                <td style="background-color:lightgray;line-height:30px;  font-family:serif">
+                                    <strong>
+                                        @*@grp.KgSum*@
+                                        @grouptotalEcruKgs
+                                    </strong>
+                                </td>
+
+                                @if (grp.Type == true)
+                                {
+                                    <td style="background-color:lightgray;line-height:30px; font-family:serif">
+                                        <strong>
+                                            @*@grp.DayedKgSum*@
+                                            @grouptotalDyedKgs
+                                        </strong>
+                                    </td>
+                                }
+
+
+                                @if (grp.Type == false)
+                                {
+                                    <td style="background-color:lightgray;line-height:30px; font-family:serif">
+                                        <strong>
+                                            @grp.TotalWeight
+                                            @*@grouptotalDyedKgs*@
+                                        </strong>
+                                    </td>
+                                    <td>
+                                    </td>
+
+                                    @*<td style="background-color:lightgray;line-height:30px; border:1px solid black; font-family:serif">
+                                            <strong>
+                                                @grp.Loss.ToString("0.00")
+                                            </strong>
+                                        </td>*@
+                                    <td></td>
+                                }
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                            <tr></tr>
+                            <tr></tr>
+                            <tr></tr>
+
+                            totalDyedKgs = totalDyedKgs + grouptotalDyedKgs;
+                            grouptotalDyedKgs = 0;
+                            grouptotalEcruKgs = 0;
+
+                        }
+
+                        <tr style="font-size: 18px; font-weight: bold; background-color: lightgray;">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2">Total KGs: </td>
+                            <td>@totalDyedKgs</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+}
+else
+{
+    <h3><center>       There is no record in selected Filter   </center> </h3>
+}

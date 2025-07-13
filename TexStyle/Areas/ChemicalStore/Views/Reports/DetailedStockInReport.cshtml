@@ -1,0 +1,209 @@
+﻿@model IEnumerable<TexStyle.ViewModels.CS.Reports.StockDetailIn_C2ViewModel>
+@{ ViewData["Title"] = "Detailed Stock Out Report";
+                Layout = "_LayoutPrint"; }
+<div class="container">
+    <div class="row">
+        <div class="col-1 report-numberheading">C-8</div>
+        <div class="col-11"></div>
+    </div>
+    <div class="row">
+        <div class="col-12 report-header1">
+
+            @Model.FirstOrDefault().CompanyName
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 report-header2">
+            @ViewData["Title"]
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 report-header3">
+            DATE FROM: @Model.FirstOrDefault().DateFrom TO: @Model.FirstOrDefault().DateTo
+        </div>
+
+    </div>
+</div>
+<div class="table-responsive">
+
+
+    <table class="table table-responsive">
+        <thead>
+
+            <tr class="report-detailheader">
+                <th colspan="2">Dye/Chmical</th>
+                <th colspan="3">Openining Balance </th>
+                <th colspan="3">LC Import</th>
+                <th colspan="3">Local Purchase</th>
+                <th colspan="3">Loan Taken In</th>
+                <th colspan="3">Loan Party Return In</th>
+                <th colspan="3">Chemical Dilution</th>
+            </tr>
+            <tr class="report-detailSubheader">
+                <td colspan="2"></td>
+                <td>OGP No</td>
+                <td>Date</td>
+                <td>Qty</td>
+                <td>OGP No</td>
+                <td>Date</td>
+                <td>Qty</td>
+                <td>Issuance No</td>
+                <td>Date</td>
+                <td>Qty</td>
+                <td>OGP No</td>
+                <td>Date</td>
+                <td>Qty</td>
+                <td>OGP No</td>
+                <td>Date</td>
+                <td>Qty</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+
+            @*<tr>
+
+            <th scope="col" width="7%" class="table-active report-numberheading">C-3</th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+            <th scope="col" width="7%"></th>
+
+
+        </tr>*@
+        </thead>
+        <tbody>
+
+            @*<tr>
+                    <td class="report-header1" colspan="20">@Model.FirstOrDefault().CompanyName </td>
+                    <td class="report-header1" colspan="14">COMFORT KNITWEARS PVT </td>
+                </tr>
+
+                <tr>
+                    <td class="report-header2" colspan="20">@ViewData["Title"] </td>
+                </tr>
+
+                <tr>
+                    <td class="report-header3" colspan="20">DATE FROM: @Model.FirstOrDefault().DateFrom TO: @Model.FirstOrDefault().DateTo</td>
+
+                    <td class="report-header3" colspan="14">DATE FROM: 2020-01-01 TO: 2020-02-29</td>
+                </tr>*@
+            @*<tr>
+                <td colspan="20"> </td>
+            </tr>
+            <tr>
+                <td colspan="20"> </td>
+            </tr>
+            <tr class="report-detailheader">
+                <td colspan="2">Dye/Chmical</td>
+                <td colspan="3">Openining Balance </td>
+                <td colspan="3">LC Import</td>
+                <td colspan="3">Local Purchase</td>
+                <td colspan="3">Loan Taken In</td>
+                <td colspan="3">Loan Party Return In</td>
+                <td colspan="3">Chemical Dilution</td>
+            </tr>*@
+            
+
+            @if (Model.Count() > 0)
+            {
+@foreach (var detail in Model)
+{
+@if (detail.StockDetailIn1_C2ViewModels.FirstOrDefault().DilutionQty != null && detail.StockDetailIn1_C2ViewModels.FirstOrDefault().OpeningQty != null && detail.StockDetailIn1_C2ViewModels.FirstOrDefault().LCImportQty != null && detail.StockDetailIn1_C2ViewModels.FirstOrDefault().LoanPartyInQty != null && detail.StockDetailIn1_C2ViewModels.FirstOrDefault().LoanTakenInQty != null && detail.StockDetailIn1_C2ViewModels.FirstOrDefault().LocalPurchaseQty != null)
+{
+
+}
+                    <tr>
+                        <td colspan="2">@detail.Name </td>
+                        <td colspan="18"></td>
+
+                    </tr>
+
+                                        @foreach (var d in detail.StockDetailIn1_C2ViewModels)
+                                        {
+                    <tr>
+                        <td colspan="2"></td>
+                        <td>@d.OpeningNo</td>
+                        <td>
+                            @if (d.OpeningDate != null)
+                            {@d.OpeningDate.Value.ToShortDateString()}
+                        </td>
+                        <td>
+                            @if (d.OpeningQty != null)
+                            {@Math.Round(d.OpeningQty.Value, 2)}
+                        </td>
+                        <td>@d.LCImportNo</td>
+                        <td>
+                            @if (d.LCImportDate != null)
+                            {@d.LCImportDate.Value.ToShortDateString()}
+                        </td>
+                        <td>
+                            @if (d.LCImportQty != null)
+                            {@Math.Round(@d.LCImportQty.Value, 2)}
+                        </td>
+                        <td>@d.LocalPurchaseNo</td>
+                        <td>
+                            @if (d.LocalPurchaseDate != null)
+                            {@d.LocalPurchaseDate.Value.ToShortDateString()}
+                        </td>
+                        <td>
+                            @if (d.LocalPurchaseQty != null)
+                            {@d.LocalPurchaseQty}
+                        </td>
+                        <td>@d.LoanTakenInNo</td>
+                        <td>
+                            @if (d.LoanTakenInDate != null)
+                            {@d.LoanTakenInDate.Value.ToShortDateString()}
+                        </td>
+                        <td>
+                            @if (d.LoanTakenInQty != null)
+                            {@Math.Round(@d.LoanTakenInQty.Value, 2)}
+                        </td>
+                        <td>@d.LoanPartyInNo</td>
+                        <td>
+                            @if (d.LoanPartyInDate != null)
+                            {@d.LoanPartyInDate.Value.ToShortDateString()}
+                        </td>
+                        <td>
+                            @if (d.LoanPartyInQty != null)
+                            {@Math.Round(@d.LoanPartyInQty.Value, 2)}
+                        </td>
+                        <td>@d.DilutionNo</td>
+                        <td>
+                            @if (d.DilutionDate != null)
+                            {@d.DilutionDate.Value.ToShortDateString()}
+                        </td>
+                        <td>
+                            @if (d.DilutionQty != null)
+                            {@Math.Round(@d.DilutionQty.Value, 2)}
+                        </td>
+                    </tr>}                }            }
+
+
+
+
+
+
+        </tbody>
+    </table>
+</div>
+

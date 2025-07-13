@@ -1,0 +1,77 @@
+﻿@model IEnumerable<TexStyle.ViewModels.CS.Reports.LoanTakenInOutC_4ViewModel>
+@{ ViewData["Title"] = "Loan Taken-IN Report";
+    Layout = "_LayoutPrint"; }
+
+@if (Model.Count() > 0)
+{
+
+<div class="container">
+    <div class="text-center" style=" line-height:16px;">
+        <div style="text-align:end; font-weight:bold; font-size:22px;">
+            <p>@Model.FirstOrDefault().CompanyName</p>
+        </div>
+        @if (Model.FirstOrDefault().CompanyBranch != null)
+        {
+<div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+    <p>@Model.FirstOrDefault().CompanyBranch</p>
+</div>}
+    </div>
+    <div class="text-center" style=" line-height:10px;float:right">
+        <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            Report No.
+        </div>
+        <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            C-4
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="w-100 text-center" style="margin-top:-110px">
+            <h4>@ViewData["Title"]</h4>
+            Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+        </div>
+    </div>
+
+</div>
+                <br />
+
+                                <table style="width:100%">
+                                    <thead>
+                                        <tr class="report-detailheader">
+                                            <th>Date</th>
+                                            <th>Dye/Chemical</th>
+                                            <th>IGP</th>
+                                            <th>Qty</th>
+                                            <th colspan="3"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var detail in Model)
+                                        {
+                        <tr class="report-detail">
+                            <td> @detail.Date.ToShortDateString()</td>
+                            <td> @detail.Item</td>
+                            <td> @detail.IGPNo</td>
+                            <td> @detail.Qty</td>
+                            <td colspan="3"> </td>
+                        </tr>
+                                            <tr>
+                                                <td colspan="4"></td>
+                                                <td class="report-Subdetailheader">Date </td>
+                                                <td class="report-Subdetailheader">OGP No </td>
+                                                <td class="report-Subdetailheader">Qty</td>
+                                            </tr>
+                                                                @foreach (var d in detail.OGP_IGPDetailListViewModel)
+                                                                {
+                                            <tr class="report-detail">
+                                                <td colspan="4"></td>
+                                                <td>@d.Date?.ToShortDateString()</td>
+                                                <td>@d.No</td>
+                                                <td>@d.Qty</td>
+                                            </tr>
+}}
+                                    </tbody>
+                                </table>}
+
+
+

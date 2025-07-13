@@ -1,0 +1,106 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.Reports.P6YarnDespatchedViewModel>
+@{
+    ViewData["Title"] = "Despatched Summary Report";
+    Layout = "_LayoutPrint";
+
+}
+
+<div class="table-responsive">
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+
+                <th scope="col" width="10%" class="table-active report-numberheading">P-6</th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+                <th scope="col" width="10%"></th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="report-header1" colspan="10">@Model.FirstOrDefault().CompanyName </td>
+            </tr>
+
+            <tr>
+                <td class="report-header2" colspan="10">@ViewData["Title"] </td>
+            </tr>
+
+            <tr>
+                <td class="report-header3" colspan="10">DATE FROM: @Model.FirstOrDefault().DateFrom TO: @Model.FirstOrDefault().DateTo</td>
+            </tr>
+            <tr>
+                <td colspan="10"> </td>
+            </tr>
+            <tr>
+                <td colspan="10"> </td>
+            </tr>
+            <tr class="report-detailheader">
+                <td>Date</td>
+                <td>Party</td>
+                <td>OGP.No</td>
+                <td>LPS No</td>
+                <td>Lot No</td>
+                <td>Shade</td>
+                <td>Y.Type</td>
+                <td>Y.Quality</td>
+                <td>Net Kgs</td>
+                <td></td>
+
+
+            </tr>
+            @if (Model.Count() > 0)
+            {
+                foreach (var grp in Model)
+                {
+                    <tr>
+                        <td colspan="14">
+
+                            <strong>@grp.Date</strong>
+                        </td>
+                    </tr>
+                    foreach (var item in grp.YarnDespatchedDetail)
+                    {
+                        <tr>
+                            <td></td>
+                            <td>@item.Party</td>
+                            <td>@item.No</td>
+                            <td>@item.LpsNo</td>
+                            <td>@item.LotNo</td>
+                            <td>@item.Color</td>
+                            <td>@item.YarnType</td>
+                            <td>@item.YarnQuality</td>
+                            <td>@item.NetKgs</td>
+                            <td>-</td>
+
+
+                        </tr>
+                    }
+
+
+                    <tr>
+                        <td colspan="8"></td>
+                        <td class="report-Subdetailheader">@grp.Total</td>
+                        <td colspan="1"></td>
+
+                    </tr>
+
+
+                }
+
+
+            }
+
+
+        </tbody>
+    </table>
+</div>
+

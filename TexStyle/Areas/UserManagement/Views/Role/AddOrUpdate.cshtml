@@ -1,0 +1,94 @@
+﻿@model TexStyle.Identity.Extensions.DTO.AccountRole
+
+@{
+    ViewBag.Title = "Roles";
+    List<TexStyle.ViewModels.ClaimModuleViewModel> permissionsList = ViewBag.permissionsLST;
+
+    //List<SelectListItem> rolesList = ViewBag.RoleList;
+    //var rolesListSl = new SelectListItemViewModel {
+    //    Name = "Role",
+    //    PlaceHolder = "Select Role",
+    //    UseDefault = false,
+    //    SelectList = rolesList
+    //};
+
+}
+
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Manage Roles</h5>
+                @*<span class="text-danger">@Html.ValidationSummary()</span>*@
+                <span asp-validation-summary="ModelOnly" class="text-danger"></span>
+            </div>
+            <div class="card-block">
+                <form asp-area="UserManagement" asp-controller="Role" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+
+                    @Html.HiddenFor(m => m.Id)
+                    <div class="row">
+                        <div class="form-group col-12">
+                            @Html.LabelFor(m => m.Name)
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="row mt-2 mb-3">
+                        <div class="col-12">
+                            <h5>Permissions (@(permissionsList.Count()*5))</h5>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        @foreach (var vm in permissionsList) {
+                            <div class="col-sm-4 col-xl-4 m-b-20  p-3">
+                                <h4 class="sub-title text-info">@vm.ModuleName</h4>
+                                <div class="border-checkbox-section">
+                                    <div class="row">
+                                        @foreach (var p in vm.ClaimsSelectList) {
+                                            var name = $"check_{@p.Text}";
+                                            <div class="col-6 border-checkbox-group border-checkbox-group-primary">
+                                                <input class="border-checkbox" type="checkbox" id="@name" name="@name" @{var chcked = p.Selected == true ? "checked" : ""; } @chcked>
+                                                <label class="border-checkbox-label" for="@name"> @p.Text.Split('.').Last().Replace("_"," ")</label>
+                                            </div>
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="card-footer justify-content-end" style="display:flex;">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+
+    </script>
+}
+
+@*<form asp-area="Admin" asp-controller="ManageRole" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+        <div class="form-horizontal">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(m => m.Id)
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+</form>*@

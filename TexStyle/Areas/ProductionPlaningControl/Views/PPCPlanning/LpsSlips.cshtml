@@ -1,0 +1,88 @@
+﻿@model TexStyle.Core.PPC.PPCPlanning
+@{
+    ViewData["Title"] = "Lps Slips";
+
+    var noData = "No Data Available";
+    var filter = ViewBag.filter;
+}
+<div class="card user-activity-card">
+    <div class="card-header d-flex justify-content-between align-items-center no-print">
+        @*     <h5>IGP Report</h5>*@
+        <button class="btn btn-sm btn-info pull-right" onclick="window.print()"><i class="ti-printer"></i></button>
+    </div>
+    <div class="card-block">
+        <div class="row">
+            @for (int i = 0; i < 6; i++) {
+                <div class="col-4 p-15">
+                    <p class="row my-0" style="margin: 15px 0px;padding: 10px;border: 2px dashed #c7c7c7; font-size:x-small">
+                        <strong class="col-6">Lps No : </strong>
+                        <span class="col-6">@Model.Id</span>
+
+                        <strong class="col-6">Lot No : </strong>
+                        <span class="col-6">@Model.LotNo</span>
+
+                        <strong class="col-6">Issue Date : </strong>
+                        <span class="col-6">@Model.IssuedDate.ToString("dd-MMM-yyyy")</span>
+
+                        <strong class="col-6">Activity : </strong>
+                        <span class="col-6">@Model.ProductionType?.Name</span>
+
+                        <strong class="col-6">PO NO : </strong>
+                        <span class="col-6">@Model.PurchaseOrder?.Po</span>
+
+                        <strong class="col-6">Party : </strong>
+                        <span class="col-6">@Model.BuyerColor?.Buyer?.Party?.Name</span>
+
+                        <strong class="col-6">Buyer : </strong>
+                        <span class="col-6">@Model.BuyerColor?.Buyer?.Name</span>
+
+                        <strong class="col-6">Shade : </strong>
+                        <span class="col-6">@Model.BuyerColor?.Name</span>
+                        @if (filter.IsYarn == true)
+                        {<strong class="col-6">Yarn Count : </strong>
+                            <span class="col-6">@Model.YarnType?.Name</span>
+
+                            <strong class="col-6">Yarn Quality : </strong>
+                            <span class="col-6">@Model.YarnQuality?.Name</span>
+
+                            <strong class="col-6">Manufacturer : </strong>
+                            <span class="col-6">@Model.YarnManufacturer?.Name</span>
+
+                            <strong class="col-6">Cones : </strong>
+                            <span class="col-6">@Model.Cones</span>
+
+                        }
+                        else
+                        {
+
+                            <strong class="col-6">Fabric Type : </strong>
+                            <span class="col-6">@Model.FabricType?.Name</span>
+
+                            @*<strong class="col-6">Fabric Quality : </strong>*@
+                            @*<span class="col-6">@Model.FabricQuality?.Name</span>*@
+
+                            <strong class="col-6">Knitter : </strong>
+                            <span class="col-6">@Model.knittingParty?.Name</span>
+
+                            <strong class="col-6">NoofRolls : </strong>
+                            <span class="col-6">@Model.NoOfRolls</span>
+                            <strong class="col-6">Dia : </strong>
+                            <span class="col-6">@Model.Dia</span>
+                            <strong class="col-6">GSM : </strong>
+                            <span class="col-6">@Model.GSM</span>
+
+                        }
+
+
+
+                        <strong class="col-6">Kgs : </strong>
+                        <span class="col-6">@Model.Kgs</span>
+
+                        <strong class="col-6">Remarks : </strong>
+                        <span class="col-6">@Model.Remarks</span>
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

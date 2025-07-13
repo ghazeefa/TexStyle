@@ -1,0 +1,58 @@
+﻿@model TexStyle.Core.PPC.IssueNote
+@{
+//var issueType = IssueTypes.IssueTypeList.Single(i => i.Id == Model.IssueTypeId);
+
+//var title = $"{issue.Name}";
+}
+
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          @*<h5>@title Details</h5>*@
+            @*<button href="#@(AddOrUpdateAction)?igpId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?igpId=@(Model.Id)" data-title="Create @title">ADD NEW</button>*@
+        </div>
+        <div class="card-block">
+            <div class="dt-responsive table-responsive">
+                <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="">
+                        <div class="col-xs-12 col-sm-12 m-dT">
+                            @*dataTable*@
+                            <table id="IGPDetailsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc">Issue Id</th>
+                                        <th class="sorting">Bags</th>
+                                        <th class="sorting">Kgs</th>
+                                        <th class="sorting">Store Location</th>
+                                        <th class="sorting">Yarn Type</th>
+                                        <th class="sorting">Yarn Quality</th>
+                                        @*<th class="sorting">Yarn Manufacturer</th>*@
+                                        <th class="sorting">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var i in Model.IssueNoteDetail)
+                                    {
+                                        <tr role="row">
+                                            <td class="sorting_1">@Model.Id</td>
+                                            <td class="sorting_1">@i.Bags</td>
+                                            <td class="sorting_1">@i.Kgs</td>
+                                            <td class="sorting_1">@i.StoreLocation?.Name <input type="hidden" name="@nameof(i.StoreLocationId)" value="@i.StoreLocationId" /> </td>
+                                            @*<td class="sorting_1">@i.YarnType?.Name <input type="hidden" name="@nameof(i.YarnTypeId)" value="@i.YarnTypeId" /></td>
+                                            <td class="sorting_1">@i.YarnQuality?.Name <input type="hidden" name="@nameof(i.YarnQualityId)" value="@i.YarnQualityId" /></td>*@
+                                         
+                                            <td style="width:150px;">
+                                              @*  <button type="button" class="btn btn-primary copy-js" data-action="#" data-title="Copy @title">Copy This</button>*@
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

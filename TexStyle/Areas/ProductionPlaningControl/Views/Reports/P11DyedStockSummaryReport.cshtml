@@ -1,0 +1,184 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.Reports.DyedStockSummary_P11ViewModal>
+
+@{
+    ViewData["Title"] = "Ecru Yarn Stock Report";
+    Layout = "_LayoutPrint";
+    var noData = "No Data Available";
+    var abc = @ViewBag.Message;
+}
+
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .borders > tbody > tr > td, .borders > thead > tr > td {
+        border: 1px solid black !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+@if (Model.Count() > 0)
+{
+
+
+    <div class="card user-activity-card">
+        @*<div class="card-header d-flex justify-content-between align-items-center no-print">
+                <button class="btn btn-sm btn-info " onclick="window.print()"><i class="ti-printer"></i></button>
+            </div>*@
+        <div class="row">
+            <div class="col-1 report-numberheading">P-10</div>
+            <div class="col-11"></div>
+        </div>
+        <div class="card-block">
+            <div class="w-100 text-center">
+                <h3>COMFORT KNITWEARS (PVT.) LTD. (YARN DYEING DIV.)</h3>
+
+
+                <h4>ECRU FABRIC STOCK SUMMARY REPORT-P-10</h4>
+
+
+
+                <h6>  DATE: @Model.FirstOrDefault().DateFrom </h6>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-responsive" style="line-height:5px; letter-spacing:1px; font-family: 'Times New Roman';font-size:15px;">
+
+                    <thead>
+                        <tr class="report-detailheader">
+
+                            <th width="30%">Buyer</th>
+                         
+                            <th width="30%">Shades</th>
+                            <th width="30%">FabricType</th>
+      
+                            <th width="30%">InStockKgs</th>
+                           
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+
+
+
+
+
+                        @foreach (var grp in Model)
+                        {
+
+                            <tr style=" border: 1px solid black; border-collapse: collapse; line-height:20px; letter-spacing:1px; ">
+
+                                <td style=" border: 1px solid black; border-collapse: collapse;">
+                                    @grp.Buyer
+                                </td>
+                                <td style=" border: 1px solid black; border-collapse: collapse;">
+                                    @grp.Shade
+                                </td>
+
+                                <td></td>
+                            </tr>
+
+
+                            @foreach (var detail in grp.DyedStockSummaryDetail_P11ViewModal)
+                            {
+                                <tr tr style=" border: 1px solid black; border-collapse: collapse; line-height:10px; letter-spacing:1px; ">
+                                    <td></td>
+                                    <td></td>
+
+
+                                    <td style=" border: 1px solid black; border-collapse: collapse;">
+                                        @detail.FabricType
+                                    </td>
+
+
+                                    <td style=" border: 1px solid black; border-collapse: collapse;"> @detail.Sum</td>
+
+
+
+
+
+                                </tr>
+
+
+
+
+
+
+                            }
+
+
+                            <tr>
+                                <td></td>
+                                <td></td>
+
+
+                                <td style=" border: 1px solid black; border-collapse: collapse;">
+                                </td>
+
+
+                                <td style=" border: 1px solid black; border-collapse: collapse; background-color:lightgray">@grp.Total2 </td>
+
+
+                            </tr>
+
+
+                        }
+
+
+
+                    </tbody>
+                    <tfoot>
+
+
+
+                    </tfoot>
+                </table>
+        <table>
+
+            <tr  style=" border: 1px solid black; border-collapse: collapse; line-height:10px; letter-spacing:1px; ">
+                <td colspan="4" border: 1px solid black; border-collapse: collapse;>
+                    <h3>
+
+                        Total
+                    </h3>
+            
+                </td>
+                <td colspan="4" border: 1px solid black; border-collapse: collapse;>
+
+                    <h3>
+
+                        @Model.FirstOrDefault().Total
+                    </h3>
+                 
+
+                </td>
+
+            </tr>
+        </table>
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    < h1 >< center > No Record in Report </ center ></ h1 >
+}
+

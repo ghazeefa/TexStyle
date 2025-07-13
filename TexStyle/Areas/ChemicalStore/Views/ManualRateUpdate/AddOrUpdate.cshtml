@@ -1,0 +1,44 @@
+﻿@model DyeChemicalTrDetail
+@{ ViewData["Title"] = "Add Or Update";
+    var det = ViewBag.det;
+
+                }
+
+<form asp-area="@AreaConstants.CHEMICAL_STORE.Name" asp-controller="ManualRateUpdate" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @*@Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.PayIrtd)*@
+
+    <div class="row">
+
+        <div class="form-group col-4">
+            <label asp-for="Id" class="control-label" ></label>
+            <input asp-for="Id" class="form-control" disabled/>
+            <span asp-validation-for="Id" class="text-danger" ></span>
+        </div>
+
+        <div class="form-group col-4">
+            <label asp-for="QtyDr" class="control-label"></label>
+            <input asp-for="QtyDr" class="form-control" disabled/>
+            <span asp-validation-for="QtyDr" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-4">
+            <label asp-for="Rate" class="control-label"></label>
+            <input asp-for="Rate" class="form-control" />
+            <span asp-validation-for="Rate" class="text-danger"></span>
+        </div>
+
+        @*<input type="text" id="fname" name="fname">*@
+
+    </div>
+
+    
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+

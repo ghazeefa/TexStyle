@@ -1,0 +1,160 @@
+﻿@model IEnumerable<TexStyle.ViewModels.CS.Reports.ChemicalStoreLedgerViewModel>
+@{
+    ViewData["Title"] = "Chemical Store Item-Wise Ledger";
+    Layout = "_LayoutPrint";
+
+}
+<style>
+
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+
+
+
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+<div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+    <p>@Model.FirstOrDefault().CompanyBranch</p>
+</div>}
+        </div>
+        <div class="text-center" style=" line-height:10px;float:right">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                C-10
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div><br/>
+
+    <div class="table-responsive">
+        <table class="table table-responsive">
+
+            <thead>
+                <tr class="report-detailheader">
+                    <th width="12%">Item</th>
+                    <th width="12%">Date</th>
+                    <th width="12%">SNo</th>
+                    <th width="12%">TrType</th>
+                    <th width="12%">Dr</th>
+                    <th width="12%">Cr</th>
+                    <th width="12%">Rate</th>
+                    <th width="12%">Final Qty</th>
+                    <th width="4%"></th>
+                    @*<th width="9%">Final Rate</th>
+                        <th width="9%">Final Amount</th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detail in Model)
+                {
+                    <tr>
+                        <td colspan="1" class="report-detail-footer" style="font-size:large;">
+                            @detail.ItemName
+                        </td>
+                        <td colspan="10" class="report-detail-footer"></td>
+
+                    </tr>
+
+                    @foreach (var d in detail.ChemicalStoreLedgerDetail_ViewModels)
+                    {
+
+                        <tr>
+
+                            <td></td>
+                            <td>
+                                @d.TransactionDate.ToString()
+                            </td>
+                            <td>
+                                @d.Sno
+                            </td>
+                            <td>
+                                @d.TrName
+                            </td>
+                            <td>
+                                @d.QtyDr
+                            </td>
+                            <td>
+                                @d.QtyCr
+                            </td>
+                            <td>
+                                @d.Rate
+                            </td>
+                            @*<td>
+                                    @{
+                                        decimal amount = 0;
+                                        if (d.QtyCr > 0)
+                                        {
+                                            amount = Math.Round(d.QtyCr.Value * d.Rate, 4);
+                                        }
+                                        else
+                                        {
+                                            amount = Math.Round(d.QtyDr.Value * d.Rate, 4);
+                                        }
+                                    } @amount
+                                </td>*@
+
+                            <td>
+                                @d.FinalQty
+                            </td>
+                            @*@if (d.FinalQty != 0 && d.FinalAmount != 0)
+                                {
+                                    <td>
+                                        @{var a = Math.Round(d.FinalAmount / d.FinalQty, 4);} @a
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                    </td>
+                                }
+
+                                <td>
+                                    @d.FinalAmount
+                                </td>*@
+                        </tr>
+                    }
+                }
+
+            </tbody>
+            <tfoot>
+                <tr>
+
+                    @*<th width="9%">Item</th>
+                        <th width="9%">Date</th>
+                        <th width="9%">Tr No</th>
+                        <th width="9%">TrType</th>
+                        <th width="9%">Dr</th>
+                        <th width="9%">Cr</th>
+                        <th width="9%">Rate</th>
+                        <th width="9%">Amount</th>
+                        <th width="9%">Final Qty</th>
+                        <th width="9%">Final Rate</th>
+                        <th width="9%">Final Amount</th>*@
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>
+}

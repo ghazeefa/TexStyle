@@ -1,0 +1,670 @@
+﻿@model TexStyle.ViewModels.CS.Reports.StockSummary2ViewModel
+@{ ViewData["Title"] = "Dye + Chemical Reconciliation Report";
+    Layout = "_LayoutPrint";
+    // var m = Model.StockOutSummaryViewModel1.ToList();
+    decimal? val = 0;
+    decimal? val2 = 0;
+    decimal? w2 = 0;
+    decimal? p2 = 0;
+    decimal? c1 = 0;
+    decimal? wa1 = 0;
+    decimal? gweight = 0;
+    decimal? gcapacity = 0;
+    decimal? uw = 0;
+    decimal? uc = 0;
+    decimal? gtotalweight = 0;
+    decimal? reprocessweight = 0;
+    decimal? a = 0;
+
+}
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .borders > tbody > tr > td, .borders > thead > tr > td {
+        border: 1px solid black !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }
+
+    th, td {
+        width: 500px;
+        text-align: center;
+        font-size: 7.5px;
+        padding: 30px;
+    }
+</style>
+@if (Model.StockOutSummaryViewModel.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.StockOutSummaryViewModel.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.StockOutSummaryViewModel.FirstOrDefault().CompanyBranch != null)
+            {
+<div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+    <p>@Model.StockOutSummaryViewModel.FirstOrDefault().CompanyBranch</p>
+</div>}
+        </div>
+        <div class="text-center" style=" line-height:10px;float:right">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                C-11
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.StockOutSummaryViewModel.FirstOrDefault().DateFrom To @Model.StockOutSummaryViewModel.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div><br/>
+
+
+    <div class="table-responsive">
+        <table class="table table-responsive borders">
+
+            <thead>
+
+
+
+                @*<thead style="border-bottom: hidden;">*@
+                <tr class="report-detailheader" style="border-bottom:hidden; font-size:15px;">
+
+                    <td colspan="1" width="1%">Dye/Chmical</td>
+
+                    <td colspan="2" width="2%">Opening</td>
+
+                    <td colspan="2" width="2%">Purchase</td>
+
+                    <td colspan="2" width="2%">LoanTaken</td>
+
+                    <td colspan="2" width="2%">LoanGivenReturn</td>
+
+                    <td colspan="2" width="2%">DilutionIn<br /></td>
+
+
+                    <td colspan="2" width="2%">CKL5 and CKL6Consumption</td>
+
+
+                    <td colspan="2" width="2%">DilutionOut</td>
+
+                    <td colspan="2" width="2%">LoanTakenReturn</td>
+
+
+                    <td colspan="2" width="2%">LoanGivenOut</td>
+
+
+                    <td colspan="2" width="2%">Sale<br /></td>
+
+                    <td colspan="2" width="2%">GenrlConmps<br /></td>
+
+
+                    <td colspan="2" width="1%">Closing<br /></td>
+                </tr>
+                @*</thead>*@
+                <tr class="report-detailheader">
+                    <td colspan="1" width="4%"></td>
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    <td colspan="1" width="1%">Amount</td>
+
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    @*<td colspan="1" width="1%">Rate</td>*@
+                    <td colspan="1" width="1%">Amount</td>
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    @*<td colspan="1" width="1%">Rate</td>*@
+                    <td colspan="1" width="1%">Amount</td>
+
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    @*<td colspan="1" width="1%">Rate</td>*@
+                    <td colspan="1" width="1%">Amount</td>
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    @*<td colspan="1" width="1%">Rate</td>*@
+                    <td colspan="1" width="1%">Amount</td>
+
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    @*<td colspan="1" width="1%">Rate</td>*@
+                    <td colspan="1" width="1%">Amount</td>
+
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    @*<td colspan="1" width="1%">Rate</td>*@
+                    <td colspan="1" width="1%">Amount</td>
+
+
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    @*<td colspan="1" width="1%">Rate</td>*@
+                    <td colspan="1" width="1%">Amount</td>
+
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    @*<td colspan="1" width="1%">Rate</td>*@
+                    <td colspan="1" width="1%">Amount</td>
+
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    @*<td colspan="1" width="1%">Rate</td>*@
+                    <td colspan="1" width="1%">Amount</td>
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    @*<td colspan="1" width="1%">Rate</td>*@
+                    <td colspan="1" width="1%">Amount</td>
+
+
+
+                    @*<td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Rate</td>
+                        <td colspan="1" width="1%">Amount</td>*@
+
+
+                    <td colspan="1" width="1%">Qty</td>
+                    <td colspan="1" width="1%">Rate</td>
+
+
+
+
+
+                    @*<td colspan="1" width="14%"></td>*@
+                </tr>
+
+            </thead>
+            <tbody>
+                @if (Model.StockOutSummaryViewModel.Count() > 0)
+                {
+                    @foreach (var detail in Model.StockOutSummaryViewModel.FirstOrDefault().SummaryDetail)
+                    {
+                        @if (detail.Opening != 0 || detail.Purchase != 0 || detail.LoanTaken != 0 || detail.LoanReturnIn != 0 || detail.DilutionIn != 0 || detail.Issuance != 0 || detail.Diluation != 0 || detail.LoanReturn != 0 || detail.InterUnitOut != 0 || detail.LoanGiven != 0 || detail.GeneralConsumption != 0 || detail.Closing != 0)
+                        {
+                            <tr class="report-detail" style="line-height: 30px; ">
+                                <td class="text-center" colspan="1" style="font-weight:bolder; "> @detail.Item&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;</td>
+                                @if (detail.Opening != 0)
+                                {
+                                    <td class="text-center" colspan="1"> @detail.Opening.ToString("#,0.00")</td>
+                                    <td class="text-center" colspan="1"> @detail.OpeningAmount.ToString("#,0.00")</td>
+
+                                    @*<td class="text-center" colspan="1"> @detail.OpeningRate.ToString("0.00")</td>*@
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                                @if (detail.Purchase != 0)
+                                {
+
+                                    <td class="text-center" colspan="1"> @detail.Purchase.ToString("0.00")</td>
+                                    <td class="text-center" colspan="1"> @detail.PurchaseAmount.ToString("#,0.00")</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                                @if (detail.LoanTaken != 0)
+                                {
+                                    <td class="text-center" colspan="1"> @detail.LoanTaken.ToString("#,0.00")</td>
+                                    <td class="text-center" colspan="1"> @detail.LoanTakenAmount.ToString("#,0.00")</td>
+                                    @*<td class="text-center" colspan="1"> @detail.LoanTakenRate.ToString("0.00")</td>*@
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                                @if (detail.LoanReturnIn != 0)
+                                {
+
+                                    <td class="text-center" colspan="1"> @detail.LoanReturnIn.ToString("#,0.00")</td>
+                                    <td class="text-center" colspan="1"> @detail.LoanReturnInAmount.ToString("#,0.00")</td>
+                                    @*<td class="text-center" colspan="1"> @detail.LoanReturnInRate.ToString("0.00")</td>*@
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                                @if (detail.DilutionIn != 0)
+                                {
+                                    <td class="text-center" colspan="1"> @detail.DilutionIn.ToString("#,0.00")</td>
+                                    <td class="text-center" colspan="1"> @detail.DiluationInAmount.ToString("#,0.00")</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                                @if (detail.Issuance != 0)
+                                {
+
+                                    <td class="text-center" colspan="1"> CKL5 : @detail.Issuance.ToString("#,0.00") &nbsp; CKL6 : @detail.IssunaceCKL6.ToString("#,0.00") </td>
+                                    <td class="text-center" colspan="1"> @detail.IssuanceAmount.ToString("#,0.00")</td>
+                                    @*<td class="text-center" colspan="1"> @detail.IssuanceRate.ToString("0.00")</td>*@
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                                @if (detail.Diluation != 0)
+                                {
+
+                                    <td class="text-center" colspan="1"> @detail.Diluation.ToString("#,0.00")</td>
+                                    <td class="text-center" colspan="1"> @detail.DiluationAmount.ToString("#,0.00")</td>
+                                    @*<td class="text-center" colspan="1"> @detail.DiluationRate.ToString("0.00")</td>*@
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                                @if (detail.LoanReturn != 0)
+                                {
+
+                                    <td class="text-center" colspan="1"> @detail.LoanReturn.ToString("#,0.00")</td>
+                                    <td class="text-center" colspan="1"> @detail.LoanReturnAmount.ToString("#,0.00")</td>
+                                    @*<td class="text-center" colspan="1"> @detail.LoanReturnRate.ToString("0.00")</td>*@
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                                @if (detail.LoanGiven != 0)
+                                {
+
+                                    <td class="text-center" colspan="1"> @detail.LoanGiven.ToString("#,0.00")</td>
+                                    <td class="text-center" colspan="1"> @detail.LoanGivenAmount.ToString("#,0.00")</td>
+                                    @*<td class="text-center" colspan="1"> @detail.LoanGivenRate.ToString("0.00")</td>*@
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                                @if (detail.InterUnitOut != 0)
+                                {
+
+                                    <td class="text-center" colspan="1"> @detail.InterUnitOut.ToString("#,0.00")</td>
+                                    <td class="text-center" colspan="1"> @detail.InterUnitOutAmount.ToString("#,0.00")</td>
+                                    @*<td class="text-center" colspan="1"> @detail.InterUnitOutRate.ToString("0.00")</td>*@
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                                @if (detail.GeneralConsumption != 0)
+                                {
+
+                                    <td class="text-center" colspan="1"> @detail.GeneralConsumption.ToString("#,0.00")</td>
+                                    <td class="text-center" colspan="1"> @detail.GeneralConsumptionAmount.ToString("#,0.00")</td>
+                                    @*<td class="text-center" colspan="1"> @detail.GeneralConsumptionRate.ToString("0.00")</td>*@
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                                @if (detail.Closing != 0)
+                                {
+
+                                    <td class="text-center" colspan="1" style="font-weight:bolder"> @detail.Closing.ToString("#,0.00")</td>
+                                    <td class="text-center" colspan="1" style="font-weight:bolder"> @detail.ClosingAmount.ToString("#,0.00")</td>
+
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">-</td>
+                                    <td class="text-center" colspan="1">-</td>
+                                    @*<td class="text-center" colspan="1"> @detail.PurchaseRate.ToString("0.00")</td>*@
+
+
+                                }
+
+                            </tr>
+
+
+
+
+
+
+                        }
+                    }
+                }
+                <tr class="report-detail">
+                </tr>
+                <tr class="report-detail" style="background-color:lightgray">
+
+
+                    <td class="text-center" colspan="1" style="font-size:large"> Total</td>
+
+
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().OpeningSum.ToString("#,0.00")</td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().OpeningAmountSum.ToString("#,0.00")</td>
+
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().PurchaseSum.ToString("#,0.00")</td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().PurchaseAmountSum.ToString("#,0.00")</td>
+
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanTakenSum.ToString("#,0.00")</td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanTakenAmountSum.ToString("#,0.00")</td>
+
+
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanReturnInSum.ToString("#,0.00")</td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanReturnInAmountSum.ToString("#,0.00")</td>
+
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().DilutionInSum.ToString("#,0.00")</td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().DilutionInAmountSum.ToString("#,0.00")</td>
+
+                    <td class="text-center" colspan="1"> CKL5 :  @Model.StockOutSummaryViewModel.FirstOrDefault().IssuanceSum.ToString("#,0.00")  &nbsp; CKL6 : @Model.StockOutSummaryViewModel.FirstOrDefault().IssunaceCKL6Sum.ToString("#,0.00") </td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().IssuanceAmountSum.ToString("#,0.00")</td>
+
+
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().DiluationSum.ToString("#,0.00")</td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().DiluationAmountSum.ToString("#,0.00")</td>
+
+
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanReturnSum.ToString("#,0.00") </td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanReturnAmountSum.ToString("#,0.00") </td>
+
+
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanGivenSum.ToString("#,0.00")</td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanGivenAmountSum.ToString("#,0.00")</td>
+
+
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().InterUnitOutSum.ToString("#,0.00")</td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().InterUnitOutAmountSum.ToString("#,0.00")</td>
+
+
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().GeneralConsumptionSum.ToString("#,0.00")</td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().GeneralConsumptionAmount.ToString("#,0.00")</td>
+
+
+
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().ClosingSum.ToString("#,0.00")</td>
+                    <td class="text-center" colspan="1"> @Model.StockOutSummaryViewModel.FirstOrDefault().ClosingAmountSum.ToString("#,0.00")</td>
+
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    @*<br />
+        <br />
+        <h4 class="text-left font-weight-bold">Total Qunatity (STOCK OUT)</h4>
+        <div class="table-responsive">
+            <table class="table table-responsive borders">
+
+                <thead>
+                    <tr class="report-detailheader">
+
+                        <td colspan="2" width="12%">CKL5 CONSUMPTION</td>
+                        <td colspan="2" width="12%">INTER UNIT OUT</td>
+                        <td colspan="2" width="12%"> DILUTION</td>
+                        <td colspan="2" width="12%">LOAN TAKEN RETURN</td>
+                        <td colspan="2" width="12%">REJECTION</td>
+                        <td colspan="2" width="5%">LOAN GIVEN OUT</td>
+                        <td colspan="2" width="5%">GENERAL CONSUMPTION</td>
+                    </tr>
+
+
+                    <tr class="report-detailheader">
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+
+
+
+                    </tr>
+                </thead>
+
+                <tbody>
+
+
+                    <tr class="report-detail" style="font-size:large; height:10px; letter-spacing:1px;">
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().IssuanceSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().IssuanceAmountSum.ToString("#,0.00")</td>
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().InterUnitOutSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().InterUnitOutAmountSum.ToString("#,0.00")</td>
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().DiluationSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().DiluationAmountSum.ToString("#,0.00")</td>
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanReturnSum.ToString("#,0.00") </td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanReturnAmountSum.ToString("#,0.00") </td>
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().RejectionSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().RejectionAmountSum.ToString("#,0.00")</td>
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanGivenSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanGivenAmountSum.ToString("#,0.00")</td>
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().GeneralConsumptionSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().GeneralConsumptionAmount.ToString("#,0.00")</td>
+
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().ClosingSum.ToString("#,0.00")</td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>*@
+
+    @*<br />
+        <br />
+        <h4 class="text-left font-weight-bold">Total Qunatity (STOCK IN)</h4>
+        <div class="table-responsive">
+            <table class="table table-responsive borders">
+
+                <thead>
+                    <tr class="report-detailheader">
+                        <td colspan="2" width="12%">OPENING</td>
+                        <td colspan="2" width="12%">PURCHASE</td>
+
+                        <td colspan="2" width="12%">LOAN TAKEN</td>
+                        <td colspan="2" width="12%">LOAN GIVEN RETURN</td>
+                        <td colspan="2" width="12%">DILUTION IN</td>
+                        <td colspan="2" width="12%">CLOSING</td>
+
+                    </tr>
+
+                    <tr class="report-detailheader">
+
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+                        <td colspan="1" width="1%">Qty</td>
+                        <td colspan="1" width="1%">Amount</td>
+
+
+
+
+
+
+                    </tr>
+
+
+                </thead>
+
+                <tbody>
+
+
+                    <tr class="report-detail" style="font-size:large; height:10px; letter-spacing:1px;">
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().OpeningSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().OpeningAmountSum.ToString("#,0.00")</td>
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().PurchaseSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().PurchaseAmountSum.ToString("#,0.00")</td>
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanTakenSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanTakenAmountSum.ToString("#,0.00")</td>
+
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanReturnInSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().LoanReturnInAmountSum.ToString("#,0.00")</td>
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().DilutionInSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().DilutionInAmountSum.ToString("#,0.00")</td>
+
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().ClosingSum.ToString("#,0.00")</td>
+                        <td class="text-center" colspan="1" style="font-size:large"> @Model.StockOutSummaryViewModel.FirstOrDefault().ClosingAmountSum.ToString("#,0.00")</td>
+
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>*@
+
+
+
+
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>}
+
+
+

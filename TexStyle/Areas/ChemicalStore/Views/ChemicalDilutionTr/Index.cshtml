@@ -1,0 +1,91 @@
+﻿@model IEnumerable<DyeChemicalTr>
+
+@{
+    var title = $"Chemical Dilution In Tr";
+    ViewData["Title"] = $"{title}s";
+
+    var AddOrUpdateAction = "/cs/ChemicalDilutionTr/AddOrUpdate/";
+    var DeleteAction = "/cs/ChemicalDilutionTr/Delete/";
+    var ChemicalDilutionDetailReportAction = "/cs/ChemicalDilutionTr/ChemicalDilutionDetailReport/";
+
+    Layout = "_Layout";
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                <button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW </button>
+
+                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.CS_CHEMICAL_DILUTION_IN_TR_CREATE))
+                {
+
+                }
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" data-order="[[ 2, &quot;asc&quot; ]]" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>No</th>
+                                            <th>Transaction Date</th>
+                                            <th>Cable Charges</th>
+                                            <th>Drum Charges</th>
+                                            <th>Labour Charges</th>
+                                            <th>Electricity Charges</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                                            
+                                        <tr role="row">
+                                            <td>@c.Sno</td>
+                                            <td>@c.TransactionDate.ToString("dd MMM yyyy")</td>
+                                            <td>@c.CableCharges</td>
+                                            <td>@c.DrumCharges</td>
+                                            <td>@c.LabourCharges</td>
+                                            <td>@c.ElectricityCharges</td>
+                                            <td style="width:150px;">
+                                                <a href="@ChemicalDilutionDetailReportAction@c.Id" class="btn btn-outline-secondary">Detail Report</a>
+                                                <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-primary">Details</a>
+                                                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.CS_CHEMICAL_DILUTION_IN_TR_EDIT))
+                                                {<button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdateAction@c.Id" data-title="Update @title">Edit</button>} @*<button type="button" class="btn btn-primary update-js" data-action="#@AddDetailsAction@c.Id" data-title="Detail @title">Details</button>
+            @if (User.Claims.Any(x => x.Value == AccountClaimKeys.CS_CHEMICAL_DILUTION_IN_TR_DELETE)){<button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>}*@
+                                            </td>
+
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th>No</th>
+                                            <th>Transaction Date</th>
+                                            <th>Cable Charges</th>
+                                            <th>Drum Charges</th>
+                                            <th>Labour Charges</th>
+                                            <th>Electricity Charges</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        var modal = "#adminModal";
+    </script>
+}

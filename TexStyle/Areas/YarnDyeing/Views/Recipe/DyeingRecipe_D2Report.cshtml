@@ -1,0 +1,821 @@
+﻿@model IEnumerable<TexStyle.ViewModels.YD.Reports.DyeingRecipe_D2ViewModel>
+@{ Layout = "_LayoutPrint";
+    var title= ViewBag.Counts;
+    int stepNumber = 0;
+    decimal groupSumCost = 0;
+    decimal groupSumCostPerKg = 0;
+    decimal totalCost = 0;
+    decimal totalCostPerKg = 0;
+
+    decimal totalDyedWeight = Model.FirstOrDefault()?.Weight ?? 0;
+    decimal totalDyedPcs = Model.FirstOrDefault()?.Pcs ?? 0;
+
+}
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+    body {
+        font-size: 14px;
+        line-height: 14px;
+        font-family: Arial;
+    }
+    h2{
+        font-size:22px;
+        font-weight: bold;
+    }
+    h3{
+        font-size:16px;
+        font-weight: bold;
+    }
+    .table-container {
+        display: flex !important;
+        justify-content: space-between;
+        gap:20px;
+        margin-left: 0px;
+    }
+
+    .table-container table {
+        text-align: left;
+    }
+
+</style>
+
+<div style="margin-left:20px;">
+
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+                <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+                    <p>@Model.FirstOrDefault().CompanyBranch</p>
+                </div>}
+        </div>
+        <div class="text-center" style=" line-height:10px;float:right">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                D-1
+            </div>
+        </div>
+
+    </div>
+    <br />
+
+    <div class="text-center" style="position:absolute; margin-top:20px; margin-left:610px; line-height:10px;">
+        <div style="text-align:end; font-size:12px;">
+            <span style="font-weight:bold;">Date:</span> @Model.FirstOrDefault().Date.ToString("dd-MMM-yyyy")
+        </div>
+    </div>
+
+    <div class="w-100 text-center" style="margin-bottom:30px;">
+
+        @if (Model.Count() > 0)
+        {
+            if (Model.FirstOrDefault().IsGarmentPrinting == true)
+            {
+                <h2 style="font-weight: bold; margin-top: -60px;">Printing Recipe</h2>
+            }
+            else if (Model.FirstOrDefault().IsGarmentDyeing == true)
+            {
+                <h2 style="font-weight: bold; margin-top: -60px;">Garment Dyeing Recipe</h2>
+            }
+            else
+            {
+                if (Model.FirstOrDefault().IsYarn == true)
+                {
+                    <h2 style="font-weight: bold; margin-top: -60px;">Yarn Dyeing Recipe</h2>
+
+                    @if (Model.FirstOrDefault().IsWithoutLPS == true)
+                    {
+                        <h3>Machine Wash</h3>
+                    }
+                }
+                else
+                {
+
+                    if (Model.FirstOrDefault().IsReprocessed == true)
+                    {
+                        <h2 style="margin-top:-60px;">Fabric DYEING REPROCESSED RECIPE</h2>
+                    }
+                    else
+                    {
+                        <h2 style="font-weight:bold; margin-top:-60px;">Fabric Dyeing Recipe</h2>
+
+                        @if (Model.FirstOrDefault().IsWithoutLPS == true)
+
+                        {
+                            <h3>Machine Wash Recipe</h3>
+                        }
+                    }
+
+
+                }
+            }
+        }
+        <br /><br /><br /><br /><br /><br />
+
+
+
+
+
+        <div class="m-grid">
+            @*<div class="row m-g-head">
+                <div class="col-2"></div>
+                @if (Model.Count() > 0)
+                {
+                    @if (Model.FirstOrDefault().IsReprocessed == true)
+                    {
+                        <div class="col-8"><h4>DYEING REPROCESSED RECIPE</h4></div>
+                    }
+                    else
+                    {
+
+                        @if (Model.FirstOrDefault().IsYarn == true && Model.FirstOrDefault().IsWithoutLPS == false)
+
+                        {
+                            <div class="col-8"><h4>Dyeing Recipe Yarn (CKL 5)</h4></div>
+                        }
+
+                        @if (Model.FirstOrDefault().IsYarn == true && Model.FirstOrDefault().IsWithoutLPS == true)
+
+                        {
+                            <div class="col-8"><h4>Machine Wash Recipe (CKL 5)</h4></div>
+                        }
+                        @if (Model.FirstOrDefault().IsYarn == false && Model.FirstOrDefault().IsWithoutLPS == false)
+
+                        {
+                            <div class="col-8"><h4>Dyeing Recipe Fabric (CKL 6)</h4></div>
+                        }
+
+
+                        @if (Model.FirstOrDefault().IsYarn == false && Model.FirstOrDefault().IsWithoutLPS == true)
+
+                        {
+                            <div class="col-8"><h4>Machine Wash Recipe (CKL 6)</h4></div>
+                        }
+
+
+
+                    }
+
+                }
+
+            </div>*@
+
+            @if (Model.Count() > 0)
+            {
+
+                <div class="table-container row" style="width:97%">
+                    <table width="15%">
+                        <tbody>
+                            <tr>
+                                @if (Model.FirstOrDefault().IsGarmentPrinting == true)
+                                {
+                                    <td width="30%" style="font-weight:bold;">Printing:</td>
+                                    <td width="70%">Garment</td>
+                                }
+                                else if (Model.FirstOrDefault().IsFabricPrinting == true)
+                                {
+                                    <td width="30%" style="font-weight:bold;">Printing:</td>
+                                    <td width="70%">Fabric</td>
+                                }
+                                else
+                                {
+                                    <td width="30%" style="font-weight:bold;">Shade:</td>
+                                    <td width="70%">@Model.FirstOrDefault().Color</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td style="font-weight:bold;">Lot No:</td>
+                                <td>@Model.FirstOrDefault().LotNo</td>
+                            </tr>
+                            <tr>
+                                @if (Model.FirstOrDefault().IsGarmentPrinting == true)
+                                {
+                                    <td style="font-weight:bold;">Pcs:</td>
+                                    <td>@Model.FirstOrDefault().Pcs</td>
+                                }
+                                else
+                                {
+                                    <td style="font-weight:bold;">Weight:</td>
+                                    <td>@Model.FirstOrDefault().Weight</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td style="font-weight:bold;">PO #:</td>
+                                <td>@Model.FirstOrDefault().Vw_RecipeLpsDetail?.FirstOrDefault()?.FactoryPo</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <table width="30%">
+                        <tbody>
+                            <tr>
+                                <td width="35%" style="font-weight:bold;">Machine #:</td>
+                                <td width="65%">@Model.FirstOrDefault().MachineType</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:bold;">Recipe #:</td>
+                                <td>@Model.FirstOrDefault().No</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:bold;">Process:</td>
+                                <td>@Model.FirstOrDefault().Format</td>
+                            </tr>
+                            <tr>
+                                @if (Model.FirstOrDefault().IsGarmentPrinting == false)
+                                {
+                                    <td style="font-weight:bold;">LiquoreRate </td>
+                                    <td>  @Model.FirstOrDefault().LiquorRate</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                            </tr>
+
+
+
+                        </tbody>
+                    </table>
+
+                    <table width="20%">
+                        <tbody>
+                            <tr>
+                                <td width="30%" style="font-weight:bold;">Buyer:</td>
+                                <td width="70%">@Model.FirstOrDefault().Buyer</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:bold;">Party</td>
+                                <td>@Model.FirstOrDefault().Party</td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+
+                    <table width="35%" style="margin-left:20px">
+                        <thead>
+                        <th>LPS Detail</th>
+                        @if (Model.FirstOrDefault().IsYarn == true)
+                        {
+                        <th>Yarn Type</th>
+                        <th>Manufacturer</th>
+                        }
+                        else
+                        {
+                        <th>Fabric Type</th>
+                        @if(Model.FirstOrDefault().IsGarmentPrinting == true)
+                        {<th></th>}
+                        else {<th>Knitter</th>}
+                        }
+
+                        @if(Model.FirstOrDefault().IsGarmentPrinting == true)
+                        {
+                        <th style="text-align:right;">Pcs</th>
+                        }
+                        else
+                        {
+                        <th style="text-align:right;">Kgs</th>
+                        }
+
+                        </thead>
+                        <tbody>
+                            @if (Model.FirstOrDefault().Vw_RecipeLpsDetail.Count > 0)
+                            {
+                                foreach (var item in Model.FirstOrDefault().Vw_RecipeLpsDetail)
+                                {
+                            <tr>
+                                <td width="20%">@item.LPSId</td>
+                                @if (Model.FirstOrDefault().IsYarn == true)
+                                        {
+                                <td width="30%">@item.YarnType</td>
+                                <td width="30%">@item.YarnManufacturer</td>
+                                        }
+                                        else
+                                        {
+                                <td width="30%">@item.FabricType</td>
+                                <td width="30%">@item.KnittingParty</td>
+                                        }
+
+                                @if(Model.FirstOrDefault().IsGarmentPrinting == true)
+                                {
+                                <td width="20%" style="text-align:end">@item.Pcs</td>
+                                }
+                                else
+                                {
+                                <td width="20%" style="text-align:end">@item.Kgs</td>
+                                }
+                            </tr>
+                                }
+                            }
+
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                @if(Model.FirstOrDefault().IsGarmentPrinting == true)
+                                {
+                                <td style="font-weight: bold;">Total Pcs:</td>
+                                <td style="text-align:right;">@Math.Round(Model.FirstOrDefault().Pcs)</td>
+                                }
+                                else
+                                {
+                                <td style="font-weight: bold;">Total Kgs:</td>
+                                <td style="text-align:right;">@Model.FirstOrDefault().Weight</td>
+                                }
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+
+
+
+
+            }
+            <br />
+
+            <div style="font-size: 12px; line-height: 14px;">
+                <table width="100%">
+                    <thead>
+                        <tr style="text-align: center; font-size: 14px; line-height: 18px; font-weight: bold; margin-bottom: 10px; background-color: lightgray;">
+
+                            <th>Step</th>
+                            <th>Chemicals/Dyes</th>
+
+                            <th class="text-center">Kgs</th>
+                            @if (Model.FirstOrDefault().IsGarmentPrinting == false)
+                            {
+                                <th class="text-center">GPL</th>
+                                <th class="text-center">Percentage</th>
+                            }
+                            <th class="text-center">Rate/Kg</th>
+                            <th class="text-center">Cost(Rs.)</th>
+                            @if (Model.FirstOrDefault().IsGarmentPrinting == false)
+                            {
+                                <th class="text-center">Cost(Rs.)/Kg </th>
+                            }
+                            else
+                            {
+                                <th class="text-center">Cost(Rs.)/Pc </th>
+                            }
+
+
+                        </tr>
+
+                    </thead>
+                    <tbody>
+
+                        @*@if (Model.Count() > 0)
+        {
+            foreach (var recipe in Model)
+            {
+                foreach (var group in recipe.DyeingRecipeDetail_D2ViewModels.GroupBy(x => x.RecipeStepId))
+                {
+                    foreach (var item in group)
+                    {
+                        groupSumCost += item.Cost;
+
+                        @if (item.Status == 1)
+                        {
+                            <tr style="font-style:italic; font-weight:bold;">
+
+                                @if (item.RecipeName == item.ItemName)
+                                {
+                                    if (item.RecipeName != null)
+                                    {
+                                        stepNumber += 1;
+                                    }
+
+                                    <td width="20%" style="text-align:left;font-weight:bold">@stepNumber - @item.RecipeName</td>
+
+
+                                }
+
+                                else
+                                {
+                                    <td width="20%">@item.RecipeName</td>
+                                    <td width="30%" style="text-align: left;">@item.ItemName</td>
+                                    <td width="10%">@item.Kgs?.ToString("0.000")</td>
+
+                                    @if (Model.FirstOrDefault().IsGarmentPrinting == false)
+                                    {
+                                        <td width="10%">@item.Gpl.ToString("0.00")</td>
+                                        <td width="10%">@item.Percentage.ToString("0.0000")</td>
+                                    }
+
+                                    <td width="10%">@Math.Round(item.Rate, 2)</td>
+                                    <td width="10%">@Math.Round(item.Cost, 2)</td>
+
+                                }
+
+
+                            </tr>
+
+                        }
+                        else if (item.Status == 0)
+                        {
+
+                            <tr style="font-family: 'Times New Roman';">
+
+                                @if (item.RecipeName == item.ItemName)
+                                {
+                                    if (item.RecipeName != null)
+                                    {
+                                        stepNumber += 1;
+                                    }
+                                    <td width="20%" style="text-align: left; font-weight: bold">@stepNumber - @item.RecipeName</td>
+
+
+                                }
+
+                                else
+                                {
+                                    <td width="20%">@item.RecipeName</td>
+                                    <td width="30%" style="text-align: left;">@item.ItemName</td>
+                                    <td width="10%">@item.Kgs?.ToString("0.000")</td>
+
+                                    @if (Model.FirstOrDefault().IsGarmentPrinting == false)
+                                    {
+                                        <td width="10%">@item.Gpl.ToString("0.00")</td>
+                                        <td width="10%">@item.Percentage.ToString("0.0000")</td>
+                                    }
+
+                                    <td width="10%">@Math.Round(item.Rate, 2)</td>
+                                    <td width="10%">@Math.Round(item.Cost, 2)</td>
+
+                                }
+
+
+
+
+                            </tr>
+
+                        }
+
+                        else
+                        {
+
+
+                            <tr>
+                                @if (item.RecipeStepId == 1)
+                                {
+
+                                }
+                                @if (item.RecipeName == item.ItemName)
+                                {
+
+                                    if (item.RecipeName != null)
+                                    {
+                                        stepNumber += 1;
+                                    }
+                                    <td width="20%" style="text-align: left; font-weight: bold"> @stepNumber - @item.RecipeName</td>
+
+
+                                }
+
+                                else
+                                {
+                                    <td width="20%">@item.RecipeName</td>
+                                    <td width="30%" style="text-align: left;">@item.ItemName</td>
+                                    <td width="10%">@item.Kgs?.ToString("0.000")</td>
+
+                                    @if (Model.FirstOrDefault().IsGarmentPrinting == false)
+                                    {
+                                        <td width="10%">@item.Gpl.ToString("0.00")</td>
+                                        <td width="10%">@item.Percentage.ToString("0.0000")</td>
+                                    }
+
+                                    <td width="10%">@Math.Round(item.Rate, 2)</td>
+                                    <td width="10%">@Math.Round(item.Cost, 2)</td>
+                                }
+
+
+
+
+                            </tr>
+
+
+                        }
+
+                    }
+
+                    <tr>
+
+                        @{
+                            groupSumCostPerKg = 0;
+                            groupSumCostPerKg = groupSumCost / totalDyedWeight;
+                            totalCostPerKg += groupSumCostPerKg;
+                        }
+
+                        <td colspan="6">
+                        </td>
+                        <td style="border-top: 1px solid black; border-bottom: 1px solid black;">@Math.Round(groupSumCost, 2)</td>
+                        <td style="border-top: 1px solid black; border-bottom: 1px solid black;">@Math.Round(groupSumCostPerKg, 2)</td>
+
+                        @{
+                            totalCost += groupSumCost;
+                            groupSumCost = 0;
+                        }
+                    </tr>
+
+                }
+
+                <tr>
+                    <td colspan="5"></td>
+                    <td style="font-weight:bold;">Total Cost:</td>
+                    <td>@Math.Round(totalCost, 2)</td>
+                    <td>@Math.Round(totalCostPerKg, 2)</td>
+                </tr>
+
+            }
+        }*@
+
+                        @if (Model.Count() > 0)
+                        {
+                            long? previousStepId = null;
+                            groupSumCost = 0;
+                            totalCost = 0;
+                            groupSumCostPerKg = 0;
+                            totalCostPerKg = 0;
+                            stepNumber = 0;
+
+
+                            foreach (var recipe in Model)
+                            {
+                                foreach (var item in recipe.DyeingRecipeDetail_D2ViewModels)
+                                {
+                                    // Check if we have moved to a new RecipeStepId
+                                    if (previousStepId != null && item.RecipeStepId != previousStepId)
+                                    {
+                                        if (Model.FirstOrDefault().IsGarmentPrinting == true)
+                                        {
+                                            groupSumCostPerKg = groupSumCost / totalDyedPcs;
+                                        }
+                                        else
+                                        {
+                                            groupSumCostPerKg = groupSumCost / totalDyedWeight;
+                                        }
+                                        totalCostPerKg += groupSumCostPerKg;
+
+                        <tr>
+                            @if (Model.FirstOrDefault().IsGarmentPrinting == true)
+                            {
+                                <td colspan="4"></td>
+                            }
+                            else
+                            {
+                                <td colspan="6"></td>
+                            }
+
+                            <td style="border-top: 1px solid black; border-bottom: 1px solid black;">@Math.Round(groupSumCost, 2)</td>
+                            <td style="border-top: 1px solid black; border-bottom: 1px solid black;">@Math.Round(groupSumCostPerKg, 2)</td>
+                        </tr>
+
+                                        totalCost += groupSumCost;
+                                        groupSumCost = 0; // Reset for the next group
+                                    }
+
+                                    // Now, display the step header when a new step starts
+                                    if (previousStepId == null || item.RecipeStepId != previousStepId)
+                                    {
+                                        stepNumber += 1; // Increment the step number
+                    <tr>
+                        <td colspan="2" style="text-align:left;font-weight:bold; padding-top:5px;">
+                            @stepNumber - @item.RecipeName
+                        </td>
+                    </tr>
+                                    }
+
+                                    // Now process the current item
+                                    groupSumCost += item.Cost;
+
+                                    @if (item.Status == 1)
+                                    {
+                    <tr style="font-style:italic; font-weight:bold;">
+                        @if (item.RecipeName == item.ItemName)
+                        {
+                            <td width="20%" style="text-align:left;font-weight:bold">@item.RecipeName</td>
+                        }
+                        else
+                        {
+                            <td width="20%">@item.RecipeName</td>
+                            <td width="30%" style="text-align: left;">@item.ItemName</td>
+                        }
+                        <td width="10%">@item.Kgs?.ToString("0.000")</td>
+
+                        @if (Model.FirstOrDefault().IsGarmentPrinting == false)
+                        {
+                            <td width="10%">@item.Gpl.ToString("0.00")</td>
+                            <td width="10%">@item.Percentage.ToString("0.0000")</td>
+                        }
+                        <td width="10%">@Math.Round(item.Rate, 2)</td>
+                        <td width="10%">@Math.Round(item.Cost, 2)</td>
+
+                        @if (Model.FirstOrDefault().IsGarmentPrinting == true)
+                        {
+                            <td width="10%">@(Math.Round(item.Cost / totalDyedPcs, 2))</td>
+                        }
+                        else
+                        {
+                            <td width="10%">@(Math.Round(item.Cost / totalDyedWeight, 2))</td>
+                        }
+
+                    </tr>
+                                    }
+                                    else if (item.Status == 0)
+                                    {
+                    <tr style="font-family: 'Times New Roman';">
+                        @if (item.RecipeName == item.ItemName)
+                        {
+                            <td width="20%" style="text-align:left;font-weight:bold">@item.RecipeName</td>
+                        }
+                        else
+                        {
+                            <td width="20%">@item.RecipeName</td>
+                            <td width="30%" style="text-align: left;">@item.ItemName</td>
+                        }
+                        <td width="10%">@item.Kgs?.ToString("0.000")</td>
+
+                        @if (Model.FirstOrDefault().IsGarmentPrinting == false)
+                        {
+                            <td width="10%">@item.Gpl.ToString("0.00")</td>
+                            <td width="10%">@item.Percentage.ToString("0.0000")</td>
+                        }
+                        <td width="10%">@Math.Round(item.Rate, 2)</td>
+                        <td width="10%">@Math.Round(item.Cost, 2)</td>
+
+                        @if (Model.FirstOrDefault().IsGarmentPrinting == true)
+                        {
+                            <td width="10%">@(Math.Round(item.Cost / totalDyedPcs, 2))</td>
+                        }
+                        else
+                        {
+                            <td width="10%">@(Math.Round(item.Cost / totalDyedWeight, 2))</td>
+                        }
+
+                    </tr>
+                                    }
+
+                                    // Update the previousStepId to the current one
+                                    previousStepId = item.RecipeStepId;
+                                }
+
+                                // After the loop, show the sum for the last group of steps
+                                if (groupSumCost > 0)
+                                {
+                                    if (Model.FirstOrDefault().IsGarmentPrinting == true)
+                                    {
+                                        groupSumCostPerKg = groupSumCost / totalDyedPcs;
+                                    }
+                                    else
+                                    {
+                                        groupSumCostPerKg = groupSumCost / totalDyedWeight;
+                                    }
+
+                                    totalCostPerKg += groupSumCostPerKg;
+
+                    <tr>
+                        @if (Model.FirstOrDefault().IsGarmentPrinting == true)
+                        {
+                            <td colspan="4"></td>
+                        }
+                        else
+                        {
+                            <td colspan="6"></td>
+                        }
+                        <td style="border-top: 1px solid black; border-bottom: 1px solid black;">@Math.Round(groupSumCost, 2)</td>
+                        <td style="border-top: 1px solid black; border-bottom: 1px solid black;">@Math.Round(groupSumCostPerKg, 2)</td>
+                    </tr>
+
+                                    totalCost += groupSumCost;
+                                }
+                            }
+
+                    <tr>
+                        @if (Model.FirstOrDefault().IsGarmentPrinting == false)
+                        {
+                        <td colspan="5"></td>
+                        }
+                        else
+                        {
+                        <td colspan="3"></td>
+                        }
+
+                        <td style="font-weight:bold;">Total Cost:</td>
+                        <td>@Math.Round(totalCost, 2)</td>
+                        <td>@Math.Round(totalCostPerKg, 2)</td>
+                    </tr>
+                        }
+
+
+
+
+
+
+
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="table-container row">
+        <table style="width:50%; margin-right:20px;">
+            <tr>
+                <th colspan="7" style="font-size:22px; font-weight: bold; padding-bottom: 10px;">Dyeing Information</th>
+            </tr>
+            <tr style="width: 100%; background-color: lightgray; border: 1px solid black !important; font-weight:bold;">
+                <td style="width:40%; text-align:left">Designation</td>
+                <td style="width:30%; text-align:left">Name:</td>
+                <td style="width:25%; text-align:center">Shift:</td>
+                <td style="width:15%; text-align:center; border-right:1px solid black;">Code:</td>
+            </tr>
+            <tr style="width:100%">
+                <td style="border: 1px solid black;">Shift Incharge</td>
+                <td style="border: 1px solid black;">@Model.FirstOrDefault()?.ShiftInchargeName</td>
+                <td style="border: 1px solid black; text-align:center">@Model.FirstOrDefault()?.ShiftName</td>
+                <td style="border: 1px solid black; text-align: center">@Model.FirstOrDefault()?.ShiftInchargeCode</td>
+            </tr>
+            <tr style="width:100%">
+                <td style="border: 1px solid black;">Machine Operator</td>
+                <td style="border: 1px solid black;">@Model.FirstOrDefault()?.MachineOperatorName</td>
+                <td style="border: 1px solid black; text-align: center">@Model.FirstOrDefault()?.ShiftName</td>
+                <td style="border: 1px solid black; text-align: center">@Model.FirstOrDefault()?.MachineOperatorCode</td>
+            </tr>
+
+            <tr style="width:100%">
+                <td style="border: 1px solid black;">Helper Name</td>
+                <td style="border: 1px solid black;">@Model.FirstOrDefault()?.HelperName</td>
+                <td style="border: 1px solid black; text-align: center">@Model.FirstOrDefault()?.ShiftName</td>
+                <td style="border: 1px solid black; text-align: center">@Model.FirstOrDefault()?.HelperCode</td>
+            </tr>
+
+            <tr style="width:100%">
+                <td style="border: 1px solid black;">Chemical Store Operator</td>
+                <td style="border: 1px solid black;">@Model.FirstOrDefault()?.CStoreOperatorName</td>
+                <td style="border: 1px solid black; text-align: center">@Model.FirstOrDefault()?.ShiftName</td>
+                <td style="border: 1px solid black; text-align: center">@Model.FirstOrDefault()?.CStoreOperatorCode</td>
+            </tr>
+        </table>
+
+
+        <table style="width:30%">
+            <tr>
+                <th colspan="7" style="font-size:22px; font-weight: bold; padding-bottom: 10px; font-weight:bold;">Process Time</th>
+            </tr>
+            <tr style="width: 100%; background-color: lightgray; border: 1px solid black !important;">
+                <td style="width:40%; text-align:left">Operation</td>
+                <td style="width:25%; text-align:left; border-right:1px solid black;">Time:</td>
+            </tr>
+
+            @{
+                DateTime machineStartTime = Model.FirstOrDefault()?.MachineStartTime ?? DateTime.MinValue;
+                string formattedMachineStartTime = machineStartTime.ToString("HH: mm");
+            }
+
+            <tr style="width:100%">
+                <td style="border: 1px solid black; width: 40% ">Machine Start Time</td>
+                <td style="border: 1px solid black; width: 25%">@formattedMachineStartTime</td>
+            </tr>
+
+            @{
+                DateTime machineUnloadTime = Model.FirstOrDefault()?.MachineUnloadTime ?? DateTime.MinValue;
+                string formattedMachineUnloadTime = machineUnloadTime.ToString("HH: mm");
+            }
+
+            <tr style="width:100%">
+                <td style="border: 1px solid black; width: 40%">Machine Unload Time</td>
+                <td style="border: 1px solid black; width: 25%">@formattedMachineUnloadTime</td>
+            </tr>
+
+            @{
+                DateTime soapingDrainTime = Model.FirstOrDefault()?.SoapingDrainTime ?? DateTime.MinValue;
+                string formattedSoapingDrainTime = soapingDrainTime.ToString("HH: mm");
+            }
+
+            <tr style="width:100%">
+                <td style="border: 1px solid black; width: 40%">Soaping Drain Time</td>
+                <td style="border: 1px solid black; width: 25%">@formattedSoapingDrainTime</td>
+            </tr>
+        </table>
+    </div>
+
+

@@ -1,0 +1,120 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.YarnReceivedReportViewModel>
+@{
+    ViewData["Title"] = "Yarn Received Report";
+    Layout = "_LayoutPrint";
+    var noData = "No Data Available";
+    var abc = @ViewBag.Message;
+}
+
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+@if (Model.Count() > 0)
+{
+
+
+    <div class="card user-activity-card">
+        @*<div class="card-header d-flex justify-content-between align-items-center no-print">
+                <button class="btn btn-sm btn-info " onclick="window.print()"><i class="ti-printer"></i></button>
+            </div>*@
+        <div class="row">
+            <div class="col-1 report-numberheading">P-5</div>
+            <div class="col-11"></div>
+        </div>
+        <div class="card-block">
+            <div class="w-100 text-center">
+                <h3>COMFORT KNITWEARS (PVT.) LTD. (YARN DYEING DIV.)</h3>
+                <h4>DYED YARN DISPATCH REPORT </h4>
+                <h6>  DATE FROM: @Model.FirstOrDefault().DateFrom TO: @Model.FirstOrDefault().DateTo</h6>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-responsive">
+
+                    <thead>
+                        <tr class="report-detailheader">
+                            <th width="10%">Date</th>
+                            <th width="10%">Party</th>
+                            <th width="10%">OGP</th>
+                            <th width="10%">LPS</th>
+                            <th width="10%">Lot no</th>
+                            <th width="10%">Yarn Type</th>
+                            <th width="10%">Yarn Quality</th>
+                            <th width="10%">Yarn Manufacturer</th>
+                            <th width="10%">Bags</th>
+                            <th width="10%">Kgs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var detail in Model)
+                        {
+                            <tr>
+                                <td colspan="1" class="report-detail-footer" style="font-size:large;">
+                                    @detail.Descriminator
+                                </td>
+                                <td colspan="2" class="report-detail-footer"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                            @foreach (var d in detail.Items)
+                            {
+
+                                <tr>
+
+                                    <td colspan="1" class="report-detail-footer"></td>
+                                    <td>
+                                        @d.Party
+                                    </td>
+                                    <td>
+                                        @d.No
+                                    </td>
+                                    <td>
+                                        @d.LPSId
+                                    </td>
+                                    <td>
+                                        @d.LotNo
+                                    </td>
+                                    <td>
+                                        @d.YarnType
+                                    </td>
+                                    <td>
+                                        @d.YarnQuality
+                                    </td>
+                                    <td>
+                                        @d.YarnManufacturer
+                                    </td>
+                                    <td>
+                                        @d.Bags
+                                    </td>
+                                    <td>
+                                        @d.NetKgs
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+
+                            <td colspan="5"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>
+}

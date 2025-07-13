@@ -1,0 +1,79 @@
+﻿@using TexStyle.Identity.Extensions
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<TexStyle.Identity.Extensions.DTO.Account>
+
+@{
+    ViewBag.Title = "Accounts";
+    var addorUpdate = "/UserManagement/Account/AddOrUpdate/";
+    var delete = "/UserManagement/Account/Delete/";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Account Management</h5>
+                @*@if (User.Identity.HasClaim(FitnessFrenzy.Common.ClaimKeys.USER_CREATE) == true) {
+                    }*@
+                <a asp-area="UserManagement" asp-controller="Account" asp-action="AddOrUpdate" class="btn btn-primary">ADD NEW</a>
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="AccountsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc">User Name</th>
+                                            <th class="sorting">Email</th>
+                                            <th class="sorting">Email Confirmed</th>
+                                            <th class="sorting">Lockout Enabled</th>
+                                            <th class="sorting">Lockout End Date</th>
+                                            <th class="sorting">AccessFailedCount</th>
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model) {
+                                            <tr role="row">
+                                                <td class="sorting_1">@c.UserName</td>
+                                                <td>@c.Email</td>
+                                                <td>@c.EmailConfirmed</td>
+                                                <td>@c.LockoutEnabled</td>
+                                                <td>@c.LockoutEnd</td>
+                                                <td>@c.AccessFailedCount</td>
+                                                <td style="width:150px;">
+                                                    <a href="@addorUpdate@c.Id" class="btn btn-primary">Edit</a>
+                                                    <button disabled class="btn btn-danger item-delete-btn" data-delete-url="@delete@c.Id">Delete</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th class="sorting_asc">User Name</th>
+                                            <th class="sorting">Email</th>
+                                            <th class="sorting">Email Confirmed</th>
+                                            <th class="sorting">Lockout Enabled</th>
+                                            <th class="sorting">Lockout End Date</th>
+                                            <th class="sorting">AccessFailedCount</th>
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*@section scripts{
+    <script type="text/javascript">
+        let AccountsTable = $("#AccountsTable").DataTable();
+    </script>
+}*@

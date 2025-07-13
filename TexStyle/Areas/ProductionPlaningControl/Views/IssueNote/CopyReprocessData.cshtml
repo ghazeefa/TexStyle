@@ -1,0 +1,88 @@
+﻿@using TexStyle.ViewModels;
+@model IEnumerable<TexStyle.Core.PPC.Reprocess>
+@{
+    var title = $"PPC Planning";
+
+}
+
+
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>@title Details</h5>
+            @*<button href="#@(AddOrUpdateAction)?igpId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?igpId=@(Model.Id)" data-title="Create @title">ADD NEW</button>*@
+        </div>
+        <div class="card-block">
+            <div class="dt-responsive table-responsive">
+                <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="">
+                        <div class="col-xs-12 col-sm-12 m-dT">
+                            @* <input type="hidden" id="refYarnManufacturerId" value="@Model.YarnManufacturerId" />
+                                <input type="hidden" id="refYarnQualityId" value="@Model.YarnQualityId" />
+                                <input type="hidden" id="refYarnTypeId" value="@Model.YarnTypeId" />*@
+                            @*dataTable*@
+                            <table id="IGPDetailsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                <thead>
+                                    <tr role="row">
+
+                                        <th class="sorting_asc">LPS ID</th>
+                                        <th class="sorting_asc">Reprocess ID</th>
+                                        <th class="sorting_asc">IGP No</th>
+                                        <th class="sorting">Lot No</th>
+                                        <th class="sorting">Activity</th>
+                                        <th class="sorting">Party</th>
+                                        <th class="sorting">Buyer</th>
+                                        <th class="sorting">Shade</th>
+                                        <th class="sorting">Yarn Type</th>
+                                        <th class="sorting">Yarn Quality</th>
+                                        <th class="sorting">Yarn Manufacturer</th>
+                                        <th class="sorting">Cones</th>
+                                        <th class="sorting">Kgs</th>
+                                        <th class="sorting">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var c in @Model)
+                                    {
+
+                                        <tr role="row">
+                                            <td class="sorting_1">
+                                                @c.PPCPlanningId
+                                                <input type="hidden" name="@nameof(c.Cones)" value="@c.Cones" />
+                                                <input type="hidden" name="ReprocessId" value="@c.Id" />
+                                                <input type="hidden" name="@nameof(c.Kgs)" value="@c.AvailableLpsKgs" />
+                                                <input type="hidden" name="@nameof(c.PPCPlanning.YarnManufacturerId)" value="@c.PPCPlanning.YarnManufacturerId" />
+                                                <input type="hidden" name="@nameof(c.PPCPlanning.YarnQualityId)" value="@c.PPCPlanning.YarnQualityId" />
+                                                <input type="hidden" name="@nameof(c.PPCPlanning.YarnTypeId)" value="@c.PPCPlanning.YarnTypeId" />
+                                                <input type="hidden" id="@nameof(c.AvailableLpsKgs)" name="@nameof(c.AvailableLpsKgs)" value="@c.AvailableLpsKgs" />
+
+                                            </td>
+                                            <td class="sorting_1" style="width:10px;">@c.Id </td>
+                                            <td class="sorting_1" style="width:10px;">@c.PPCPlanning?.InwardGatePassDetail?.InwardGatePassId </td>
+                                            <td class="sorting_1" style="width:10px;">@c.PPCPlanning.LotNo </td>
+                                            <td class="sorting_1">@c.PPCPlanning.ProductionType?.Name</td>
+                                            <td class="sorting_2">@c.PPCPlanning.BuyerColor.Name</td>
+                                            <td class="sorting_3">@c.PPCPlanning.BuyerColor.Buyer.Name</td>
+                                            <td class="sorting_3">@c.PPCPlanning.BuyerColor.Buyer.Party.Name</td>
+                                            <td class="sorting_4">@c.PPCPlanning.YarnType?.Name</td>
+                                            <td class="sorting_5">@c.PPCPlanning.YarnQuality?.Name</td>
+                                            <td class="sorting_5">@c.PPCPlanning.YarnManufacturer?.Name</td>
+                                            <td class="sorting_7" style="width:10px;"> @c.Cones</td>
+                                            <td class="sorting_7" style="width:10px;"> @c.Kgs</td>
+                                            @*<td class="sorting_7" style="width:10px;"> @c.Reprocesses.id</td>*@
+
+                                            <td style="width:150px;">
+                                                <button type="button" class="btn btn-primary copyIgpId-js copy-js" data-title="Copy @title">Copy This</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

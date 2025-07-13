@@ -1,0 +1,195 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.PPC.IGPViewModel
+
+@{ ViewData["Title"] = "Add Or Update";
+
+                List<SelectListItem> activityTypeList = ViewBag.processActivityTypeList;
+                List<SelectListItem> partyTypeList = ViewBag.partyTypeList;
+                List<SelectListItem> gateogpList = ViewBag.gateogpList;
+                List<SelectListItem> gateIgpList = ViewBag.gateIgpList;
+    
+    }
+
+<form asp-area="ProductionPlaningControl" asp-controller="IGP" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        <div class="row">
+            <div class="form-group col-4">
+                <label class="control-label">Sno No</label>
+                <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="IgpDate" class="control-label"></label>
+                <input asp-for="IgpDate" class="form-control" type="date" />
+                <span asp-validation-for="IgpDate" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group col-4">
+                    <label class="control-label" asp-for="ActivityTypeId"></label>
+                    <select asp-for="ActivityTypeId" select2="@(activityTypeList)" class="form-control select2"></select>
+                    <span asp-validation-for="ActivityTypeId" class="text-danger"></span>
+                </div>*@
+
+            <div class="form-group col-4">
+                <label class="control-label" asp-for="GateTrId"></label>
+                <select asp-for="GateTrId" select2="@(gateIgpList)" select2-ph="Select Gate IGP" class="form-control select2"></select>
+                <span asp-validation-for="GateTrId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label class="control-label" asp-for="GateReffId"></label>
+                <input class="form-control" readonly="readonly" disabled="disabled" />
+                <span asp-validation-for="GateReffId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="BilityNo" class="control-label"></label>
+                <input asp-for="BilityNo" class="form-control" />
+                <span asp-validation-for="BilityNo" class="text-danger"></span>
+            </div>
+            @*<div class="form-group col-4">
+                    <label class="control-label" asp-for="GateOGPId"></label>
+                    <select asp-for="GateOGPId" select2="@(gateogpList)" select2-ph="Select Gate OGP" class="form-control select2"></select>
+                    <span asp-validation-for="GateOGPId" class="text-danger"></span>
+                </div>*@
+            @* <div class="form-group form-check col-2">
+                    <label asp-for="IsReturnToParty" class="control-label"></label>
+                    <div class="border-checkbox-section">
+                        <div class="row">
+                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                <input class="border-checkbox" type="checkbox" asp-for="IsReturnfromParty">
+                                <label class="border-checkbox-label" asp-for="IsReturnfromParty"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>*@
+            @if (Model.IsReturnfromParty == true)
+            {
+<div class="form-group form-check col-2">
+    @*  <label asp-for="IsReturnToParty" class="control-label"></label>*@
+    <div class="border-checkbox-section">
+        <div class="row">
+            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                <input class="border-checkbox" type="checkbox" asp-for="IsReWaxRecheck">
+                <label class="border-checkbox-label" asp-for="IsReWaxRecheck"></label>
+            </div>
+        </div>
+    </div>
+</div>
+                @if (Model.IsWithoutOGP == false)
+                {
+<div class="form-group form-check col-2">
+    <div class="border-checkbox-section">
+        <div class="row">
+            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                <input class="border-checkbox" type="checkbox" asp-for="IsReprocessed">
+                <label class="border-checkbox-label" asp-for="IsReprocessed"></label>
+            </div>
+        </div>
+    </div>
+</div>} } @*<div class="form-group form-check col-2">
+                    <label asp-for="IsReturnToParty" class="control-label"></label>
+                    <div class="border-checkbox-section">
+                        <div class="row">
+                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                <input class="border-checkbox" type="checkbox" asp-for="IsReprocessed">
+                                <label class="border-checkbox-label" asp-for="IsReprocessed"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+
+            <div class="form-group form-check col-2">
+                @*<label asp-for="IsReturnToParty" class="control-label"></label>*@
+                <div class="border-checkbox-section">
+                    <div class="row">
+                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                            <input class="border-checkbox" type="checkbox" asp-for="IsConfirm">
+                            <label class="border-checkbox-label" asp-for="IsConfirm"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-checkbox-section">
+                    <div class="row">
+                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                            <input class="border-checkbox" type="checkbox" asp-for="IsCancel">
+                            <label class="border-checkbox-label" asp-for="IsCancel"></label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            @*<div class="form-group col-3">
+                    <label asp-for="LotNo" class="control-label"></label>
+                    <input asp-for="LotNo" class="form-control" />
+                    <span asp-validation-for="LotNo" class="text-danger"></span>
+                </div>
+                <div class="form-group col-3">
+                    <label asp-for="Bags" class="control-label"></label>
+                    <input asp-for="Bags" class="form-control" />
+                    <span asp-validation-for="Bags" class="text-danger"></span>
+                </div>*@
+        </div>
+
+        <div class="row">
+
+            @*<div class="form-group col-4">
+                    @if (bagMarkingList != null) {
+                        <label class="control-label" asp-for="BagMarkingId"></label>
+                        <partial name="~/Views/Shared/_SelectList.cshtml" model="bagMarkingSl" />
+                    }
+                    <span asp-validation-for="BagMarkingId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    @if (coneMarkingList != null) {
+                        <label class="control-label" asp-for="ConeMarkingId"></label>
+                        <partial name="~/Views/Shared/_SelectList.cshtml" model="coneMarkingSl" />
+                    }
+                    <span asp-validation-for="ConeMarkingId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    @if (yarnTypeList != null) {
+                        <label class="control-label" asp-for="YarnTypeId"></label>
+                        <partial name="~/Views/Shared/_SelectList.cshtml" model="yarnTypeSl" />
+                    }
+                    <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    @if (yarnQualityList != null) {
+                        <label class="control-label" asp-for="YarnQualityId"></label>
+                        <partial name="~/Views/Shared/_SelectList.cshtml" model="YarnQualitySl" />
+                    }
+                    <span asp-validation-for="YarnQualityId" class="text-danger"></span>
+                </div>*@
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#btn").on("click", function () {
+            $(this).attr("disabled", "disabled");
+            doWork();
+        });
+    });
+
+    function doWork() {
+        alert("doing work");
+        setTimeout('$("#btn").removeAttr("disabled")', 1500);
+    }
+
+
+</script>

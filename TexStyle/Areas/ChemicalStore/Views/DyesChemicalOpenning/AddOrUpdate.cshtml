@@ -1,0 +1,30 @@
+﻿@model TrViewModel
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    //List<SelectListItem> supplierList = ViewBag.supplierList;
+    //var supplierSl = new SelectListItemViewModel
+    //{
+    //    Name = nameof(Model.PartyId),
+    //    PlaceHolder = "Select Supplier",
+    //    UseDefault = false,
+    //    SelectList = supplierList
+    //};
+
+}
+
+    <form asp-area="@AreaConstants.CHEMICAL_STORE.Name" asp-controller="DyesChemicalOpenning" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+
+                <div class="form-horizontal">
+                     @Html.HiddenFor(m=>m.Sno)
+                    <div class="form-group">
+                        <label asp-for="TransactionDate" class="control-label"></label>
+                        <input asp-for="TransactionDate" class="form-control" type="date" />
+                        <span asp-validation-for="TransactionDate" class="text-danger"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+    </form>

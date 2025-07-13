@@ -1,0 +1,115 @@
+﻿@model TexStyle.Core.PPC.PPCPlanning
+@{
+    var title = $"PPC Planning";
+}
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>@title Details</h5>
+            @*<button href="#@(AddOrUpdateAction)?igpId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?igpId=@(Model.Id)" data-title="Create @title">ADD NEW</button>*@
+        </div>
+        <div class="card-block">
+            <div class="dt-responsive table-responsive">
+                <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="">
+                        <div class="col-xs-12 col-sm-12 m-dT">
+                            <input type="hidden" id="refYarnManufacturerId" value="@Model.YarnManufacturerId" />
+                            <input type="hidden" id="refYarnQualityId" value="@Model.YarnQualityId" />
+                            <input type="hidden" id="refYarnTypeId" value="@Model.YarnTypeId"/>
+
+                            <input type="hidden" id="refYarnManufacturerId" value="@Model.KnitingPartyId" />
+                            <input type="hidden" id="refYarnQualityId" value="@Model.FabricQualityId" />
+                            <input type="hidden" id="refFabricTypesId" value="@Model.FabricTypesId" />
+                            @*dataTable*@
+
+                            @*dataTable*@
+                            <table id="PPCTable" class="table table-striped table-bordered sdataTable" role="grid" aria-describedby="simpletable_info">
+
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc">LPS ID</th>
+                                        <th class="sorting">Lot No</th>
+                                        <th class="sorting">Activity</th>
+                                        <th class="sorting">PO</th>
+                                        <th class="sorting">Party</th>
+                                        <th class="sorting">Buyer</th>
+                                        <th class="sorting">Shade</th>
+                                        @if (Model.IsYarn == true)
+                                        {
+                                            <th class="sorting">Yarn Type</th>
+                                            <th class="sorting">Yarn Quality</th>
+                                            <th class="sorting">Yarn Manufacturer</th>
+                                            <th class="sorting">Cones</th>
+                                        }
+                                        else
+                                        {
+                                            <th class="sorting">Fabric Type</th>
+                                            @*<th class="sorting">Fabric Quality</th>*@
+                                            <th class="sorting">Knitter</th>
+                                            <th class="sorting">No of Roll</th>
+
+                                        }
+                                        <th class="sorting">Available Kgs</th>
+                                        <th class="sorting">Kgs</th>
+                                        <th class="sorting">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr role="row">
+                                        <td class="sorting_1">@Model.Id</td>
+                                        <td class="sorting_1" style="width:10px;">@Model.LotNo <input type="hidden" name="@nameof(Model.LotNo)" value="@Model.LotNo" /></td>
+                                        <td class="sorting_1">@Model.ProductionType?.Name</td>
+                                        <td class="sorting_1">@Model.FactoryPo <input type="hidden" name="PO" value="@Model.FactoryPo" /></td>
+                                        <td class="sorting_2">@Model.BuyerColor?.Buyer?.Party?.Name</td> 
+                                        <td class="sorting_3">@Model.BuyerColor?.Buyer?.Name  <input type="hidden" name="@nameof(Model.BuyerId)" value="@Model.BuyerId" /></td>
+                                        <td class="sorting_3">@Model.BuyerColor?.Name <input type="hidden" name="@nameof(Model.BuyerColorId)" value="@Model.BuyerColorId" /></td>
+
+
+                                        @if (Model.IsYarn == true)
+                                        {
+                                            <td class="sorting_1">@Model.YarnType?.Name <input type="hidden" name="@nameof(Model.YarnTypeId)" value="@Model.YarnTypeId" /></td>
+                                            <td class="sorting_1">@Model.YarnQuality.Name <input type="hidden" name="@nameof(Model.YarnQualityId)" value="@Model.YarnQualityId" /></td>
+                                            <td class="sorting_5">@Model.YarnManufacturer?.Name <input type="hidden" name="@nameof(Model.YarnManufacturerId)" value="@Model.YarnManufacturerId" /></td>
+                                            <td class="sorting_7" style="width:10px;"> @Model.Cones</td>
+
+                                        }
+                                        else
+                                        {
+                                            <td class="sorting_1">@Model.FabricType?.Name <input type="hidden" name="@nameof(Model.FabricTypesId)" value="@Model.FabricTypesId" /></td>
+                                            @*<td class="sorting_1">@Model.FabricQuality.Name <input type="hidden" name="@nameof(Model.FabricQualityId)" value="@Model.FabricQualityId" /></td>*@
+                                            <td class="sorting_5">@Model.knittingParty?.Name <input type="hidden" name="@nameof(Model.KnitingPartyId)" value="@Model.KnitingPartyId" /></td>
+                                            <td class="sorting_7" style="width:10px;"> @Model.NoOfRolls</td>
+
+
+
+                                        }
+
+
+                                    <td class="sorting_7" style="width:10px;">
+                                        @Model.AvailableLpsKgs                                        
+                                    </td>
+
+
+                                        <td class="sorting_7" style="width:10px;">
+                                            @Model.Kgs
+
+                                            <input type="hidden" name="@nameof(Model.Kgs)" value="@Model.AvailableLpsKgs" />
+                                            <input type="hidden" name="PendingKgs" value="@Model.AvailableLpsKgs" />
+                                            <input type="hidden" id="@nameof(Model.AvailableLpsKgs)" name="@nameof(Model.AvailableLpsKgs)" value="@Model.AvailableLpsKgs" />
+
+                                        </td>
+
+                                        <td style="width:150px;">
+                                            <button type="button" class="btn btn-primary copy-js" data-action="#" data-title="Copy @title">Copy This</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

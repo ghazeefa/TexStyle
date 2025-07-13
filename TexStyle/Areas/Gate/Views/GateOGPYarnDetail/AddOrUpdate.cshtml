@@ -1,0 +1,122 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.Gate.GateTrDetailViewModel;
+@{
+    ViewData["Title"] = "Add Or Update";
+
+
+    List<SelectListItem> yarntypelist = ViewBag.yarntypelist;
+    var yarnTyeSl = new SelectListItemViewModel
+    {
+        Name = "YarnTypeId",
+        PlaceHolder = "Select Yarn Type",
+        UseDefault = false,
+        SelectList = yarntypelist,
+        IsReadonly = true
+    };
+
+    List<SelectListItem> chemicalList = ViewBag.chemicalList;
+    var chemicalS1 = new SelectListItemViewModel
+    {
+        Name = "ChemicalId",
+        PlaceHolder =  "Chemical Id",
+        UseDefault = false,
+        SelectList = chemicalList,
+        IsReadonly = true
+    };
+
+    List<SelectListItem> dyeList = ViewBag.dyeList;
+    var dyeS1 = new SelectListItemViewModel
+    {
+        Name = "DyeId",
+        PlaceHolder =  "Select Dye List",
+        UseDefault = false,
+        SelectList = dyeList,
+        IsReadonly = true
+    };
+
+}
+
+<form asp-area="@AreaConstants.GATE.Name" asp-controller="GateOGPYarnDetail" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.GateTrId)
+        @Html.HiddenFor(m => m.YarnTypeId)
+        @Html.HiddenFor(m => m.QtyDr)
+        @Html.HiddenFor(m => m.QtyCr)
+ 
+        <div class="row">
+            <div class="form-group col-4">
+                    <label class="control-label">No</label>
+                    <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+                    <span class="text-danger"></span>
+                </div>
+            <div class="form-group col-4">
+                    <label class="control-label">Yarn IGP No</label>
+                    <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.GateTrId" />
+                    <span class="text-danger"></span>
+                </div>
+
+            <div class="form-group col-4">
+                @if (chemicalS1 != null)
+                {
+                <label class="control-label" asp-for="ChemicalId"></label>
+                <partial name="@AppConsts.SelectListPartial" model="chemicalS1" />
+                }
+                <span asp-validation-for="ChemicalId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                @if (dyeS1 != null)
+                {
+                <label class="control-label" asp-for="DyeId"></label>
+                <partial name="@AppConsts.SelectListPartial" model="dyeS1" />
+                }
+                <span asp-validation-for="DyeId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                    @if (yarnTyeSl != null)
+                    {
+                        <label class="control-label" asp-for="YarnTypeId"></label>
+                        <partial name="@AppConsts.SelectListPartial" model="yarnTyeSl" />
+                    }
+                    @Html.HiddenFor(x => x.YarnTypeId)
+                    <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+                </div>
+
+            <div class="form-group col-4">
+                <label asp-for="QtyDr" class="control-label"></label>
+                <input asp-for="QtyDr" class="form-control" />
+                <span asp-validation-for="QtyDr" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="QtyCr" class="control-label"></label>
+                <input asp-for="QtyCr" class="form-control" disabled="disabled" />
+                <span asp-validation-for="QtyCr" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea rows="3" asp-for="Description" class="form-control">@Model.Description</textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+<script>
+        $(function () {
+
+
+            $('#YarnTypeId').change(function (e) {
+                $("#DyeId").val("-1").trigger("change");
+                $("#ChemicalId").val("-1").trigger("change");
+                });
+
+        })
+    </script>

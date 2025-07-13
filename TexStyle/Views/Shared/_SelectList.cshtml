@@ -1,0 +1,50 @@
+﻿@model TexStyle.ViewModels.SelectListItemViewModel
+
+
+@if (Model.IsReadonly == null) {
+    if (Model.UseDefault == true) {
+        <select id="@Model.Name" name="@Model.Name" class="form-control select2" style="width:100%">
+            <option value="-1" selected disabled> @Model.PlaceHolder </option>
+            @foreach (var m in Model.SelectList) {
+                <option value="@m.Value">@m.Text</option>
+            }
+        </select>
+    } else
+    if (Model.Reqired == true) {
+        <select id="@Model.Name" name="@Model.Name" class="form-control select2" style="width:100%" required>
+            <option value="-1" selected disabled> @Model.PlaceHolder </option>
+            @if (Model.SelectList != null) {
+                @foreach (var m in Model.SelectList) {
+                    if (m.Selected == true) {
+                        <option value="@m.Value" selected="selected">@m.Text</option>
+                    } else {
+                        <option value="@m.Value">@m.Text</option>
+                    }
+                }}
+        </select>
+    } else {
+        <select id="@Model.Name" name="@Model.Name" class="form-control select2" style="width:100%">
+            <option value="-1" selected disabled> @Model.PlaceHolder </option>
+            @if (Model.SelectList != null) {
+                @foreach (var m in Model.SelectList) {
+                    if (m.Selected == true) {
+                        <option value="@m.Value" selected="selected">@m.Text</option>
+                    } else {
+                        <option value="@m.Value">@m.Text</option>
+                    }
+                }}
+        </select>
+    }
+} else {
+    <select id="@Model.Name" name="@Model.Name" readonly="readonly" disabled="disabled" class="form-control select2" style="width:100%;">
+        <option value="-1" selected disabled> @Model.PlaceHolder </option>
+        @if (Model.SelectList != null) {
+            @foreach (var m in Model.SelectList) {
+                if (m.Selected == true) {
+                    <option value="@m.Value" selected="selected">@m.Text</option>
+                } else {
+                    <option value="@m.Value">@m.Text</option>
+                }
+            }}
+    </select>
+}

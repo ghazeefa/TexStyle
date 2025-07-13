@@ -1,0 +1,62 @@
+﻿@model TexStyle.ViewModels.PPC.Forms.LotMarkingViewModel
+@{ ViewData["Title"] = "Add Or Updaste";
+
+    List<SelectListItem> LPSList = ViewBag.LPS;
+    var gateIGPTypeSl = new SelectListItemViewModel
+    {
+        Name = "PPCPlanningId",
+        PlaceHolder = "Select LPS No",
+        UseDefault = false,
+        SelectList = LPSList,
+        IsReadonly = true
+    }; }
+    <form asp-area="ProductionPlaningControl" asp-controller="LotMarking" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(m => m.Id)
+        <div class="row">
+            <div class="form-group col-6">
+                <label class="control-label" asp-for="PPCPlanningId">Gate Tr</label>
+                <div id="gatetr">
+                    <select asp-for="PPCPlanningId" select2="@(LPSList)" class="form-control select2"></select>
+                </div>
+                <span asp-validation-for="PPCPlanningId" class="text-danger"></span>
+            </div>
+            @*<div class="form-group col-4">
+            <label asp-for="NoOfRolls" class="control-label"></label>
+            <input asp-for="NoOfRolls" class="form-control" required />
+            <span asp-validation-for="NoOfRolls" class="text-danger"></span>
+        </div>*@
+            <div class="form-group col-6">
+
+                <label asp-for="IssuanceDate" class="control-label"></label>
+                <input asp-for="IssuanceDate" class="form-control" type="date" />
+                <span asp-validation-for="IssuanceDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-6">
+                <label asp-for="Kgs" class="control-label"></label>
+                <input asp-for="Kgs" class="form-control" />
+                <span asp-validation-for="Kgs" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check col-2">
+                <div class="border-checkbox-section">
+                    <div class="row">
+                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                            <input class="border-checkbox" type="checkbox" asp-for="IsIssued">
+                            <label class="border-checkbox-label" asp-for="IsIssued"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+
+
+    </form>

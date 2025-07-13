@@ -1,0 +1,103 @@
+﻿@model IEnumerable<TexStyle.Core.PPC.RollMarking>
+
+@{
+    var title = $"RollMarking";
+    ViewData["Title"] = $"{title}s";
+    var AddOrUpdateAction = "/ppc/RollMarking/AddOrUpdate/";
+    var DeleteAction = "/ppc/RollMarking/Delete/";
+    var IssuanceReport = "/ppc/ReportsController/P9IssunaceRecordReport/";
+
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+
+                <button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW</button>
+                <a href="@IssuanceReport" class="btn btn-outline-secondary">Lot Issuance Document</a>
+
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Sno</th>
+                                            <th class="sorting_asc">LPSNo</th>
+                                            <th class="sorting_asc">LotNo</th>
+                                            <th class="sorting_asc">Fabric Type</th>
+                                            <th class="sorting_asc">Buyer PO</th>
+                                            <th class="sorting_asc">Buyer</th>
+                                            <th class="sorting_asc">Party</th>
+                                            <th class="sorting_asc">Buyer Color</th>
+                                            <th class="sorting_asc">No of Rolls</th>
+                               
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                                        <tr role="row">
+                                            <td class="sorting_1">@c.Id</td>
+                                            <td class="sorting_1">@c.PPCPlanningId</td>
+                                            @if (Model.FirstOrDefault().PPCPlanning!=null)
+                                            {
+                                                    <td class="sorting_1">@c.PPCPlanning.LotNo</td>
+                                            <td class="sorting_1">@c.PPCPlanning.FabricType.Name</td>
+                                            <td class="sorting_1">@c.PPCPlanning.InwardGatePassDetail.BuyerPO</td>
+                                            <td class="sorting_1">@c.PPCPlanning.Buyer.Name</td>
+                                            <td class="sorting_1">@c.PPCPlanning.Party.Name</td>
+                                            <td class="sorting_1">@c.PPCPlanning.BuyerColor?.Name</td>
+
+
+                                            }
+                                        
+                                            <td class="sorting_1">@c.NoOfRolls</td>
+                                            <td style="width:150px;">
+
+                                                <button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdateAction@c.Id" data-title="Update @title">Edit</button>
+                                                <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-primary">Details</a>
+
+                                                <button disabled class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>
+
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Sno</th>
+                                            <th class="sorting_asc">LPSNo</th>
+                                            <th class="sorting_asc">LotNo</th>
+                                            <th class="sorting_asc">Fabric Type</th>
+                                            <th class="sorting_asc">Buyer PO</th>
+                                            <th class="sorting_asc">Buyer</th>
+                                            <th class="sorting_asc">Party</th>
+                                            <th class="sorting_asc">Buyer Color</th>
+                                            <th class="sorting_asc">No of Rolls</th>
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var modal = "#adminModal";
+    </script>
+}

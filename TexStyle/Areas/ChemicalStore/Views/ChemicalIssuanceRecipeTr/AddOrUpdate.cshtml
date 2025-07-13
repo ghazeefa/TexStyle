@@ -1,0 +1,34 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.CS.RecipeNoViewModel;
+
+@{
+    ViewData["Title"] = "Add New Recipe";
+
+    List<SelectListItem> RecipeList = ViewBag.recipeList;
+
+
+}
+
+<form asp-area="ChemicalStore" asp-controller="ChemicalIssuanceRecipeTr" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        @* @Html.TextBoxFor(m=>m.Id)*@
+        <div class="form-group">
+            <label class="control-label" asp-for="RecipeId"></label>
+            <select asp-for="RecipeId" select2="@(RecipeList)" class="form-control select2"></select>
+            <span asp-validation-for="RecipeId" class="text-danger"></span>
+        </div>
+        <div class="border-checkbox-section">
+            <div class="row">
+                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                    <input class="border-checkbox" type="checkbox" asp-for="IsCancel">
+                    <label class="border-checkbox-label" asp-for="IsCancel"></label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+
+</form>

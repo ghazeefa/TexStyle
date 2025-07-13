@@ -1,0 +1,26 @@
+﻿@model TexStyle.ViewModels.PPC.Reports.LotNumber
+    @{ ViewData["Title"] = "Add Or Update ";
+
+        //List<SelectListItem> LPSList = ViewBag.LPS;
+
+        }
+    <form asp-area="ProductionPlaningControl" asp-controller="LotMarking" asp-action="IssunaceDocument" method="get" enctype="multipart/form-data">
+        <div class="form-horizontal">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="form-group col-4">
+                    <label asp-for="LotNo" class="control-label"></label>
+                    <input asp-for="LotNo" class="form-control" />
+                    <span asp-validation-for="LotNo" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Get Record</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+
+
+    </form>

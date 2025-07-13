@@ -1,0 +1,22 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.Analysis.DefectViewModel
+
+@{
+    ViewData["Title"] = "Add Or Updaste";
+}
+
+<form asp-area="Analysis" asp-controller="Defect" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            <label  class="control-label">Defect</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

@@ -1,0 +1,171 @@
+﻿@model List<TexStyle.ViewModels.YD.Reports.TotalRecipesReport_ViewModel>;
+
+    @{ ViewData["Title"] = "Recipes List Buyer/PO/Color Wise";
+        Layout = "_LayoutPrint";
+        decimal? totalBuyerKgs = 0;
+        decimal? totalBuyerPcs = 0;
+        decimal? totalPoKgs = 0;
+        decimal? totalPoPcs = 0;
+        decimal? totalColorKgs = 0;
+        decimal? totalColorPcs = 0;
+        decimal? grandTotalKgs = 0;
+        decimal? grandTotalPcs = 0;
+    }
+    <style>
+        .table-responsive {
+            overflow-x: visible !important;
+        }
+
+        .borders > tbody > tr > td, .borders > thead > tr > td {
+            border: 1px solid black !important;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+            line-height: 15px !important;
+        }
+    </style>
+
+
+    @if (Model.Count() > 0)
+    {
+        <div class="container">
+            <div class="text-center" style=" line-height:16px;">
+                <div style="text-align:end; font-weight:bold; font-size:22px;">
+                    <p>@Model.FirstOrDefault().CompanyName</p>
+                </div>
+                @if (Model.FirstOrDefault().CompanyBranch != null)
+                {
+                    <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+                        <p>@Model.FirstOrDefault().CompanyBranch</p>
+                    </div>}
+            </div>
+            <div class="text-center" style=" line-height:10px;float:right">
+                <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                    Report No.
+                </div>
+                <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                    D-5
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="w-100 text-center" style="margin-top:-110px">
+                    <h4>@ViewData["Title"]</h4>
+                    Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+                </div>
+            </div>
+
+        </div>
+        <br />
+
+        <div class="table-responsive">
+            <table class="table table-responsive">
+
+                <thead>
+                    <tr class="report-detailheader">
+
+                        <th width="20%" style="font-size:large;">Buyer</th>
+                        <th width="10%" style="font-size:large;">PO</th>
+                        <th width="20%" style="font-size:large;">Shade</th>
+                        <th width="10%" style="font-size:large;">Recipe #</th>
+                        <th width="20%" style="font-size:large;">Recipe Date</th>
+                        <th width="10%" style="font-size:large;">Kgs</th>
+                        <th width="10%" style="font-size:large;">Pcs</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var buyerGroup in Model.GroupBy(x => x.BuyerId))
+                    {
+                        totalBuyerKgs = 0;
+                        totalBuyerPcs = 0;
+
+                        <tr>
+                            <td colspan="2" style="font-weight:bold;"> @buyerGroup.FirstOrDefault().Buyer</td>
+                        </tr>
+
+                        foreach (var poGroup in buyerGroup.GroupBy(x => x.FactoryPo).OrderBy(x => x.Key))
+                        {
+                            totalPoKgs = 0;
+                            totalPoPcs = 0;
+
+                            <tr>
+                                <td></td>
+                                <td style="font-weight:bold;"> @poGroup.FirstOrDefault().FactoryPo</td>
+                            </tr>
+
+                            foreach (var colorGroup in poGroup.GroupBy(x => x.BuyerColorId).OrderBy(x => x.Key))
+                            {
+
+                                totalColorKgs = 0;
+                                totalColorPcs = 0;
+
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td style="font-weight:bold;"> @colorGroup.FirstOrDefault().BuyerColor</td>
+                                </tr>
+                                foreach (var item in colorGroup.OrderBy(x => x.RecipeNo))
+                                {
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <td class="report-detail-footer">@item.RecipeNo</td>
+                                        <td class="report-detail-footer">@item.RecipeDate.ToString("dd-MM-yyyy")</td>
+                                        <td class="report-detail-footer">@item.PPCPlanedKgs</td>
+                                        <td class="report-detail-footer">@item.Pcs</td>
+                                    </tr>
+
+                                    totalColorKgs += item.PPCPlanedKgs;
+                                    totalColorPcs += item.Pcs;
+                                }
+
+                                <tr>
+                                    <td colspan="4"></td>
+                                    <td style="text-align:right; font-weight:bold;">Total for Color:</td>
+                                    <td style="font-weight:bold;">@totalColorKgs</td>
+                                    <td style="font-weight:bold;">@totalColorPcs</td>
+                                </tr>
+
+                                totalPoKgs += totalColorKgs;
+                                totalPoPcs += totalColorPcs;
+
+                            }
+
+                            <tr>
+                                <td colspan="5" style="text-align:right; font-weight:bold;">Total for PO:</td>
+                                <td style="font-weight:bold;">@totalPoKgs</td>
+                                <td style="font-weight:bold;">@totalPoPcs</td>
+                            </tr>
+
+                            totalBuyerKgs += totalPoKgs;
+                            totalBuyerPcs += totalPoPcs;
+                        }
+
+                        <tr>
+                            <td colspan="5" style="text-align:right; font-weight:bold;">Total for Buyer:</td>
+                            <td style="font-weight:bold;">@totalBuyerKgs</td>
+                            <td style="font-weight:bold;">@totalBuyerPcs</td>
+                        </tr>
+                        grandTotalKgs += totalBuyerKgs;
+                        grandTotalPcs += totalBuyerPcs;
+                    }
+
+                    <tr>
+                        <td colspan="5" style="text-align:right; font-weight:bold;">Grand Total:</td>
+                        <td style="font-weight:bold;">@grandTotalKgs</td>
+                        <td style="font-weight:bold;">@grandTotalPcs</td>
+                    </tr>
+
+                </tbody>
+
+                <tfoot>
+
+                </tfoot>
+            </table>
+
+        </div>
+    }
+    else
+    {
+        <center><h1> No Record in Report </h1></center>
+    }

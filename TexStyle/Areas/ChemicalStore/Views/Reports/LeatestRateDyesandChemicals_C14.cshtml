@@ -1,0 +1,110 @@
+﻿@*@model IEnumerable<TexStyle.ViewModels.CS.Reports.LatestRateReportC14_ViewModel>*@
+    @model TexStyle.ViewModels.CS.Reports.LatestRateReportC14_ViewModel
+
+    @{ViewData["Title"] = "Stock Out Summary";
+        Layout = "_LayoutPrint";
+
+
+
+
+    }
+    <style>
+        .table-responsive {
+            overflow-x: visible !important;
+        }
+
+        .borders > tbody > tr > td, .borders > thead > tr > td {
+            border: 1px solid black !important;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+            line-height: 15px !important;
+        }
+    </style>
+    @if (Model.LatestRateReportDetailC14_ViewModel.Count() > 0)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-1 report-numberheading">C-14</div>
+
+
+
+            </div>
+            <div class="row">
+                <div class="col-12 report-header1">
+
+                    @Model.Date
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 report-header2">
+                    Leatest Rate Report
+                </div>
+            </div>
+
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-responsive borders">
+
+                <thead>
+
+
+
+                <thead style="border-bottom: hidden;">
+                    <tr class="report-detailheader" style="border-bottom:hidden">
+
+                        <td colspan="1" width="1%">Dye/Chmical</td>
+
+                        <td colspan="2" width="2%">Rate</td>
+
+                        <td colspan="2" width="2%">Last Purchase Date</td>
+
+
+
+
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.LatestRateReportDetailC14_ViewModel.Count() > 0)
+                    {
+                        @foreach (var detail in Model.LatestRateReportDetailC14_ViewModel)
+                        {
+                            <tr class="report-detail">
+                                <td class="text-center" colspan="1"> @detail.Item</td>
+
+                                <td class="text-center" colspan="1"> @detail.Rate.ToString("#,0.00")</td>
+                                @if (detail.TransactionDate != null)
+                                {
+
+                                    <td class="text-center" colspan="1"> @detail.TransactionDate.ToString("DD-MMM-yyyy")</td>
+
+                                }
+                                else
+                                {
+
+                                    <td class="text-center" colspan="1">Opening Date</td>
+
+
+
+                                }
+
+
+
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+
+
+    }
+    else
+    {
+        <h1><center> No Record in Report </center></h1>}

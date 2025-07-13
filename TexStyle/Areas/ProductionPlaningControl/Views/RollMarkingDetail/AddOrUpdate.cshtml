@@ -1,0 +1,36 @@
+﻿@model TexStyle.ViewModels.PPC.Forms.RollMarkingDetailViewModel
+@{ ViewData["Title"] = "Add Or Updaste"; }
+
+<form asp-area="ProductionPlaningControl" asp-controller="RollMarkingDetail" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id))
+        @Html.HiddenFor(m => m.RollMarkingId))
+        <div class="form-group">
+            <label asp-for="RollNo" class="control-label"></label>
+            <input asp-for="RollNo" class="form-control" />
+            <span asp-validation-for="RollNo" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EcruKgs" class="control-label"></label>
+            <input asp-for="EcruKgs" class="form-control" />
+            <span asp-validation-for="EcruKgs" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DyedKgs" class="control-label"></label>
+            <input asp-for="DyedKgs" class="form-control" />
+            <span asp-validation-for="DyedKgs" class="text-danger"></span>
+        </div>     
+        <div class="form-group">
+            <label asp-for="Status" class="control-label"></label>
+            <input asp-for="Status" class="form-control" />
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+

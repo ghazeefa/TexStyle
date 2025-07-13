@@ -1,0 +1,54 @@
+﻿@model TexStyle.ViewModels.PPC.OGPViewModel
+
+@{
+    List<SelectListItem> YarnTypeList = ViewBag.YarnTypeList;
+    List<SelectListItem> PartyList = ViewBag.PartyList;
+    List<SelectListItem> ProcessTypeList = ViewBag.ProcessTypeList;
+}
+
+<form asp-area="MarketingAccounts" asp-controller="OGPInvoice" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.PartyId)
+        @Html.HiddenFor(m => m.OGPDate)
+        @Html.HiddenFor(m => m.ReceivingPerson)
+        @Html.HiddenFor(m => m.VehicleNo)
+        @Html.HiddenFor(m => m.YarnTypeId)
+        @Html.HiddenFor(m => m.IsReturnToParty)
+        @Html.HiddenFor(m => m.IsReprocessed)
+        @Html.HiddenFor(m => m.IsReCheck)
+        @Html.HiddenFor(m => m.IsConfirm)
+        @Html.HiddenFor(m => m.IDCard)
+        @Html.HiddenFor(m => m.ActivityTypeId)
+        <div class="row">
+            <div class="form-group col-6">
+                <label asp-for="InvoiceNo" class="control-label"></label>
+                <input asp-for="InvoiceNo" class="form-control" />
+                <span asp-validation-for="InvoiceNo" class="text-danger"></span>
+            </div>
+            <div class="form-group col-6">
+                <label asp-for="InvoiceAmount" class="control-label"></label>
+                <input asp-for="InvoiceAmount" class="form-control" />
+                <span asp-validation-for="InvoiceAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group col-6">
+                <label asp-for="InvoiceDescription" class="control-label"></label>
+                <textarea cols="10" rows="4" asp-for="InvoiceDescription" class="form-control" />
+                <span asp-validation-for="InvoiceDescription" class="text-danger"></span>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+
+
+

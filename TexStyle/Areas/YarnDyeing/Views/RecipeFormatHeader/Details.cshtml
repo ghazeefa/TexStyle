@@ -1,0 +1,257 @@
+﻿@model TexStyle.Core.YD.RecipeFormatHeader
+@{
+    var title = $"Recipe Format";
+    ViewData["Title"] = $"{title} No. {Model.Id}";
+
+
+    var AddOrUpdateAction = "/yd/RecipeFormatHeader/AddOrUpdateDetail/";
+    var DeleteDetailAction = "/yd/RecipeFormatHeader/DeleteDetail/";
+
+
+    List<SelectListItem> processTypeList = ViewBag.processTypeList;
+    var processTypeSl = new SelectListItemViewModel
+    {
+        Name = "ProcessTypeId",
+        PlaceHolder = "Select Process Type",
+        UseDefault = false,
+        IsReadonly = true,
+        SelectList = processTypeList
+    };
+
+
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @* @if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_FORMAT_CREATE)){<button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW</button>}
+                *@
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="form-horizontal">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    @*<input type="hidden" asp-for="Id" />*@
+                                    @Html.HiddenFor(m => m.Id)
+                                <div class="row">
+                                    <div class="form-group col-4">
+                                        <label asp-for="Id" class="control-label"></label>
+                                        <input asp-for="Id" readonly="readonly" disabled="disabled" value="@Model.Id" class="form-control" />
+                                        <span class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label asp-for="Name" class="control-label"></label>
+                                        <input asp-for="Name" readonly="readonly" disabled="disabled" class="form-control" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        @if (processTypeSl != null)
+                                        {
+                                            <label class="control-label" asp-for="ProcessTypeId"></label>
+                                            <partial name="~/Views/Shared/_SelectList.cshtml" model="processTypeSl" />
+                                        <span asp-validation-for="ProcessTypeId" class="text-danger"></span>
+                                        }
+                                    </div>
+                                    @*<div class="form-group col-4">
+            <label asp-for="OutwardGatePassId" class="control-label"> Outward Gate Pass Id</label>
+            @if (Model.OutwardGatePassId.HasValue)
+            {
+                <p>
+                    <a asp-controller="OGP" asp-action="Details" asp-route-id="@Model.OutwardGatePassId">@Model.OutwardGatePassId</a>
+                </p>
+            }
+            else
+            {
+                <p class="text-warning">No OGP Selected</p>
+            }
+        </div>*@
+                                    @* <div class="form-group form-check col-3">
+            <label asp-for="IsReturnToParty" class="control-label"></label>
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" value="@Model.IsReturnfromParty" disabled>
+                        <label class="border-checkbox-label" asp-for="IsReturnfromParty"> Return From Party</label>
+                    </div>
+                </div>
+            </div>
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" value="@Model.IsConfirmed" disabled>
+                        <label class="border-checkbox-label" asp-for="IsConfirmed"> Is Confirmed</label>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+                                </div>
+
+                                    <div class="row">
+                                        @*<div class="form-group col-4">
+                                                <label asp-for="Bags" class="control-label"></label>
+                                                <input asp-for="Bags" class="form-control" />
+                                                <span asp-validation-for="Bags" class="text-danger"></span>
+                                            </div>*@
+
+                                        @*<div class="form-group col-4">
+                                                @if (bagMarkingList != null)
+                                                {
+                                                    <label class="control-label" asp-for="BagMarkingId"></label>
+                                                    <partial name="~/Views/Shared/_SelectList.cshtml" model="bagMarkingSl" />
+                                                }
+                                                <span asp-validation-for="BagMarkingId" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-4">
+                                                @if (coneMarkingList != null)
+                                                {
+                                                    <label class="control-label" asp-for="ConeMarkingId"></label>
+                                                    <partial name="~/Views/Shared/_SelectList.cshtml" model="coneMarkingSl" />
+                                                }
+                                                <span asp-validation-for="ConeMarkingId" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-4">
+                                                @if (yarnTypeList != null)
+                                                {
+                                                    <label class="control-label" asp-for="YarnTypeId"></label>
+                                                    <partial name="~/Views/Shared/_SelectList.cshtml" model="yarnTypeSl" />
+                                                }
+                                                <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-4">
+                                                @if (yarnQualityList != null)
+                                                {
+                                                    <label class="control-label" asp-for="YarnQualityId"></label>
+                                                    <partial name="~/Views/Shared/_SelectList.cshtml" model="YarnQualitySl" />
+                                                }
+                                                <span asp-validation-for="YarnQualityId" class="text-danger"></span>
+                                            </div>*@
+                                    </div>
+
+                                </div>
+
+                                @*<form asp-area="ProductionPlaningControl" asp-controller="IGP" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>*@
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Details</h5>
+                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.YD_RECIPE_FORMAT_CREATE))
+                {
+                    <button href="#@(AddOrUpdateAction)?formatHeaderId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?formatHeaderId=@(Model.Id)" data-title="Create @title">ADD NEW</button>
+
+                }
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12 m-dT">
+                                @*dataTable*@
+                                <table id="IGPDetailsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Recipe Format No</th>
+                                            <th class="sorting_asc">Sno</th>
+                                            <th class="sorting">Recipe Step</th>
+                                            <th class="sorting">Dye</th>
+                                            <th class="sorting">Chemical</th>
+                                            <th class="sorting">GPL</th>                               
+                                            <th class="sorting">Percentage</th>                               
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model.RecipeFormatDetails.Where(x=>!x.IsDeleted))
+                                        {
+                                            //var recStep
+
+                                        <tr role="row"  class="@(@c.RecipeStepId==null ? @c.ChemicalId!=null ? "table-info": "table-success" : "table-danger")">
+
+                                            <td class="sorting_asc">@c.RecipeFormatHeaderId</td>
+                                            <td class="sorting_asc">@c.Sno</td>
+                                            <td class="sorting">@c.RecipeStep?.Name</td>
+                                            <td class="sorting">@c.Dye?.Name</td>
+                                            <td class="sorting">@c.Chemical?.Name</td>
+                                            @if (c.RecipeStepId == null)
+                                            {
+                                                <td class="sorting">@c.Gpl</td>
+                                                <td class="sorting">@c.Percentage</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="sorting"></td>
+                                                <td class="sorting"></td>
+                                            }
+
+
+                                            @*<td class="sorting">
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" disabled="disabled" @{var isChecked = c.IsZeroBalance == true ? "checked" : ""; } @isChecked>
+                        <label class="border-checkbox-label" for="Confirmed"> </label>
+                    </div>
+                </div>
+            </div>
+        </td>*@
+                                            <td style="width:150px;">
+                                                @*<a asp-action="Details" class="btn btn-primary">Details</a>*@
+                                                @*<button type="button" class="btn btn-primary update-js" data-action="#@AddDetailsAction@c.Id" data-title="Detail @title">Details</button>*@
+                                                <button type="button" class="btn btn-primary update-js" data-action="#@(AddOrUpdateAction)@(c.Id)" data-title="Update @title">Edit</button>
+                                                <button class="btn btn-danger item-delete-btn" data-delete-url="@(DeleteDetailAction)@(c.Id)/">Delete</button>
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    @*<tfoot>
+                                            <tr role="row">
+                                                <th class="sorting_asc">Bility No</th>
+                                                <th class="sorting">Bag Marking</th>
+                                                <th class="sorting">Cone Marking</th>
+                                                <th class="sorting">Buyer Color</th>
+                                                <th class="sorting">Yarn Manufacturer</th>
+                                                <th class="sorting">Yarn Type</th>
+                                                <th class="sorting">Yarn Quality</th>
+                                                <th class="sorting">Lot No</th>
+                                                <th class="sorting">Bags</th>
+                                                <th class="sorting">Gross Weight (Kg)</th>
+                                                <th class="sorting">Tear Weight (Kg)</th>
+                                                <th class="sorting">Net Weight (Kg)</th>
+                                                <th class="sorting">Difference</th>
+                                                <th class="sorting">Wear House Location</th>
+                                                <th class="sorting">Description</th>
+                                                <th class="sorting">Is Zero Balance</th>
+                                                <th class="sorting">Actions</th>
+                                            </tr>
+                                        </tfoot>*@
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

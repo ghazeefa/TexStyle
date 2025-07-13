@@ -1,0 +1,87 @@
+﻿@model TrViewModel
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    List<SelectListItem> partyList = ViewBag.partyList;
+    List<SelectListItem> localpurchaseList = ViewBag.localpurchaseList;
+}
+
+<form asp-area="@AreaConstants.CHEMICAL_STORE.Name" asp-controller="StoreReturnNote" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.PartyId)
+
+    <div class="row">
+        @*<div class="form-group col-4">
+            <label class="control-label">No</label>
+            <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+            <span class="text-danger"></span>
+        </div>*@
+        <div class="form-group col-4">
+            <label asp-for="TransactionDate" class="control-label"></label>
+            <input asp-for="TransactionDate" class="form-control" type="date" />
+            <span asp-validation-for="TransactionDate" class="text-danger"></span>
+            <div class="col-1" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">Created On:</div>
+            <div class="col-2" style="font-weight: bolder; border-bottom: 0.2px solid #d5d4d4;">@Model?.GateTrDetails.FirstOrDefault().CreatedOn</div>
+        </div>
+
+        <div class="form-group col-4">
+            <label class="control-label" asp-for="DyeChemicalXrefTrId"></label>
+            <select asp-for="DyeChemicalXrefTrId" select2="@(localpurchaseList)" select2-ph="Select Local Purchase Id" class="form-control select2"></select>
+
+            <span asp-validation-for="DyeChemicalXrefTrId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label class="control-label">Party</label>
+            <input class="form-control" id="PartyName" type="text" value="@Model?.Party?.Name" placeholder="Select Local Purchase Id" disabled />
+
+        </div>
+        <div class="form-group col-4">
+            <label class="control-label">IGP No</label>
+            <input class="form-control" id="GateId" type="text" value="@Model?.DyeChemicalXrefTr?.GateTr?.Sno" placeholder="Select Local Purchase Id" disabled />
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="InvoiceNo" class="control-label"></label>
+            <input asp-for="InvoiceNo" class="form-control" />
+            <span asp-validation-for="InvoiceNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-4">
+            <label asp-for="InvoiceDate" class="control-label"></label>
+            <input asp-for="InvoiceDate" class="form-control" type="date" />
+            <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-4">
+            <label  class="control-label">OGP Reff No</label>
+            <input asp-for="IGPReffNo" class="form-control" />
+            <span asp-validation-for="IGPReffNo" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+<script>
+    $(function () {
+        $("#DyeChemicalXrefTrId").change(function () {
+            $.get("/cs/StoreReturnNote/GetParty/" + $(this).val(),
+                function (d) {
+                    debugger;
+                    console.log(d);
+                    $("#PartyId").val(d.id);
+                    $("#PartyName").val(d.name);
+                $("#GateId").val(d.gId);
+
+            });
+        });
+
+    })
+</script>

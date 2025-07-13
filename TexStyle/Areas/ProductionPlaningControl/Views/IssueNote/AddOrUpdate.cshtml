@@ -1,0 +1,111 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.PPC.IssueNoteViewModel
+
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    List<SelectListItem> processActivityTypeList = ViewBag.processActivityTypeList;
+    var activityTypeSl = new SelectListItemViewModel
+    {
+        Name = "ProcessActivityTypeId",
+        PlaceHolder = "Select Activity Type",
+        UseDefault = false,
+        SelectList = processActivityTypeList
+    };
+
+    List<SelectListItem> partyTypeList = ViewBag.partyTypeList;
+    var partySl = new SelectListItemViewModel
+    {
+        Name = "PartyId",
+        PlaceHolder = "Select Party",
+        UseDefault = false,
+        SelectList = partyTypeList
+    };
+
+    //List<SelectListItem> bagMarkingList = ViewBag.bagMarkingList;
+    //var bagMarkingSl = new SelectListItemViewModel
+    //{
+    //    Name = "BagMarkingId",
+    //    PlaceHolder = "Select Bag Marking",
+    //    UseDefault = false,
+    //    SelectList = bagMarkingList
+    //};
+
+    //List<SelectListItem> coneMarkingList = ViewBag.coneMarkingList;
+    //var coneMarkingSl = new SelectListItemViewModel {
+    //    Name = "ConeMarkingId",
+    //    PlaceHolder = "Select Cone Marking",
+    //    UseDefault = false,
+    //    SelectList = coneMarkingList
+    //};
+
+    //List<SelectListItem> yarnTypeList = ViewBag.yarnTypeList;
+    //var yarnTypeSl = new SelectListItemViewModel {
+    //    Name = "YarnTypeId",
+    //    PlaceHolder = "Select Yarn Type",
+    //    UseDefault = false,
+    //    SelectList = yarnTypeList
+    //};
+
+    //List<SelectListItem> yarnQualityList = ViewBag.yarnQualityList;
+    //var YarnQualitySl = new SelectListItemViewModel {
+    //    Name = "YarnQualityId",
+    //    PlaceHolder = "Select Yarn Quality",
+    //    UseDefault = false,
+    //    SelectList = yarnQualityList
+    //};
+}
+
+<form asp-area="ProductionPlaningControl" asp-controller="IssueNote" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.IssueTypeId)
+    <div class="row">
+        <div class="form-group col-4">
+            <label class="control-label">Issue Id</label>
+            <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="IRNO" class="control-label"></label>
+            <input asp-for="IRNO" class="form-control" />
+            <span asp-validation-for="IRNO" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="IssueDate" class="control-label"></label>
+            <input asp-for="IssueDate" class="form-control" type="date" />
+            <span asp-validation-for="IssueDate" class="text-danger"></span>
+        </div>
+        <div class="form-group form-check col-4">
+            @*<label class="control-label">Return To Party</label>*@
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" asp-for="IsReprocessed">
+                        <label class="border-checkbox-label" for="IsReprocessed">Is Reprocessed?</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group form-check col-4">
+            @* <label class="control-label">Is Confirmed</label>*@
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" asp-for="IsConfirmed">
+                        <label class="border-checkbox-label" for="IsConfirmed"> Is Confirmed</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

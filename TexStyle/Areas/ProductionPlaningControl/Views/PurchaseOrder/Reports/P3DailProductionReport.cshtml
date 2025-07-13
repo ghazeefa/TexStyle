@@ -1,0 +1,117 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.Reports.P3DailyProductionReportViewModel>
+@{
+    ViewData["Title"] = "Daily Production Report";
+    Layout = "_LayoutPrint";
+
+}
+
+<div class="table-responsive">
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+
+                <th scope="col" width="7%" class="table-active report-numberheading">P-3</th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model!=null)
+            {
+
+
+            <tr>
+                <td class="report-header1" colspan="14">@Model.FirstOrDefault().CompanyName </td>
+            </tr>
+
+            <tr>
+                <td class="report-header2" colspan="14">@ViewData["Title"] </td>
+            </tr>
+
+            <tr>
+                <td class="report-header3" colspan="14">DATE FROM: @Model.FirstOrDefault().DateFrom TO: @Model.FirstOrDefault().DateTo</td>
+            </tr>
+            <tr>
+                <td colspan="14"> </td>
+            </tr>
+            <tr>
+                <td colspan="14"> </td>
+            </tr>
+            <tr class="report-detailheader">
+                <td>Date</td>
+                <td>LPS</td>
+                <td>PO.No</td>
+                <td>Lot.No</td>
+                <td>Buyer</td>
+                <td>Shade</td>
+                <td>Y.Count</td>
+                <td>Ecru(Kgs)</td>
+                <td>Ecru Cones</td>
+                <td>Dyed(Kgs)</td>
+                <td>Dyed(Bags)</td>
+                <td>Loss%</td>
+
+                <td>Status</td>
+                <td></td>
+
+            </tr>
+
+            @if (Model.Count() > 0)
+            {
+                foreach (var grp in Model)
+                {
+            <tr>
+                <td colspan="14">
+
+                    <strong>@grp.Date</strong>
+                </td>
+            </tr>
+                    foreach (var item in grp.LPSDetail)
+                    {
+        <tr>
+            <td></td>
+            <td>@item.LPSNo</td>
+            <td>@item.PurchaseOrderNo</td>
+            <td>@item.LotNo</td>
+            <td>@item.Buyer</td>
+            <td>@item.Shade</td>
+            <td>@item.YarnType</td>
+            <td>@item.EcruKgs</td>
+            <td>@item.Cones</td>
+            <td>@item.DyeKgs</td>
+            <td>@item.DyedBags</td>
+            <td>@(((item.EcruKgs - item.DyeKgs)/(item.EcruKgs))*100)</td>
+            <td>@item.ReceivedQualityStatus</td>
+            <td>-</td>
+
+
+        </tr>
+                    }
+
+
+           
+
+
+            }
+
+
+            }
+            }
+
+        </tbody>
+        </table>
+</div>
+

@@ -1,0 +1,87 @@
+﻿@model IEnumerable<TexStyle.Core.PPC.Party>
+
+@{
+    var title = $"Party";
+    ViewData["Title"] = $"{title}s";
+    var AddOrUpdateAction = "/ppc/Party/AddOrUpdate/";
+    var DeleteAction = "/ppc/Party/Delete/";
+
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_SETTINGS_PARTY_CREATE)){<button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW</button>}
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting">Control Account</th>
+                                            <th class="sorting">Sub Account</th>
+                                            <th class="sorting">Name</th>
+                                            <th class="sorting">Is Header</th>
+                                            @*<th class="sorting">Buyers</th>*@
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                                        <tr role="row">
+
+                                            <td class="sorting_1">@c.ControlAccount</td>
+                                            <td class="sorting_1">@c.SubAccount</td>
+                                            <td class="sorting_1">@c.Name</td>
+                                            <td class="sorting_3">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @{var isHeader = c.IsHeader == true ? "checked" : ""; } @isHeader>
+                                                            <label class="border-checkbox-label"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            @*  <td class="sorting_1">@c.Buyers.Where(x => x.IsDeleted == false).Count()</td>*@
+                                            <td style="width:150px;">
+                                                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_SETTINGS_PARTY_EDIT)){<button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdateAction@c.Id" data-title="Update @title">Edit</button>}
+                                                 @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_SETTINGS_PARTY_DELETE)){<button disabled class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>}
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th class="sorting">Control Account</th>
+                                            <th class="sorting">Sub Account</th>
+                                            <th class="sorting">Name</th>
+                                            <th class="sorting">Is Header</th>
+                                            @*<th class="sorting">Buyers</th>*@
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        var modal = "#adminModal";
+    </script>
+}

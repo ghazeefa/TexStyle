@@ -1,0 +1,66 @@
+﻿@model TrDetailViewModel
+@{
+    ViewData["Title"] = "Add Or Update";
+}
+
+<form asp-area="@AreaConstants.CHEMICAL_STORE.Name" asp-controller="LCImportInTrDetail" asp-action="Update" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.DyeChemicalTrId)
+        <div class="row">
+            @*<div class="form-group col-4">
+                    <label class="control-label">No</label>
+                    <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+                    <span class="text-danger"></span>
+                </div>*@
+            <div class="form-group col-12">
+                <label class="control-label">LCImportInTr No</label>
+                <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.DyeChemicalTrId" />
+                <span class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group col-4">
+                @if (chemicalSl != null) {
+                    <label class="control-label" asp-for="ChemicalId"></label>
+                    <partial name="@AppConsts.SelectListPartial" model="chemicalSl" />
+                }
+                <span asp-validation-for="ChemicalId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                @if (dyeSl != null) {
+                    <label class="control-label" asp-for="DyeId"></label>
+                    <partial name="@AppConsts.SelectListPartial" model="dyeSl" />
+                }
+                <span asp-validation-for="DyeId" class="text-danger"></span>
+            </div>*@
+
+            @*<div class="form-group col-4">
+                <label asp-for="QtyDr" class="control-label"></label>
+                <input asp-for="QtyDr" class="form-control" />
+                <span asp-validation-for="QtyDr" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="QtyCr" class="control-label"></label>
+                <input asp-for="QtyCr" class="form-control" />
+                <span asp-validation-for="QtyCr" class="text-danger"></span>
+            </div>*@
+            <div class="form-group col-12">
+                <label asp-for="Rate" class="control-label"></label>
+                <input asp-for="Rate" class="form-control" />
+                <span asp-validation-for="Rate" class="text-danger"></span>
+            </div>
+            @*<div class="form-group col-4">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" disabled />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>*@
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

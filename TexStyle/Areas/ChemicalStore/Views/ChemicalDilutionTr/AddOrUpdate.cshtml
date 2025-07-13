@@ -1,0 +1,58 @@
+﻿@model TrViewModel
+@{
+    ViewData["Title"] = "Add Or Update";
+
+
+}
+
+<form asp-area="@AreaConstants.CHEMICAL_STORE.Name" asp-controller="ChemicalDilutionTr" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Sno)
+        <div class="row">
+            @*<div class="form-group col-4">
+                <label class="control-label">No</label>
+                <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+                <span class="text-danger"></span>
+            </div>*@
+            <div class="form-group col-6">
+                <label asp-for="TransactionDate" class="control-label"></label>
+                <input asp-for="TransactionDate" class="form-control" type="date" />
+                <span asp-validation-for="TransactionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group col-6">
+                <label asp-for="ElectricityCharges" class="control-label"></label>
+                <input asp-for="ElectricityCharges" class="form-control" />
+                <span asp-validation-for="ElectricityCharges" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group col-6">
+                <label asp-for="CableCharges" class="control-label"></label>
+                <input asp-for="CableCharges" class="form-control" />
+                <span asp-validation-for="CableCharges" class="text-danger"></span>
+            </div>
+            <div class="form-group col-6">
+                <label asp-for="DrumCharges" class="control-label"></label>
+                <input asp-for="DrumCharges" class="form-control" />
+                <span asp-validation-for="DrumCharges" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-6">
+                <label asp-for="LabourCharges" class="control-label"></label>
+                <input asp-for="LabourCharges" class="form-control" />
+                <span asp-validation-for="LabourCharges" class="text-danger"></span>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

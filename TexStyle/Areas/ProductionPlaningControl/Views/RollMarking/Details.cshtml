@@ -1,0 +1,178 @@
+﻿@model TexStyle.Core.PPC.RollMarking
+@{
+    //var ReturnType = IssueTypes.ReturnTypeList.Single(i => i.Id == Model.ReturnTypeId);
+
+    var title = "Production Recieved";
+    ViewData["Title"] = $"{title} No. {Model.Id}";
+
+
+    var AddOrUpdateAction = "/ppc/RollMarkingDetail/AddOrUpdate/";
+    var DeleteAction = "/ppc/RollMarkingDetail/Delete/";
+
+    var filter = ViewBag.filter;
+
+
+    List<SelectListItem> processActivityTypeList = ViewBag.processActivityTypeList;
+    var activityTypeSl = new SelectListItemViewModel
+    {
+        Name = "ProcessActivityTypeId",
+        PlaceHolder = "Select Activity Type",
+        UseDefault = false,
+        IsReadonly = true,
+        SelectList = processActivityTypeList
+    };
+
+  
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.Something)){<button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW</button>}*@
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="form-horizontal">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    @*<input type="hidden" asp-for="Id" />*@
+                                    @Html.HiddenFor(m => m.Id)
+                                    <div class="row">
+                                        <div class="form-group col-4">
+                                            <label asp-for="Id" class="control-label"></label>
+                                            <input asp-for="Id" readonly="readonly" disabled="disabled" value="@Model.Id" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <label asp-for="PPCPlanningId" class="control-label"></label>
+                                            <input asp-for="PPCPlanningId" readonly="readonly" disabled="disabled"  class="form-control" />
+                                            <span asp-validation-for="PPCPlanningId" class="text-danger"></span>
+                                        </div> 
+                                        <div class="form-group col-4">
+                                            <label asp-for="NoOfRolls" class="control-label"></label>
+                                            <input asp-for="NoOfRolls" readonly="readonly" disabled="disabled"  class="form-control" />
+                                            <span asp-validation-for="NoOfRolls" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <label asp-for="Date" class="control-label"></label>
+                                            <input asp-for="Date" readonly="readonly" disabled="disabled"  class="form-control" />
+                                            <span asp-validation-for="Date" class="text-danger"></span>
+                                        </div>
+                                    
+                        
+
+
+                                        </div>
+
+                                      
+                                    </div>
+
+                                </div>
+
+                              
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Details</h5>
+                @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.purchase))*@
+                <a href="@(AddOrUpdateAction)?ParentId=@(Model.Id)" class="btn btn-primary" data-title="Create @title">ADD NEW</a>
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12 m-dT">
+                                <table id="IGPDetailsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                         
+                                           
+
+                                            <th class="sorting_asc">SNo</th>
+                                            <th class="sorting_asc">Roll No</th>
+
+                                            <th class="sorting_asc">Ecru Kg</th>
+                                            <th class="sorting_asc">Dyed Kgs</th>
+
+                                
+                                            <th class="sorting">Status</th>
+
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model.RollMarkingDetails.Where(x => !x.IsDeleted))
+                                        {
+                                        <tr>
+                                            <td>@c.Id</td>
+                                            <td>@c.RollNo</td>
+
+                                            <td>@c.EcruKgs</td>
+                                            <td>@c.DyedKgs</td>
+                                            <td>@c.Status</td>
+
+                                            <td style="width:150px;">
+
+                                                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_PRODUCTION_RECEIVED_DETAIL_EDIT))
+                                                {
+                                                    <a href="@(AddOrUpdateAction)@c.Id?rnId=@Model.Id" class="btn btn-primary" data-title="Update @title">Edit</a>
+
+                                                }
+                                                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_PRODUCTION_RECEIVED_DETAIL_DELETE))
+                                                {
+                                                    <button disabled class="btn btn-danger item-delete-btn" data-delete-url="@(DeleteAction)@(c.Id)">Delete</button>
+
+                                                }
+
+
+                                            </td>
+
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+
+
+
+                                            <th class="sorting_asc">SNo</th>
+                                            <th class="sorting_asc">Roll No</th>
+
+                                            <th class="sorting_asc">Ecru Kg</th>
+                                            <th class="sorting_asc">Dyed Kgs</th>
+
+
+                                            <th class="sorting">Status</th>
+
+                                            <th class="sorting">Actions</th>
+
+</tfoot>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

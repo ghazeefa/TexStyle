@@ -1,0 +1,162 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.PPC.IssueNoteDetailViewModel
+@{
+    var title = $"Update Issue Detail";
+    ViewData["Title"] = $"{title}";
+   // var AddOrUpdateAction = "/ppc/ReturnToWindingDetail/AddOrUpdate/";
+    var CopyPPCAction = "/ppc/IssueNote/CopyPPCData/";
+
+    List<SelectListItem> storeLocationList = ViewBag.storeLocationList;
+    
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+
+                <div style="color:white" ;> @ViewBag.isreprocessed</div>
+                <button href="#@CopyPPCAction" class="btn btn-primary IgpRef-js" data-action="#@CopyPPCAction?isreprocess=@(ViewBag.isreprocessed)&id=" data-title="Create @title">Copy LPS Reference</button>
+            </div>
+        
+            <form asp-area="ProductionPlaningControl" asp-controller="IssueNote" asp-action="AddOrUpdateDetail" method="post" enctype="multipart/form-data">
+                <div class="card-block">
+                    <h5>LPS No: @Model.PPCPlanningId </h5>
+                    <br />     <br />
+                    <div class="form-horizontal">
+                        <div class="form-horizontal">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            @Html.HiddenFor(m => m.Id)
+                            @Html.HiddenFor(m => m.ReprocessId)
+                            @*@Html.HiddenFor(m => m.YarnManufacturerId)
+                @Html.HiddenFor(m => m.YarnQualityId)*@
+                            @Html.HiddenFor(m => m.PPCPlanningId)
+                            @Html.HiddenFor(m => m.Kgs)
+                            <div class="row">
+                                <div class="form-group col-3">
+                                    <label asp-for="LPSNO" class="control-label"></label>
+                                    <input asp-for="LPSNO" class="form-control" />
+                                    @*<input asp-for="IGPXref" class="form-control" />*@
+                                    @*<span asp-validation-for="IGPXref" class="text-danger"></span>*@
+                                </div>
+                                <div class="form-group col-3">
+                                    <label asp-for="IssueNoteId" class="control-label"></label>
+                                    <input asp-for="IssueNoteId" class="form-control" readonly />
+                                    <span asp-validation-for="IssueNoteId" class="text-danger"></span>
+                                </div>
+                                @*<div class="form-group col-3">
+                        <label asp-for="YarnTypeId" class="control-label"></label>
+                        <input asp-for="YarnTypeId" class="form-control" />
+                        <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group col-3">
+                        <label asp-for="YarnQualityId" class="control-label"></label>
+                        <input asp-for="YarnQualityId" class="form-control" />
+                        <span asp-validation-for="YarnQualityId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-3">
+                        <label asp-for="YarnManufacturerId" class="control-label"></label>
+                        <input asp-for="YarnManufacturerId" class="form-control" />
+                        <span asp-validation-for="YarnManufacturerId" class="text-danger"></span>
+                    </div>*@
+                                <div class="form-group col-3">
+                                    <label asp-for="Kgs" class="control-label"></label>
+                                    <input asp-for="Kgs" class="form-control" disabled type="number" max="0" step="0.01" />
+                                    <span asp-validation-for="Kgs" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label asp-for="Bags" class="control-label"></label>
+                                    <input asp-for="Bags" class="form-control" />
+                                    <span asp-validation-for="Bags" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="StoreLocationId"></label>
+                                    <select asp-for="StoreLocationId" select2="@(storeLocationList)" select2-ph="Select Store Location" class="form-control select2"></select>
+                                    <span asp-validation-for="StoreLocationId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row d-none" id="partialWrapper">
+
+</div>
+
+
+
+
+@section scripts {
+    <script type="text/javascript">
+
+        $(function () {
+            var igpNo = 0;
+            $("#LPSNO").change(function (e) {
+                e.preventDefault();
+                igpNo = $(this).val();
+                console.log($(this).val());
+            });
+            $('.IgpRef-js').click(function (e) {
+                e.preventDefault();
+                var igpno = $("#LPSNO").val();
+                //alert(igpno)
+        
+                var btn = $(this);
+                var BtnText = btn.text();
+                btn.html(`<i class="fa fa-refresh fa-spin text-white"></i>`);
+
+                var url = `${$(this).data('action').replace('#', '')}${igpno}`
+                //alert(url)
+                console.log(url);
+                $.ajax({
+                    method: 'GET',
+                    url: url
+                }).done(function (res) {
+                    btn.text(BtnText);
+
+
+                    $('#partialWrapper').removeClass('d-none').addClass('d-block').html(res);
+                    $("#IGPDetailsTable").DataTable({
+                        scrollX: 300,
+                        scrollY: true,
+                        autoWidth: true,
+                    });
+                    // script that will work on the partial view
+                    $(".copy-js").click(function () {
+                        var btn = $(this);
+
+
+                        var tr = btn.parents("tr")
+                        tr.find("input[type='hidden']").each(function (i) {
+                            var input = $(this);
+                            $(`input[type='number']#${input.attr("name")},input[type='hidden']#${input.attr("name")},input[type='text']#${input.attr("name")}, select#${input.attr("name")}`).val(input.val());
+                            $('.select2').trigger('change');
+                        })
+
+                        var maxKg = tr.find("input#AvailableLpsKgs").val();
+                        $("input#Kgs").attr("max", maxKg);
+                       // $("#availableKgs").prop("value", maxKg);
+                       $("#availableKgs").text(maxKg);
+                    })
+
+                }).fail(function () {
+                    btn.text(BtnText);
+                    console.log(
+                        swal("Failed", "Request Failed. Try later.", "error"));
+                    });
+
+            });
+        });
+                                    
+    </script>
+}

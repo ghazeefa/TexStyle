@@ -1,0 +1,311 @@
+﻿@model TexStyle.ViewModels.YD.RecipeFormatDetailViewModel
+@{
+    List<SelectListItem> RecipeStepList = ViewBag.RecipeStepList;
+    var RecipeStepSl = new SelectListItemViewModel
+    {
+        Name = "RecipeStepId",
+        PlaceHolder = "Select Recipe Step",
+        UseDefault = false,
+        SelectList = RecipeStepList
+
+    };
+
+    List<SelectListItem> DyeList = ViewBag.DyeList;
+    var DyeSl = new SelectListItemViewModel
+    {
+        Name = "DyeId",
+        PlaceHolder = "Select Dye",
+        UseDefault = false,
+        SelectList = DyeList
+
+    };
+    List<SelectListItem> ChemicalList = ViewBag.ChemicalList;
+    var ChemicalSl = new SelectListItemViewModel
+    {
+        Name = "ChemicalId",
+        PlaceHolder = "Select Chemical",
+        UseDefault = false,
+        SelectList = ChemicalList
+
+    };
+}
+
+
+<form asp-action="AddOrUpdateDetail" asp-area="YarnDyeing" asp-controller="RecipeFormatHeader" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.RecipeFormatHeaderId)
+        <div class="row">
+            <div class="form-group col-4">
+                <label asp-for="RecipeFormatHeaderId" class="control-label"></label>
+                <input asp-for="RecipeFormatHeaderId" class="form-control" disabled />
+                <span asp-validation-for="RecipeFormatHeaderId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label asp-for="Sno" class="control-label"></label>
+                <input asp-for="Sno" class="form-control" />
+                <span asp-validation-for="Sno" class="text-danger"></span>
+            </div>
+            <div class="form-radio col-4">
+                <div class="radio radiofill radio-primary radio-inline">
+                    <label>
+                        <input type="radio" name="detail" id="detail" value="Head" @(Model.RecipeStepId != null ? "checked" : "") data-bv-field="member">
+                        <i class="helper"></i>Head
+                    </label>
+                </div>
+                <div class="radio radiofill radio-primary radio-inline">
+                    <label>
+                        <input type="radio" name="detail" id="detail" value="Dye" @(Model.DyeId != null ? "checked" : "") data-bv-field="member">
+                        <i class="helper"></i>Dye
+                    </label>
+                </div>
+                <div class="radio radiofill radio-primary radio-inline">
+                    <label>
+                        <input type="radio" name="detail" id="detail" value="Chemical" @(Model.ChemicalId != null ? "checked" : "") data-bv-field="member">
+                        <i class="helper"></i>Chemical
+                    </label>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-4">
+                <label class="control-label" asp-for="RecipeStepId"></label>
+
+                <div id="headSelectCont">
+                    <select asp-for="RecipeStepId" select2="@(RecipeStepList)" select2-ph="Select Recipe Step" class="form-control select2"></select>
+                </div>
+                <span asp-validation-for="RecipeStepId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label class="control-label" asp-for="DyeId"></label>
+
+                <div id="dyeSelectCont">
+                    <select asp-for="DyeId" select2="@(DyeList)" select2-ph="Select Dye" class="form-control select2"></select>
+                </div>
+                <span asp-validation-for="DyeId" class="text-danger"></span>
+
+            </div>
+            <div class="form-group col-4">
+                <label class="control-label" asp-for="ChemicalId"></label>
+
+                <div id="chemicalSelectCont">
+                    <select asp-for="ChemicalId" select2="@(ChemicalList)" select2-ph="Select Chemical" class="form-control select2"></select>
+                </div>
+                <span asp-validation-for="ChemicalId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-4">
+                <label asp-for="Gpl" class="control-label"></label>
+                <input asp-for="Gpl" class="form-control" />
+                <span asp-validation-for="Gpl" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-4">
+                <label asp-for="Percentage" class="control-label"></label>
+                <input asp-for="Percentage" class="form-control" />
+                <span asp-validation-for="Percentage" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group col-4">
+            <input type="submit" value="Save" id="savebtn" class="btn btn-primary" disabled />
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    //$(".savebtn").unbind('click');
+    //debugger;
+    //$(function fun() {
+        
+    //    var dyeid = $("#dyeSelectCont").find(':selected').val();
+        
+    //    var ChemicalId = $("#chemicalSelectCont").find(':selected').val();
+    //    var RecipeStepId = $("#headSelectCont").find(':selected').val();
+
+    //    if (dyeid == null && ChemicalId == null && RecipeStepId == null) {
+    //        $('#savebtn').attr("disabled", true);
+    //        return false;
+
+    //    }
+    //});
+    //debugger;
+    //$(function fun() {
+    //    if (val == 'Dye' || val == 'Head' || val == 'Chemical') {
+
+    //        var DyeSelect = $("#dyeSelectCont .select2").select2({ dropdownParent: $("#dyeSelectCont") }).val();
+    //        var HeadSelect = $("#headSelectCont .select2").select2({ dropdownParent: $("#headSelectCont") }).val();
+    //        var ChemicalSelect = $("#chemicalSelectCont .select2").select2({ dropdownParent: $("#chemicalSelectCont") }).val();
+    //        if (DyeSelect == null || HeadSelect == null || ChemicalSelect == null) {
+    //           $('#savebtn').attr("disabled", true);
+    //        }
+    //                }
+    //}
+
+
+    $(function () {
+        $('#Gpl').change(function (e) {
+            $("#Percentage").val(0);
+            $("#Percentage").trigger('change');
+            $('#Percentage').attr("disabled", true);
+        });
+        $('#Percentage').change(function (e) {
+            $("#GPL").val(0);
+            $("#GPL").trigger('change');
+            $('#GPL').attr("disabled", true);
+        });
+        $('input[type=radio][name=detail]').change(function () {
+
+            var val = $('input[name=detail]:checked').val()
+            if (val == 'Head') {
+
+                $("#DyeId").val(-1);
+                $("#DyeId").trigger('change');
+                $("#ChemicalId").val(-1);
+                $("#ChemicalId").trigger('change');
+                $.ajax({
+                    method: 'GET',
+                    url: `/yd/RecipeFormatHeader/GetHead/`
+                }).done(function (res) {
+                    console.log(res)
+                    $("#ChemicalId").attr("disabled", true);
+                    $("#DyeId").attr("disabled", true);
+                    $("#headSelectCont").html(res);
+                    $("#headSelectCont .select2").select2({ dropdownParent: $("#headSelectCont") });
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert("error");
+                });
+
+
+                 //  if (RecipeStepId == -1) {
+                
+                $('#savebtn').attr("disabled", true);
+               // }
+
+
+
+
+            }
+            else if (val == 'Dye') {
+                $("#ChemicalId").val(-1);
+                $("#ChemicalId").trigger('change');
+                $("#RecipeStepId").val(-1);
+                $("#RecipeStepId").trigger('change');
+                $.ajax({
+                    method: 'GET',
+                    url: `/yd/RecipeFormatHeader/Getdyes/`
+                }).done(function (res) {
+                    $("#RecipeStepId").attr("disabled", true);
+                    $("#ChemicalId").attr("disabled", true);
+                    $("#dyeSelectCont").html(res);
+                    $("#dyeSelectCont .select2").select2({ dropdownParent: $("#dyeSelectCont") });
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert("error");
+                });
+
+
+
+               // if (DyeId == -1) {
+                
+                 $('#savebtn').attr("disabled", true);
+               // }
+
+
+            }
+            else {
+               
+
+
+
+                $("#RecipeStepId").val(-1);
+                $("#RecipeStepId").trigger('change');
+                $("#DyeId").val(-1);
+                $("#DyeId").trigger('change');
+                $.ajax({
+                    method: 'GET',
+                    url: `/yd/RecipeFormatHeader/Getchemicals/`
+                }).done(function (res) {
+                   
+
+                    $("#DyeId").trigger('change').val = -1;
+                    $("#RecipeStepId").trigger('change').val = -1;
+                    $("#RecipeStepId").attr("disabled", true);
+                    $("#DyeId").attr("disabled", true);
+                    
+                    $('#savebtn').attr("disabled", true);
+                    $("#chemicalSelectCont").html(res);
+                    $("#chemicalSelectCont .select2").select2({ dropdownParent: $("#chemicalSelectCont") });
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert("error");
+                });
+
+                //if (ChemicalId == -1) {
+               // alert("hello chemical");
+                // $('#savebtn').attr("disabled", false);
+          //  }
+               
+
+            }
+
+
+             debugger;
+                //if (val == 'Dye' || val == 'Head' || val == 'Chemical') {
+            var RecipeStepId = $("#RecipeStepId").find('option:selected').val();
+            var ChemicalId = $("#ChemicalId").find('option:selected').val();
+            //var ChemicalId = $("#ChemicalId").find('option:selected').val();
+            var DyeId = $("#DyeId").find('option:selected').val();
+
+            //var DyeSelect = $("#dyeSelectCont .select2").select2({ dropdownParent: $("#dyeSelectCont") }).val();
+            //var HeadSelect = $("#headSelectCont .select2").select2({ dropdownParent: $("#headSelectCont") }).val();
+            //var ChemicalSelect = $("#chemicalSelectCont .select2").select2({ dropdownParent: $("#chemicalSelectCont") }).val();
+            
+           
+            
+            //{
+            //            $('#savebtn').attr("disabled", false);
+            //        }
+
+            //}
+
+             debugger;
+
+    $(document).on("change", "#DyeId", function (e) {
+        
+
+                $('#savebtn').attr("disabled", false);
+
+       })
+    $(document).on("change", "#RecipeStepId", function (e) {
+        
+
+                $('#savebtn').attr("disabled", false);
+
+    })
+
+     $(document).on("change", "#ChemicalId", function (e) {
+        
+
+         $('#savebtn').attr("disabled", false);
+
+    })
+
+
+
+        });
+
+    });
+
+    //alert("dsd");
+   
+   
+</script>

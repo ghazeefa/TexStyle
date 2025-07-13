@@ -1,0 +1,87 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.PPC.Forms.FactoryPoViewModel;
+
+@{
+    ViewData["Title"] = "Add Or Update";
+    List<SelectListItem> buyerlist = ViewBag.buyerlist;
+  List<SelectListItem> buyercolorlist = ViewBag.buyercolorlist;
+    var buyerSl = new SelectListItemViewModel
+    {
+        Name = "BuyerId",
+        PlaceHolder = "Select Buyer",
+        UseDefault = false,
+        Reqired = true,
+        SelectList = buyerlist
+    };
+
+    var filter = ViewBag.filter;
+
+}
+
+<form asp-area="ProductionPlaningControl" asp-controller="FactoryPo" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @*@Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Sno)
+        @Html.HiddenFor(m => m.GateActivityTypeId)*@
+        @Html.HiddenFor(m => m.Id)
+
+    <div class="row">
+
+        <div class="form-group col-4">
+            <label asp-for="Date" class="control-label"></label>
+            <input asp-for="Date" class="form-control" type="date" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label class="control-label" asp-for="BuyerId"></label>
+            <select asp-for="BuyerId" select2="@(buyerlist)" class="form-control select2"></select>
+            <span asp-validation-for="BuyerId" class="text-danger"></span>
+        </div>
+        @*<div class="form-group col-4">
+            <label class="control-label" asp-for="BuyerColorId"></label>
+            <select asp-for="BuyerColorId" select2="@(buyercolorlist)" class="form-control select2"></select>
+            <span asp-validation-for="BuyerColorId" class="text-danger"></span>
+        </div>*@
+        @*<div class="form-group col-4">
+            <label asp-for="GSM" class="control-label"></label>
+            <input asp-for="GSM" class="form-control" />
+            <span asp-validation-for="GSM" class="text-danger"></span>
+        </div>*@
+        <div class="form-group col-4">
+            <label asp-for="Po" class="control-label"></label>
+            <input asp-for="Po" class="form-control" />
+            <span asp-validation-for="Po" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="form-group col-12">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea rows="3" asp-for="Description" class="form-control">@Model.Description</textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+        <div class="form-group form-check col-2">
+            @*<label asp-for="IsReturnToParty" class="control-label"></label>*@
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" asp-for="IsCancel">
+                        <label class="border-checkbox-label" asp-for="IsCancel"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+
+
+</form>
+

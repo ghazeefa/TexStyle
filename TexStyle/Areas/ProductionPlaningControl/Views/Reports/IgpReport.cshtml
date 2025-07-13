@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.IGPReportViewModel>
+@{
+    ViewData["Title"] = "IGP Report";
+
+    var noData = "No Data Available";
+}
+<div class="card user-activity-card">
+    <div class="card-header d-flex justify-content-between align-items-center no-print">
+        <h5>IGP Report</h5>
+        <button class="btn btn-sm btn-info " onclick="window.print()"><i class="ti-printer"></i></button>
+    </div>
+    <div class="card-block">
+        <table id="demo-foo-filtering" class="table table-borderless">
+            <thead>
+                <tr>
+                    <th>Igp Date</th>
+                    <th data-breakpoints="xs">Igp #</th>
+                    <th data-breakpoints="xs">Description</th>
+                    <th data-breakpoints="xs">Bags</th>
+                    <th>Kgs</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0) {
+                    foreach (var igd in Model) {
+                        <tr>
+                            <td>@(igd.IssueDate.HasValue ? igd.IssueDate.Value.ToString("dd MMM yyyy") : noData)</td>
+                            <td>@igd.Sno</td>
+                            <td>@igd.Description</td>
+                            <td>@igd.Bags</td>
+                            <td>@igd.NetKgs</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+﻿@model DyeingEnergyConsumption
+
+@{ ViewData["Title"] = "Add Or Update"; }
+
+<form asp-area="@(AreaConstants.CHEMICAL_STORE.Name)" asp-controller="DyeingEnergyConsumption" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        @if (ViewBag.errormsg != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.errormsg
+            </div>
+        }
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            <label asp-for="Date" class="control-label"></label>
+            <input asp-for="Date" class="form-control" type="date" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ElectricityCost" class="control-label"></label>
+            <input asp-for="ElectricityCost" class="form-control" />
+            <span asp-validation-for="ElectricityCost" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="GassCost" class="control-label"></label>
+            <input asp-for="GassCost" class="form-control" />
+            <span asp-validation-for="GassCost" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CoalCost" class="control-label"></label>
+            <input asp-for="CoalCost" class="form-control" />
+            <span asp-validation-for="CoalCost" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SalaryCost" class="control-label"></label>
+            <input asp-for="SalaryCost" class="form-control" />
+            <span asp-validation-for="SalaryCost" class="text-danger"></span>
+        </div>
+
+        @if (Model != null && Model.Id != null && Model.Id.Value > 0)
+        {
+            <div class="form-group">
+                <label asp-for="IsYarn" class="control-label"></label>
+                <input asp-for="IsYarn" class="form-control" type="checkbox" id="IsYarn" disabled />
+                <span asp-validation-for="IsYarn" class="text-danger"></span>
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label asp-for="IsYarn" class="control-label"></label>
+                <input asp-for="IsYarn" class="form-control" type="checkbox" id="IsYarn" />
+                <span asp-validation-for="IsYarn" class="text-danger"></span>
+            </div>
+        }
+
+        <div class="form-group">
+            <label asp-for="IsConfirmed" class="control-label"></label>
+            <input asp-for="IsConfirmed" class="form-control" type="checkbox" />
+            <span asp-validation-for="IsConfirmed" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

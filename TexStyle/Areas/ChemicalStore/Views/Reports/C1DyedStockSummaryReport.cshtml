@@ -1,0 +1,131 @@
+﻿@model IEnumerable<TexStyle.ViewModels.CS.Reports.DyeSummary_C1ViewModel>
+@{ ViewData["Title"] = "Dyes & Chemical Stock Summary";
+    Layout = "_LayoutPrint"; }
+
+
+<style>
+    body {
+        margin-left: 10px;
+    }
+
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+
+
+
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+<div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+    <p>@Model.FirstOrDefault().CompanyBranch</p>
+</div>}
+        </div>
+        <div class="text-center" style=" line-height:10px;float:right">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                C-1
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div>
+                    <br />
+
+                    <div class="table-responsive">
+                        <table class="table table-responsive">
+
+                            <thead>
+                                <tr class="report-detailheader " style=" height:10px; letter-spacing:1px; background:lightgrey;">
+                                    <th width="20%">Item</th>
+                                    <th width="50%">Name</th>
+                                    <th width="15%" style="text-align: right;">Balance</th>
+                                    <th width="15%"></th>
+                                </tr>
+                            </thead>
+                            <tbody style="line-height:30px;">
+                                @foreach (var detail in Model)
+                                {
+                                    <tr>
+                                        <td colspan="1" class="report-detail-footer" style="font-size:large; ">
+                                            @detail.Status
+                                        </td>
+                                        <td colspan="2" class="report-detail-footer"></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                    @foreach (var d in detail.SummaryDetail)
+                                    {
+                                        @if (d.Balance != 0)
+                                        {
+                                            <tr>
+
+                                                <td colspan="1" class="report-detail-footer"></td>
+                                                <td colspan="1" class="report-detail-footer">
+                                                    @d.Name
+                                                </td>
+                                                <td colspan="1" class="report-detail-footer" style="text-align: right;">
+                                                    @d.Balance.ToString("0.0000")
+                                                </td>
+                                                <td></td>
+
+                                            </tr>
+
+                                        }
+                                    }
+
+
+                                    <tr>
+
+
+                                        <td></td>
+                                        <td style="font-weight: bolder; ">Total Quantity</td>
+                                        <td style="font-weight: bolder; text-align:right;">@detail.KgSum.ToString("0.0000")</td>
+                                    </tr>
+
+
+
+
+
+
+
+                                }
+
+
+
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+
+
+
+
+
+                    </div>
+
+
+                }
+                else
+                {
+                    < h1 >< center > No Record in Report </ center ></ h1 >
+
+
+                }

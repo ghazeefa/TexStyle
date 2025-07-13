@@ -1,0 +1,201 @@
+﻿@model IEnumerable<TexStyle.Core.CS.LoanTakenInTrDetail>
+
+@{
+    var AddOrUpdateAction = "/cs/LCImportInTrDetail/AddOrUpdate/";
+    var DeleteAction = "/cs/LCImportInTrDetail/Delete/";
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Details</h5>
+                @*<button href="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" data-title="Create @title Detail">ADD NEW</button>*@
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12 m-dT">
+                                <h6 class="text-danger" style="display:none" id="msg">Please Enter Rate</h6>
+                                @*dataTable*@
+                                @*<table id="datatbl" class="table table-bordered table-hover table-striped w-100">
+                                        <thead>
+                                            <tr>
+                                                <th class="sorting" style="width:10px">No</th>
+                                                <th class="sorting" style="width:10px">Chemical</th>
+                                                <th class="sorting" style="width:10px">Dye</th>
+                                                <th class="sorting" style="width:10px">Debit</th>
+                                                <th class="sorting" style="width:10px">Credit</th>
+                                                <th class="sorting" style="width:10px">Packet</th>
+                                                <th class="sorting" style="width:10px">Rate</th>
+                                                <th class="sorting" style="width:10px">Amount</th>
+                                                <th class="sorting" style="width:10px">Actions</th>
+                                                <th class="sorting" style="width:10px"></th>
+
+                                            </tr>
+                                        </thead>
+
+
+
+
+                                        <tbody>
+                                            @foreach (var c in Model.Where(x => !x.IsDeleted))
+                                            {
+                                            <tr>
+                                                <td class="sorting_asc" style="width:10px">@c.Id <input type="text" id="hidid" value="@c.Id" class="invisible" />  <input type="text" class="invisible" id="index" /></td>
+                                                <td class="sorting_asc" style="width:10px">@c.Chemical?.Name</td>
+                                                <td class="sorting_asc" style="width:10px">@c.Dye?.Name</td>
+                                                <td class="sorting_asc" style="width:10px">@c.QtyDr</td>
+                                                <td class="sorting_asc" style="width:10px">@c.QtyCr</td>
+                                                <td class="sorting_asc" style="width:10px">@c.Packet</td>
+                                                <td class="sorting_asc" style="width:10px"><input type="text" id="rate" value="@c.Rate" title="Rate is Required" required /><img src="~/images/ticks.png" style="display:none;" width="30" height="30" id="msg" /><img src="~/images/loader2.gif" width="30" height="30" style="display:none;" id="msg2" /> </td>
+                                                <td class="sorting_asc" style="width:10px"></td>
+                                                <td class="sorting_asc" style="width:10px"></td>
+                                                <td class="sorting_asc" style="width:10px"></td>
+                                            </tr>
+                                            }
+                                        </tbody>
+
+                                            <tr>
+                                                <th class="sorting_asc">No</th>
+                                                <th class="sorting">Chemical</th>
+                                                <th class="sorting">Dye</th>
+                                                <th class="sorting">Debit</th>
+                                                <th class="sorting">Credit</th>
+                                                <th class="sorting">Packet</th>
+                                                <th class="sorting">Rate</th>
+                                                <th class="sorting">Amount</th>
+                                                <th class="sorting">Actions</th>
+                                            </tr>
+                                    </table>*@
+
+
+
+
+
+
+
+
+
+
+                                <div id="datatbl" class="container table table-bordered table-hover table-striped w-100">
+                                    <div class="row header" style="font-weight:700">
+                                        <div class="sorting col-1">No</div>
+
+                                        <div class="sorting col-1" style="text-align:center;">Chemical</div>
+                                        <div class="sorting col-4" style="text-align:center">Dye</div>
+                                        <div class="sorting col-1">Debit</div>
+                                        <div class="sorting col-1">Credit</div>
+                                        <div class="sorting col-1">Packet</div>
+
+                                        <div class="sorting col-2" style="text-align:center">Rate</div>
+                                        <div class="sorting col-1"></div>
+                                        @*<div class="sorting col-1">Amount</div>
+                                            <div class="sorting col-1">Actions</div>
+
+                                            <div class="sorting col-2"></div>*@
+
+                                    </div>
+                                    <div style="height:29px;"></div>
+
+
+
+                                    <div class="row">
+                                        @foreach (var c in Model.Where(x => !x.IsDeleted))
+                                        {
+
+                                            <div class="sorting_asc col-1">@c.Id <input type="text" id="hidid" value="@c.Id" class="invisible" />  <input type="text" class="invisible" id="index" /></div>
+                                            <div class="sorting_asc col-1">@c.Chemical?.Name</div>
+                                            <div class="sorting_asc col-4" style="text-align:center">@c.Dye?.Name</div>
+                                            <div class="sorting_asc col-1">@c.QtyDr</div>
+                                            <div class="sorting_asc col-1">@c.QtyCr</div>
+                                            <div class="sorting_asc col-1">@c.Packet</div>
+
+                                            <div class="sorting_asc col-2" style="text-align:center"><input type="text" id="rate" value="@c.Rate" title="Rate is Required" required /><img src="~/images/ticks.png" style="display:none;" width="30" height="30" id="msg" /><img src="~/images/loader2.gif" width="30" height="30" style="display:none;" id="msg2" /> </div>
+                                            <div class="sorting_asc col-1"></div>
+
+                                            @*<div class="sorting_asc col-1"></div>
+                                                <div class="sorting_asc col-1"></div>
+                                                <div class="sorting_asc col-2"></div>*@
+
+                                        }
+                                    </div>
+
+
+
+
+                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <button class="btn btn-primary" onclick="sub()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    function sub() {
+        debugger;
+        var table = $('#datatbl').dataTable();
+        for (var i = 0; i < table.rows().count(); i++) {
+            data(i);
+        }
+        if ($('#rate').val() != 0) {
+            $('#msg').hide();
+        }
+        else {
+            $('#msg').show();
+        }
+        var a = 1;
+        partialfunction(a);
+    }
+    function data(i) {
+        debugger;
+        var table = $('#datatbl').DataTable();
+        var id = 0;
+        var rate = 0;
+        table.cell(i, 6).nodes().to$().find('#msg2').show();
+        id = table.cell(i, 0).nodes().to$().find('#hidid').val();
+        rate = table.cell(i, 6).nodes().to$().find('#rate').val();
+        if (id != -1) {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    Id: id,
+                    rate: rate
+                },
+                url: `/cs/LoanTakenInTr/UpdateRates1`
+            }).done(function (res) {
+                if (res.msg != '') {
+                    table.cell(i, 6).nodes().to$().find('#msg').show();
+                    table.cell(i, 6).nodes().to$().find('#msg2').hide();
+                    setTimeout(function () { table.cell(i, 6).nodes().to$().find('#msg').hide(); }, 2000);
+                }
+                table.cell(i, 0).nodes().to$().find('#hidid').prop("disabled", true);
+                table.cell(i, 6).nodes().to$().find('#rate').prop("disabled", true);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert("error");
+            });
+        }
+    }
+</script>

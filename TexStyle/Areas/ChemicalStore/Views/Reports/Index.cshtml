@@ -1,0 +1,1131 @@
+﻿@model TexStyle.ViewModels.PPC.ReportFilterViewModel
+@{
+    ViewData["Title"] = "Reports";
+    List<SelectListItem> yarnTypelist = ViewBag.YarnTypes;
+    List<SelectListItem> yarnQualitylist = ViewBag.YarnQualities;
+    List<SelectListItem> yarnPartieslist = ViewBag.YarnParties;
+
+    List<SelectListItem> analysistypeList = ViewBag.analysistypeList;
+    List<SelectListItem> buyerColorList = ViewBag.BuyerColorList;
+
+    List<SelectListItem> BuyerList = ViewBag.BuyerList;
+    List<SelectListItem> FabricQualityList = ViewBag.FabricQualityList;
+    List<SelectListItem> FabricTypeList = ViewBag.FabricTypeList;
+    List<SelectListItem> FactoryPOList = ViewBag.FactoryPOList;
+
+    var filter = ViewBag.filter;
+
+    var areaName = string.Empty;
+
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form asp-area="ChemicalStore" asp-controller="Reports" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+        <div class="form-horizontal">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.UserId)
+            @Html.HiddenFor(m => m.BranchName)
+
+            <div class="row">
+                <div class="form-group col-lg-6">
+                    <label asp-for="DateFrom" class="control-label"></label>
+                    <input asp-for="DateFrom" class="form-control" />
+                    <span asp-validation-for="DateFrom" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-6">
+                    <label asp-for="DateTo" class="control-label"></label>
+                    <input asp-for="DateTo" class="form-control" />
+                    <span asp-validation-for="DateTo" class="text-danger"></span>
+                </div>
+            </div>
+
+            @if (!(User.IsInRole(AccountRoleKeys.CHEMICAL_STORE_USER) || User.IsInRole(AccountRoleKeys.KNITTING_USER)))
+            {
+                @if (filter.IsYarn == true)
+                {
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label class="control-label">Yarn Type</label>
+                            <div id="YarnTypeId">
+                                <select asp-for="YarnTypeId" class=" form-control select2">
+
+
+                                    <option value="" selected>--Select Yarn Type--</option>
+                                    @foreach (var item in yarnTypelist)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                            <label class="control-label">Yarn Quality</label>
+                            <div id="YarnTypeId">
+                                <select asp-for="YarnQualityId" class=" form-control select2">
+
+
+                                    <option value="" selected>--Select Yarn Quality--</option>
+                                    @foreach (var item in yarnQualitylist)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="YarnQualityId" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label class="control-label">Yarn Party</label>
+                            <div id="YarnTypeId">
+                                <select asp-for="YarnPartyId" class=" form-control select2">
+
+
+                                    <option value="" selected>--Select Yarn Party--</option>
+                                    @foreach (var item in yarnPartieslist)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="YarnPartyId" class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                            <label class="control-label">Analysis Type</label>
+                            <select asp-for="AnalysisTypeId" select2="@(analysistypeList)" select2-ph="Select Party" class="form-control select2"></select>
+                            <span asp-validation-for="AnalysisTypeId" class="text-danger"></span>
+                        </div>
+
+                    </div>}
+
+                @if (filter.IsYarn == false)
+
+                {
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label class="control-label">Fabric Type</label>
+                            <div id="FabricTypeId">
+                                <select asp-for="FabricTypeId" class=" form-control select2">
+
+
+                                    <option value="" selected>--Select Fabric Type--</option>
+                                    @foreach (var item in FabricTypeList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="FabricTypeId" class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                            <label class="control-label">Fabric Quality</label>
+                            <div id="FabricQualityId">
+                                <select asp-for="FabricQualityId" class=" form-control select2">
+
+
+                                    <option value="" selected>--Select Fabric Quality--</option>
+                                    @foreach (var item in FabricQualityList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="FabricQualityId" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @*<div class="row">
+                    <div class="form-group col-lg-6">
+                        <label class="control-label">Buyer</label>
+                        <div id="BuyerId">
+                            <select asp-for="BuyerId" class=" form-control select2">
+
+
+                                <option value="" selected>--Select Buyer--</option>
+                                @foreach (var item in BuyerList)
+                                            {
+                                <option value="@item.Value">@item.Text</option>
+                                            }
+                            </select>
+                            <span asp-validation-for="BuyerId" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <label class="control-label">Buyer Color</label>
+                        <div id="BuyerId">
+                            <select asp-for="BuyerColorId" class=" form-control select2">
+
+
+                                <option value="" selected>--Select Buyer Color--</option>
+                                @foreach (var item in buyerColorList)
+                                            {
+                                <option value="@item.Value">@item.Text</option>
+                                            }
+                            </select>
+                            <span asp-validation-for="BuyerColorId" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                </div>*@
+
+
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label class="control-label">Buyer</label>
+                            <div id="BuyerIdDiv">
+                                <select id="BuyerId" asp-for="BuyerId" class="form-control select2">
+                                    <option value="" selected>--Select Buyer--</option>
+                                    @foreach (var item in BuyerList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="BuyerId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                            <label class="control-label">Buyer Color</label>
+                            <div id="BuyerColorIdDiv">
+                                <select id="BuyerColorId" asp-for="BuyerColorId" class="form-control select2">
+                                    <option value="" selected>--Select Buyer Color--</option>
+                                    @foreach (var item in buyerColorList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="BuyerColorId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label class="control-label">Factory PO</label>
+                            <div id="BuyerId">
+                                <select asp-for="FactoryPO" class=" form-control select2">
+
+
+                                    <option value="" selected>--Select Factory PO--</option>
+                                    @foreach (var item in FactoryPOList)
+                                    {
+                                        <option value="@item.Text">@item.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="FactoryPO" class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group col-lg-6">
+                            <label class="control-label">Analysis Type</label>
+                            <select asp-for="AnalysisTypeId" select2="@(analysistypeList)" select2-ph="Select Party" class="form-control select2"></select>
+                            <span asp-validation-for="AnalysisTypeId" class="text-danger"></span>
+                        </div>
+
+                    </div>}
+            }
+
+            @if (User.IsInRole(AccountRoleKeys.Account_USER))
+            {
+                <div class="row">
+                    <div class="form-group col-3">
+                        <div class="border-checkbox-section">
+                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                <input class="border-checkbox" type="checkbox" id="IsYarn" name="IsYarn" asp-for="IsYarn">
+                                <label class="border-checkbox-label" for="IsYarn">Yarn Reports ?</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <input style="display: none;" type="checkbox" asp-for="IsYarn">
+            }
+
+            @if (User.IsInRole(AccountRoleKeys.KNITTING_USER) || User.IsInRole(AccountRoleKeys.PPC_MANAGER_USER))
+            {
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label asp-for="LotNo" class="control-label"></label>
+                        <input asp-for="LotNo" class="form-control" />
+                        <span asp-validation-for="LotNo" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+</form>
+    <br />
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Reports <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    // Chemical Store Reports
+    if (User.IsInRole(AccountRoleKeys.CHEMICAL_STORE_USER) || User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.Account_USER))
+    {
+        areaName = AreaConstants.CHEMICAL_STORE.Name;
+
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+        <div><h3>Chemical Reports</h3></div>
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+
+        <div class="row">
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="C1DyedStockSummaryReport" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Stock Summary Report C-1</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DetailStockInReport" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Detail Stock In Report C-2</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DetailStockOutReport" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Detail Stock Out Report C-3</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="LoanTakenInReport" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Loan Taken In-Out Report C-4</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="LoanPartyGiveInOutReport" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Loan Party Out-In Report C-5</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyedChemicalRateDetailC7Report" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dye Chemical Rate Detail C-6</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="StoreRecipeSortReport" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Store Recipe Sort Report C-7</span>
+                </a>
+            </div>
+            @*<div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="StoreRecipeChemicalConsumptionReport" asp-controller="Reports" asp-area="@(areaName)">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Store Recipe Chemical Consumption C-8</span>
+                    </a>
+                </div>*@
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="StockOutSummary" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Stock Out Summary Report C-9</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="ChemicalStoreLedger_Report" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Chemical Store Ledger Report C-10</span>
+                </a>
+            </div>
+            @*<div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="StockSummaryAccountReport_C13" asp-controller="Reports" asp-area="@(areaName)">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Stock Summary Account Report C11</span>
+                    </a>
+                </div>*@
+            @*<div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="LeatestRateDyesandChemicals_C14" asp-controller="Reports" asp-area="@(areaName)">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes and Chemical Latest Rate C14</span>
+                    </a>
+                </div>*@
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyedChemicalDebitRate" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dye Chemical Debit Rate C-12</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="AccountStockReport" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Accont Stock Report C13</span>
+                </a>
+            </div>
+
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyesAndChemicalConsumptionYarn" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical Consumption Yarn C-15</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyesChemicalAndEnergyConsumptionYarn" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical/Energy Consumption Yarn C-16</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyesAndChemicalConsumptionFabric" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical Consumption Fabric C-17</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyesChemicalAndEnergyConsumptionFabric" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical/Energy Consumption Fabric C-18</span>
+                </a>
+            </div>
+
+        </div>
+    }
+
+    // Dyeing Reports
+    if (User.IsInRole(AccountRoleKeys.YARN_DYING_USER) || User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.Account_USER))
+    {
+        areaName = AreaConstants.YARN_DYEING.Name;
+
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+        <div><h3>Dyeing Reports</h3></div>
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+
+        <div class="row">
+            @*<div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyeingConsupmtionSummary_D1Report" asp-controller="Report" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Consupmtion Report</span>
+                    </a>
+                </div>*@
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="RecipeIssued_D3Report" asp-controller="Report" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Recipe Sorting Report D-3</span>
+                </a>
+            </div>
+            @*<div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyeingConsupmtionDetail_D5Report" asp-controller="Report" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes and Chemical Consumptiont</span>
+                    </a>
+                </div>*@
+            @*<div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyeingEfficencyReport" asp-controller="Report" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Efficency Report</span>
+                    </a>
+                </div>*@
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyeingRecipeReprocess" asp-controller="Report" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Reprocess Report D-4</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyeingProductionAndCostingReport" asp-controller="Reports" asp-area="ChemicalStore">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Production and Costing C14</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="TotalRecipesPoBuyerColor" asp-controller="Report" asp-area="YarnDyeing">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Recipes Po Buyer Color</span>
+                </a>
+            </div>
+
+            @if (User.Identity.Name == "YarnDyeing")
+            {
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyesAndChemicalConsumptionYarn" asp-controller="Reports" asp-area="ChemicalStore">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical Consumption Yarn C-15</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyesChemicalAndEnergyConsumptionYarn" asp-controller="Reports" asp-area="ChemicalStore">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical/Energy Consumption Yarn C-16</span>
+                    </a>
+                </div>
+            }
+            @if (User.Identity.Name == "FabricDyeing")
+            {
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyesAndChemicalConsumptionFabric" asp-controller="Reports" asp-area="ChemicalStore">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical Consumption Fabric C-17</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyesChemicalAndEnergyConsumptionFabric" asp-controller="Reports" asp-area="ChemicalStore">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical/Energy Consumption Fabric C-18</span>
+                    </a>
+                </div>
+            }
+
+        </div>
+
+    }
+
+    // Fabric Store Reports
+    if (User.IsInRole(AccountRoleKeys.PPC_USER) || User.IsInRole(AccountRoleKeys.DEVELOPER) || User.IsInRole(AccountRoleKeys.FabricPPCUser))
+    {
+        areaName = AreaConstants.PRODUCTION_PLANING_CONTROL.Name;
+
+        @if (User.Identity.Name == "ppcuser")
+        {
+            <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+            <div><h3>Yarn Reports</h3></div>
+            <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+
+            <div class="row">
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="IgpReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">IGP Report</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="OgpReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">OGP Report</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P1EcruYarnReceivedReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Received Report P-1</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P2EcruYarnConsumptionReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Consumption Report P-2</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P3DailProductionReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Daily Production Report D-1</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P4DyedStockReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyed Yarn Stock Report P-4</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P5DyedYarnDespatchedReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Yarn Despatched Report D-5</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P5DailProductionReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Yarn Stock Summary Report P-6</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="AnalysisReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Defect Analysis Report</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P7EcruYarnStockReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Stock Summary Report P-7</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P7EcruYarnStockReport1" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Stock Report P-7.1</span>
+                    </a>
+                </div>
+
+
+            </div>
+
+        }
+        else
+        {
+            <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+            <div><h3>Fabric Reports</h3></div>
+            <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+
+            <div class="row">
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P3DailProductionReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Daily Production Report D-1</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P4DyedStockReport1" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyed Fabric Stock Report D-4</span>
+                    </a>
+                </div>
+                @*<div class="form-group col-lg-3">
+            <a class="toolcard" target="_blank" asp-action="P9IssunaceRecordReport" asp-controller="Reports" asp-area="@areaName">
+                <span class="pcoded-mtext" data-i18n="nav.dash.default">Fabric LPS Issuance Report</span>
+            </a>
+        </div>*@
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P7EcruYarnStockReport11" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Stock Report D-2</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P5DyedYarnDespatchedReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Fabric Despatched Report D-5</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P8IssuedLPSReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Issued LPS Status Report D-6</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P10EcruStockSummary" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">EcruStock Summary D-7</span>
+                    </a>
+                </div>
+
+                @*<div class="form-group col-lg-3">
+            <a class="toolcard" target="_blank" asp-action="P11DyedStockSummaryReport" asp-controller="Reports" asp-area="@areaName">
+                <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyed Stock Summary P-11</span>
+            </a>
+        </div>*@
+
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyeingLossLotWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">PO Dyeing Loss Color Wise D-13</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyeingLossPOWiseColorWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Loss PO Wise Color Wise</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="InwardEcruFabricPOWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Inward Ecru Fabric PO Wise D-14</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="InwardEcruFabricKnitterWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Inward Ecru Fabric Knitter Wise D-15</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="EcruFabricIssuencePoWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Po Wise D-16</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="EcruFabricIssuencePartyWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Party Wise D-17</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="EcruFabricIssuenceColorWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Color Wise D-18</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="FabricDyeingWeighDetail" asp-controller="Report" asp-area="YarnDyeing">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Fabric Dyeing Weigh Detail D-19</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="EcruStockSummaryYarnCountGsmWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">EcruStock Summary D-20</span>
+                    </a>
+                </div>
+
+                @*<div class="form-group col-lg-3">
+            <a class="toolcard" target="_blank" asp-action="P12FactoryPoKgsPeportReport" asp-controller="Reports" asp-area="@areaName">
+                <span class="pcoded-mtext" data-i18n="nav.dash.default">P-12 Factory Po Kgs Report</span>
+            </a>
+        </div>*@
+
+            </div>
+
+        }
+    }
+
+    if (User.IsInRole(AccountRoleKeys.Account_USER))
+    {
+        <!--areaName = AreaConstants.CHEMICAL_STORE.Name;
+
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+        <div><h3>Accounts Reports</h3></div>
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+
+        <div class="row">
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="C1DyedStockSummaryReport" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Stock Summary Report C-1</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DetailStockInReport" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Detail Stock In Report C-2</span>
+                </a>
+            </div><div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DetailStockOutReport" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Detail Stock Out Report C-3</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="LoanTakenInReport" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Loan Taken In-Out Report C-4</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="LoanPartyGiveInOutReport" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Loan Party Out-In Report C-5</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyedChemicalRateDetailC7Report" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dye Chemical Rate Detail C-6</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="StoreRecipeSortReport" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Store Recipe Sort Report C-7</span>
+                </a>
+            </div>-->
+        @*<div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="StoreRecipeChemicalConsumptionReport" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Store Recipe Chemical Consumption C-8</span>
+                </a>
+            </div>*@
+        <!--<div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="StockOutSummary" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Stock Out Summary Report C-9</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="ChemicalStoreLedger_Report" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Chemical Store Ledger Report</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="StockSummaryAccountReport_C13" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Stock Summary Account Report C11</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyesAndChemicalConsumptionYarn" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical Consumption Yarn</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyesChemicalAndEnergyConsumptionYarn" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical/Energy Consumption Yarn</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyesAndChemicalConsumptionFabric" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical Consumption Fabric</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyesChemicalAndEnergyConsumptionFabric" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical/Energy Consumption Fabric</span>
+                </a>
+            </div>
+
+        </div>-->
+
+        areaName = AreaConstants.PRODUCTION_PLANING_CONTROL.Name;
+
+        @if (filter.IsYarn == true)
+        {
+            // Yarn Reports
+            <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+            <div><h3>Yarn Reports</h3></div>
+            <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+
+            <div class="row">
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="IgpReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">IGP Report</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="OgpReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">OGP Report</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P1EcruYarnReceivedReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Received Report P-1</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P2EcruYarnConsumptionReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Consumption Report P-2</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P3DailProductionReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Daily Production Report D-1</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P4DyedStockReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyed Yarn Stock Report P-4</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P5DyedYarnDespatchedReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Yarn Despatched Report D-5</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P5DailProductionReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Yarn Stock Summary Report P-6</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="AnalysisReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Defect Analysis Report</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P7EcruYarnStockReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Stock Summary Report P-7</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P7EcruYarnStockReport1" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Yarn Stock Report P-7.1</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyeingProductionAndCostingReport" asp-controller="Reports" asp-area="ChemicalStore">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Production and Costing C14</span>
+                    </a>
+                </div>
+
+
+            </div>
+        }
+        else
+        {
+
+            // Fabric Reports
+            <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+            <div><h3>Fabric Reports</h3></div>
+            <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+
+            <div class="row">
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P3DailProductionReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Daily Production Report D-1</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P4DyedStockReport1" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyed Fabric Stock Report D-4</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P7EcruYarnStockReport11" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Stock Report D-2</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P5DyedYarnDespatchedReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Fabric Despatched Report D-5</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P8IssuedLPSReport" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Issued LPS Status Report D-6</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="P10EcruStockSummary" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">EcruStock Summary D-7</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyeingLossLotWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Loss Lot Wise (Pending Despatch) D-13</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="InwardEcruFabricPOWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Inward Ecru Fabric PO Wise D-14</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="InwardEcruFabricKnitterWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Inward Ecru Fabric Knitter Wise D-15</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="EcruFabricIssuencePoWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Po Wise D-16</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="EcruFabricIssuencePartyWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Party Wise D-17</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="EcruFabricIssuenceColorWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Color Wise D-18</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="DyeingProductionAndCostingReport" asp-controller="Reports" asp-area="ChemicalStore">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Production and Costing C14</span>
+                    </a>
+                </div>
+
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="ChemicalIssuanceDetail" asp-controller="Report" asp-area="YarnDyeing">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Chemical Issuance Detail</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="FabricDyeingWeighDetail" asp-controller="Report" asp-area="YarnDyeing">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">Fabric Dyeing Weigh Detail D-19</span>
+                    </a>
+                </div>
+                <div class="form-group col-lg-3">
+                    <a class="toolcard" target="_blank" asp-action="EcruStockSummaryYarnCountGsmWise" asp-controller="Reports" asp-area="@areaName">
+                        <span class="pcoded-mtext" data-i18n="nav.dash.default">EcruStock Summary D-20</span>
+                    </a>
+                </div>
+
+            </div>
+        }
+
+    }
+
+    // PPC Manager Reports
+    if (User.IsInRole(AccountRoleKeys.PPC_MANAGER_USER))
+    {
+        areaName = AreaConstants.PRODUCTION_PLANING_CONTROL.Name;
+
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+        <div><h3>Dyeing Reports</h3></div>
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+
+        <div class="row">
+
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyeingLossLotWise" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">PO Dyeing Loss Color Wise D-13</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyeingLossPOWiseColorWise" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Loss PO Wise Color Wise</span>
+                </a>
+            </div>
+
+        </div>
+
+
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+        <div><h3>Fabric Reports</h3></div>
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+
+        <div class="row">
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="P3DailProductionReport" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Daily Production Report D-1</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="P4DyedStockReport1" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyed Fabric Stock Report D-4</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="P7EcruYarnStockReport11" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Stock Report D-2</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="P5DyedYarnDespatchedReport" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Fabric Despatched Report D-5</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="P8IssuedLPSReport" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Issued LPS Status Report D-6</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="P10EcruStockSummary" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">EcruStock Summary D-7</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyeingLossLotWise" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">PO Dyeing Loss Color Wise D-13</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyeingLossPOWiseColorWise" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyeing Loss PO Wise Color Wise</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="InwardEcruFabricPOWise" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Inward Ecru Fabric PO Wise D-14</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="InwardEcruFabricKnitterWise" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Inward Ecru Fabric Knitter Wise D-15</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="EcruFabricIssuencePoWise" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Po Wise D-16</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="EcruFabricIssuencePartyWise" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Party Wise D-17</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="EcruFabricIssuenceColorWise" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Ecru Fabric Issuence Color Wise D-18</span>
+                </a>
+            </div>
+
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="GetFabricDetailByLot" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Get Fabric Detail By Lot D-19</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="EcruStockSummaryYarnCountGsmWise" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">EcruStock Summary D-20</span>
+                </a>
+            </div>
+
+
+        </div>
+
+
+
+    }
+
+    // Reports User
+    if (User.IsInRole(AccountRoleKeys.REPORT_USER))
+    {
+        areaName = AreaConstants.CHEMICAL_STORE.Name;
+
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+        <div><h3>Dyeing Reports</h3></div>
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+
+        <div class="row">
+
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyesChemicalAndEnergyConsumptionYarn" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical/Energy Consumption Yarn C-16</span>
+                </a>
+            </div>
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="DyesChemicalAndEnergyConsumptionFabric" asp-controller="Reports" asp-area="@(areaName)">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Dyes/Chemical/Energy Consumption Fabric C-18</span>
+                </a>
+            </div>
+
+        </div>
+
+    }
+
+    // Knitting User
+    if (User.IsInRole(AccountRoleKeys.KNITTING_USER))
+    {
+        areaName = AreaConstants.PRODUCTION_PLANING_CONTROL.Name;
+
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+        <div><h3>Dyeing Reports</h3></div>
+        <hr style="height: 2px; background-color: #1abc9c; border: none;" />
+
+        <div class="row">
+
+            <div class="form-group col-lg-3">
+                <a class="toolcard" target="_blank" asp-action="GetFabricDetailByLot" asp-controller="Reports" asp-area="@areaName">
+                    <span class="pcoded-mtext" data-i18n="nav.dash.default">Get Fabric Detail By Lot</span>
+                </a>
+            </div>
+
+        </div>
+
+    }
+
+
+}
+
+
+
+<style>
+    .toolcard {
+        border: 2px solid #1abc9c;
+        height: 100px;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+        text-decoration: none;
+        background-color: #e3efe8;
+        transition: background-color 0.3s;
+        color: #1abc9c;
+        font-weight: bold;
+        padding: 10px;
+        text-align: center;
+    }
+
+        .toolcard:hover {
+            text-decoration: none !important;
+            background-color: #2c3e50;
+            border-color: transparent;
+            color: white;
+        }
+</style>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize select2 on both dropdowns
+        var buyerDropdown = document.getElementById('BuyerId');
+        var buyerColorDropdown = document.getElementById('BuyerColorId');
+
+        // Apply select2
+        $('#BuyerId').select2();
+        $('#BuyerColorId').select2();
+
+        // Handle change event when buyer is selected
+        $('#BuyerId').on('change', function () {
+            var selectedBuyer = buyerDropdown.value;
+
+            buyerColorDropdown.disabled = true;
+            buyerColorDropdown.selectedIndex = 0; // Reset the BuyerColor dropdown to the first option
+            $('#BuyerColorId').val(null).trigger('change'); // Reset select2 visual dropdown
+
+            //// Check if a buyer is selected
+            //if (selectedBuyer !== "") {
+            //    // Disable the Buyer Color dropdown and reset its value
+            //    buyerColorDropdown.disabled = true;
+            //    buyerColorDropdown.selectedIndex = 0; // Reset the BuyerColor dropdown to the first option
+            //    $('#BuyerColorId').val(null).trigger('change'); // Reset select2 visual dropdown
+            //} else {
+            //    // Enable Buyer Color dropdown if no buyer is selected
+            //    buyerColorDropdown.disabled = false;
+            //    $('#BuyerColorId').val(null).trigger('change'); // Reset select2 visual dropdown
+            //}
+        });
+    });
+</script>
+
+
+
+

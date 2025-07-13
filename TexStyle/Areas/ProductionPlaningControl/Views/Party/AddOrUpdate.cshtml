@@ -1,0 +1,42 @@
+﻿@model TexStyle.ViewModels.PPC.PartyViewModel
+@{
+    ViewData["Title"] = "Add Or Updaste";
+}
+
+<form asp-area="ProductionPlaningControl" asp-controller="Party" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            <label asp-for="ControlAccount" class="control-label"></label>
+            <input asp-for="ControlAccount" class="form-control" />
+            <span asp-validation-for="ControlAccount" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SubAccount" class="control-label"></label>
+            <input asp-for="SubAccount" class="form-control" />
+            <span asp-validation-for="SubAccount" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group form-check col-2">
+            @*<label asp-for="IsReturnToParty" class="control-label"></label>*@
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" asp-for="IsHeader">
+                        <label class="border-checkbox-label" asp-for="IsHeader"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+

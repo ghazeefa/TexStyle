@@ -1,0 +1,211 @@
+﻿@model TrDetailViewModel
+
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    List<SelectListItem> dyeList = ViewBag.dyeList;
+      List<SelectListItem> chemicalList = ViewBag.chemicalList;
+
+
+}
+
+<form asp-area="ChemicalStore" asp-controller="InterUnitOutTr" asp-action="AddOrUpdateDetail" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.DyeChemicalTrId)
+    <div class="row">
+        <div class="form-group col-4">
+            <label class="control-label">Tr No</label>
+            <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+            <span class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-4">
+            <label class="control-label" asp-for="ChemicalId"></label>
+            <select asp-for="ChemicalId" select2="@(chemicalList)" onchange="chem()" select2-ph="Select Chemical" class="form-control select2"></select>
+            <span asp-validation-for="ChemicalId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label class="control-label" asp-for="DyeId"></label>
+            <select asp-for="DyeId" select2="@(dyeList)" onchange="dye()" select2-ph="Select Dye" class="form-control select2"></select>
+            <span asp-validation-for="DyeId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-4">
+            <label class="control-label"> Debit <img src="~/images/loader2.gif" width="30" height="30" style="display:none;" id="msg1" /></label>
+            <select class="form-control select2" id="debitid" name="DrId"><option selected value="0">Select Debit Date</option></select>
+            <span asp-validation-for="DrId" class="text-danger"></span>
+        </div>
+
+        @*<div class="form-group col-4" style="display:none" id="bal">
+            <label class="control-label"> </label>
+            <h6 class="text-success font-weight-bold mt-3" id="debit"></h6>
+            <span class="text-danger"></span>
+        </div>*@
+        <div class="form-group col-4" style="display:none" id="balance">
+            <label class="control-label"> </label>
+            <h6 class="text-success font-weight-bold mt-3" id="DrCrlfBal"></h6>
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group col-4" style="display:none" id="balances">
+            <label class="control-label"> </label>
+            <h6 class="text-success font-weight-bold mt-3" id="DrCrDyeBal"></h6>
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group col-4" style="display:none" id="msg2">
+            <img src="~/images/loader2.gif" width="30" height="30" class="mt-4" />
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="QtyCr" class="control-label"></label>
+            <input id="Creditinput" asp-for="QtyCr" class="form-control" />
+            <span asp-validation-for="QtyCr" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="Packet" class="control-label"></label>
+            <input asp-for="Packet" class="form-control" />
+            <span asp-validation-for="Packet" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+
+            <label class="control-label"> Rate</label>
+            <input class="form-control" id="Rate" type="text" value="@Model?.Rate" placeholder="Select Dye Or Chemical" readonly />
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="Amount" class="control-label"></label>
+            <input asp-for="Amount" class="form-control" disabled />
+            <span asp-validation-for="Amount" class="text-danger"></span>
+        </div>
+
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" id="btndisable" class="btn btn-primary" onclick="sub()">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    $(function () {
+
+      
+        //$("#ChemicalId").change(function () {
+        //    debugger;
+        //    $.get("/cs/InterUnitOutTr/GetChemicalRate/" + $(this).val(),
+        //        function (d) {
+        //            debugger;
+        //            console.log(d);
+        //            $("#Rate").val(d);
+
+        //        });
+        //});
+
+
+       
+        $("#DyeId").change(function () {
+            $.get("/cs/InterUnitOutTr/GetDyeRate/" + $(this).val(),
+                function (d) {
+                    debugger;
+                    console.log(d);
+                    $("#Rate").val(d);
+
+                });
+        });
+
+    });
+
+</script>
+<script>
+    $("#Creditinput").keyup(function () {
+        var chemid = ($("#DrCrlfBal h6").html());
+        var dyeid = ($("#DrCrDyeBal h6").html());
+
+        $("#btndisable").prop('disabled', false);
+
+        if ($(this).val() > parseFloat(chemid)) {
+            $("#btndisable").prop('disabled', true);
+            event.preventDefault();
+        } else if ($(this).val() > parseFloat(dyeid)) {
+            $("#btndisable").prop('disabled', true);
+            event.preventDefault();
+        }
+    });
+    function sub() {
+        var deb = ($("#debit h6").html());
+        if ($("#QtyCr").val() > parseFloat(deb)) {
+            $("#QtyCr").css("border-color", "red");
+            event.preventDefault();
+        }
+        else {
+            $("#QtyCr").css("border-color", "green");
+        }
+    }
+    $(function () {
+        $("#debitid").change(function () {
+            $("#msg2").show();
+            $.get("/cs/GeneralConsumptionTrDetail/GetDebitDetail/" + $(this).val(),
+                function (d) {
+                    $("#QtyCr").css("border-color", "green");
+                    $("#debit").empty();
+                    $("#bal").show();
+                    $("#debit").append('<h6>' + d + '</h6>');
+                    $("#msg2").hide();
+                });
+        });
+    })
+    function chem() {
+        $("#debit").empty();
+        $("#msg1").show();
+        var id = $("#ChemicalId").find('option:selected').val();
+        if (id > 0) {
+            $.get("/cs/GeneralConsumptionTrDetail/GetDebitsChem/" + id,
+                function (res) {
+                    $("#debitid").empty();
+                    $.each(res, function (i, res) {
+                        $("#debitid").append('<option value= ' + res.id + '>' + new Date(res.createdOn).getDate() + '-' + (new Date(res.createdOn).getMonth() + 1).toString() + '-' + new Date(res.createdOn).getFullYear() + '</option>');
+                    });
+                    $("#msg1").hide();
+                });
+                    $.get("/cs/GeneralConsumptionTrDetail/GetCreditsChemBalance/" + id,
+                        function (d) {
+                            $("#DrCrlfBal").empty();
+                            $("#QtyCr").css("border-color", "green");
+                            $("#debit").empty();
+                            $("#bal").hide();
+                            $("#balances").hide();
+                            $("#balance").show();
+                            // + 'Chemical Left Balance' + ' = '
+                            $("#DrCrlfBal").append('<h6 value=' + d.id + '>' + d.balance + '</h6>');
+                            $("#msg2").hide();
+                        });
+        }
+    }
+
+    function dye() {
+        $("#debit").empty();
+        $("#msg1").show();
+        var id = $("#DyeId").find('option:selected').val();
+        if (id > 0) {
+            $.get("/cs/LoanPartyGivenOutTrDetail/GetDebitsDye/" + id,
+                function (res) {
+                    $("#debitid").empty();
+                    $.each(res, function (i, res) {
+                        $("#debitid").append('<option value= ' + res.id + '>' + new Date(res.createdOn).getDate() + '-' + (new Date(res.createdOn).getMonth() + 1).toString() + '-' + new Date(res.createdOn).getFullYear() + '</option>');
+                    });
+                    $("#msg1").hide();
+                });
+            $.get("/cs/LoanPartyGivenOutTrDetail/GetCreditsDyeBalance/" + id,
+                function (d) {
+                    $("#DrCrDyeBal").empty();
+                    $("#QtyCr").css("border-color", "green");
+                    $("#debit").empty();
+                    $("#bal").hide();
+                    $("#balance").hide();
+                    $("#balances").show();
+                    // + 'Dye Left Balance' + ' = ' 
+                    $("#DrCrDyeBal").append('<h6 value=' + d.id + '>' + d.balance + '</h6>');
+                    $("#msg2").hide();
+                });
+        }
+    }
+</script>

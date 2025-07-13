@@ -1,0 +1,176 @@
+﻿@model TrViewModel
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    List<SelectListItem> partyList = ViewBag.partyList;
+    List<SelectListItem> LoanTakenInList = ViewBag.LoanTakenInList;
+    @*var partySl = new SelectListItemViewModel
+    {
+        Name = nameof(Model.PartyId),
+        PlaceHolder = "Select Party",
+        UseDefault = false,
+        SelectList = partyList
+    };
+
+    var gateIgpSl = new SelectListItemViewModel
+    {
+        Name = nameof(Model.DyeChemicalXrefTrId),
+        PlaceHolder = "Select IGP",
+        UseDefault = false,
+        SelectList = gateIgpList
+    };*@
+
+}
+
+    <form asp-area="@AreaConstants.CHEMICAL_STORE.Name" asp-controller="LoanTakenReturnOutTr" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+        <div class="form-horizontal">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.PartyId)
+
+        <div class="row">
+            @*<div class="form-group col-4">
+        <label class="control-label">No</label>
+        <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+        <span class="text-danger"></span>
+         </div>*@
+            @*<div class="form-group col-4">
+        <label asp-for="TransactionDate" class="control-label"></label>
+        <input asp-for="TransactionDate" class="form-control" type="date" />
+        <span asp-validation-for="TransactionDate" class="text-danger"></span>
+         </div>*@
+
+
+            @*<div class="form-group col-4">
+        <label class="control-label">Transaction Date</label>*@
+            @*<input class="form-control" id="TransactionDate" value="@Model?.TransactionDate" type="text" />*@
+            @*<input class="form-control" asp-for="TransactionDate" type="text" value="@Model?.TransactionDate" placeholder="Select an IGP" readonly />
+
+        </div>*@
+
+
+            @*<div class="form-group col-4">
+            <label class="control-label" asp-for="GateTrId"></label>
+            <select asp-for="GateTrId" id="GateTrId" select2="@(gateIgpList)" select2-ph="Select Gate IGp" class="form-control select2"></select>
+            <span asp-validation-for="GateTrId" class="text-danger"></span>
+        </div>*@
+            <div class="form-group col-4">
+                <label class="control-label">Party</label>
+                <input class="form-control" id="PartyName" type="text" value="@Model?.Party?.Name" placeholder="Select Loan Taken Id" disabled />
+            </div>
+
+
+
+
+
+            <div class="form-group col-4">
+                <label class="control-label" asp-for="DyeChemicalXrefTrId"></label>
+                <select asp-for="DyeChemicalXrefTrId" id="DyeChemicalXrefTrId" select2="@(LoanTakenInList)" select2-ph="Select Loan In No" class="form-control select2"></select>
+                <span asp-validation-for="DyeChemicalXrefTrId" class="text-danger"></span>
+            </div>
+            @*<div class="form-group col-4">
+            <label class="control-label">Party</label>
+            <input class="form-control" id="PartyName" type="text" value="@Model?.Party?.Name" placeholder="Select Loan In No" disabled />
+        </div>*@
+
+            <div class="form-group col-4">
+                <label class="control-label">IGP No</label>
+                <input class="form-control" id="GateSno" type="text" value="@Model?.GateTr?.Sno" placeholder="Select Loan In No" disabled />
+            </div>
+            @*<div class="form-group col-4">
+         <label asp-for="InvoiceNo" class="control-label"></label>
+         <input asp-for="InvoiceNo" class="form-control" />
+         <span asp-validation-for="InvoiceNo" class="text-danger"></span>
+        </div>
+
+          <div class="form-group col-4">
+         <label asp-for="InvoiceDate" class="control-label"></label>
+         <input asp-for="InvoiceDate" class="form-control" type="date" />
+         <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+           </div>*@
+
+            <div class="form-group col-4">
+                <label asp-for="FairPrice" class="control-label"></label>
+                <input asp-for="FairPrice" class="form-control" />
+                <span asp-validation-for="FairPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4">
+                <label class="control-label">OGP Reff No</label>
+                <input asp-for="IGPReffNo" class="form-control" />
+                <span asp-validation-for="IGPReffNo" class="text-danger"></span>
+            </div>
+            <div class="border-checkbox-section">
+                <div class="row">
+                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                        <input class="border-checkbox" type="checkbox" asp-for="IsCancel">
+                        <label class="border-checkbox-label" asp-for="IsCancel"></label>
+                    </div>
+                </div>
+            </div>
+            @*<div class="form-group col-4">
+        @if (partyList != null)
+        {
+        <label class="control-label" asp-for="PartyId"></label>
+        <partial name="@AppConsts.SelectListPartial" model="partySl" />
+        <span asp-validation-for="PartyId" class="text-danger"></span>
+        }
+        </div>*@
+
+        </div>
+            <div id="showdetail">
+
+            </div>
+
+        </div>
+        
+           @*<div class="modal-footer" style="display:none" id="savebtn">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          </div>*@
+    </form>
+
+<script>
+    $(function () {
+        $("#DyeChemicalXrefTrId").change(function () {
+            $.get("/cs/LoanTakenReturnOutTr/GetParty/" + $(this).val(),
+                function (d) {
+                    //debugger;
+                    console.log(d);
+                    $("#PartyId").val(d.id);
+                    $("#PartyName").val(d.name);
+                    //$("#TransactionDate").val(d.date);
+                });
+            var id = $("#DyeChemicalXrefTrId").find('option:selected').val();
+            if (id != -1) {
+                $.ajax({
+                    method: 'GET',
+                    data: 'id=' + id,
+                    url: `/cs/LoanTakenReturnOutTr/ChemicalDetails`
+                }).done(function (res) {
+                    //debugger;
+                    $("#showdetail").html(res);
+                    //$.each(res.gateTrDetails, function (i, gateTrDetails) {
+                    //    alert(res.gateTrDetails[i].id);
+                    //    alert("hi");
+                    //});
+                    $('#dt-basic-example').DataTable(
+                        {
+                            //responsive: true,
+                            orderCellsTop: true,
+                            fixedHeader: true,
+                        });
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert("error");
+                });
+            }
+        });
+
+    })
+    //function partialfunction(a) {
+    //    debugger;
+    //    if (a == 1) {
+    //        $("#savebtn").show();
+    //    }
+    //}
+</script>

@@ -1,0 +1,468 @@
+﻿@model TexStyle.Core.PPC.InwardGatePass
+@{
+    var title = $"Inward Gate Pass";
+    ViewData["Title"] = $"{title} No. {Model.Id}";
+
+
+    var AddOrUpdateAction = "/ppc/IGPDetail/AddOrUpdate/";
+    var DeleteAction = "/ppc/IGPDetail/Delete/";
+
+
+    List<SelectListItem> processActivityTypeList = ViewBag.processActivityTypeList;
+    var activityTypeSl = new SelectListItemViewModel
+    {
+        Name = "ActivityTypeId",
+        PlaceHolder = "Select Activity Type",
+        UseDefault = false,
+        SelectList = processActivityTypeList,
+        IsReadonly = true
+    };
+
+    List<SelectListItem> partyTypeList = ViewBag.partyTypeList;
+    var partySl = new SelectListItemViewModel
+    {
+        Name = "PartyId",
+        PlaceHolder = "Select Party",
+        UseDefault = false,
+        SelectList = partyTypeList,
+        IsReadonly = true
+    };
+
+    List<SelectListItem> gateogpList = ViewBag.gateogpList;
+    var gateogpSl = new SelectListItemViewModel
+    {
+        Name = "GateOGPId",
+        PlaceHolder = "Select OGP",
+        UseDefault = false,
+        SelectList = gateogpList,
+        IsReadonly = true
+    };
+
+    List<SelectListItem> gateIgpList = ViewBag.gateIgpList;
+    var gateIgpSl = new SelectListItemViewModel {
+        Name = "GateIgpId",
+        PlaceHolder = "Select Gate IGP",
+        UseDefault = false,
+        SelectList = gateIgpList,
+        IsReadonly = true
+
+    };
+    var filter = ViewBag.filter;
+
+    //List<SelectListItem> bagMarkingList = ViewBag.bagMarkingList;
+    //var bagMarkingSl = new SelectListItemViewModel {
+    //    Name = "BagMarkingId",
+    //    PlaceHolder = "Select Bag Marking",
+    //    UseDefault = false,
+    //    SelectList = bagMarkingList
+    //};
+
+    //List<SelectListItem> coneMarkingList = ViewBag.coneMarkingList;
+    //var coneMarkingSl = new SelectListItemViewModel {
+    //    Name = "ConeMarkingId",
+    //    PlaceHolder = "Select Cone Marking",
+    //    UseDefault = false,
+    //    SelectList = coneMarkingList
+    //};
+
+    //List<SelectListItem> yarnTypeList = ViewBag.yarnTypeList;
+    //var yarnTypeSl = new SelectListItemViewModel {
+    //    Name = "YarnTypeId",
+    //    PlaceHolder = "Select Yarn Type",
+    //    UseDefault = false,
+    //    SelectList = yarnTypeList
+    //};
+
+    //List<SelectListItem> yarnQualityList = ViewBag.yarnQualityList;
+    //var YarnQualitySl = new SelectListItemViewModel {
+    //    Name = "YarnQualityId",
+    //    PlaceHolder = "Select Yarn Quality",
+    //    UseDefault = false,
+    //    SelectList = yarnQualityList
+    //};
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.Something)){<button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW</button>}*@
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="form-horizontal">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    @*<input type="hidden" asp-for="Id" />*@
+                                    @Html.HiddenFor(m => m.Id)
+                                <div class="row">
+                                    <div class="form-group col-4">
+                                        <label asp-for="Id" class="control-label"></label>
+                                        <input asp-for="Id" readonly="readonly" disabled="disabled" value="@Model.Id" class="form-control" />
+                                        <span class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label asp-for="IgpDate" class="control-label"></label>
+                                        <input asp-for="IgpDate" readonly="readonly" disabled="disabled" type="date" class="form-control" />
+                                        <span asp-validation-for="IgpDate" class="text-danger"></span>
+                                    </div>
+                                    @*<div class="form-group col-4">
+                                        @if (activityTypeSl != null)
+                                        {
+                                        <label class="control-label" asp-for="ActivityTypeId"></label>
+                                        <partial name="~/Views/Shared/_SelectList.cshtml" model="activityTypeSl" />
+                                        }
+                                        <span asp-validation-for="ActivityTypeId" class="text-danger"></span>
+                                    </div>*@
+                                <div class="form-group col-4">
+
+
+
+
+
+
+                                        <label asp-for="GateReffId" class="control-label"></label>
+                                        <input asp-for="GateReffId" readonly="readonly" disabled="disabled" class="form-control" />
+                                        <span asp-validation-for="GateReffId" class="text-danger"></span>
+                                   
+
+
+                                    @*@if (gateIgpSl != null)
+                                    {
+                                        <label class="control-label" asp-for="GateTrId"></label>
+                                        <partial name="~/Views/Shared/_SelectList.cshtml" model="gateIgpSl" />
+                                    }
+                                    <span asp-validation-for="GateTrId" class="text-danger"></span>*@
+                                </div>
+
+
+
+
+
+                                    @*<div class="form-group col-4">
+            <label asp-for="GateOGPId" class="control-label"> Outward Gate Pass Id</label>
+            @if (Model.GateOGPId.HasValue)
+            {
+                <p>
+                    <a asp-controller="OGP" asp-action="Details" asp-route-id="@Model.GateOGPId">@Model.GateOGPId</a>
+                </p>
+            }
+            else
+            {
+                <p class="text-warning">No OGP Selected</p>
+            }
+        </div>*@
+                                <div class="form-group form-check col-3">
+                                    @*<label asp-for="IsReturnToParty" class="control-label"></label>*@
+                                    <div class="border-checkbox-section">
+                                        <div class="row">
+                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                <input class="border-checkbox" type="checkbox" value="@Model.IsReturnfromParty" disabled>
+                                                <label class="border-checkbox-label" asp-for="IsReturnfromParty"> Return From Party</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="border-checkbox-section">
+                                        <div class="row">
+                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                <input class="border-checkbox" type="checkbox" value="@Model.IsReWaxRecheck" disabled>
+                                                <label class="border-checkbox-label" asp-for="IsReWaxRecheck"> Is ReCheck</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="border-checkbox-section">
+                                        <div class="row">
+                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                <input class="border-checkbox" type="checkbox" value="@Model.IsConfirm" disabled>
+                                                <label class="border-checkbox-label" asp-for="IsConfirm"> Is Confirmed</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="border-checkbox-section">
+                                        <div class="row">
+                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                <input class="border-checkbox" type="checkbox" value="@Model.IsCancel" disabled>
+                                                <label class="border-checkbox-label" asp-for="IsCancel"> Is Cancel</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                </div>
+
+                                    <div class="row">
+                                        @*<div class="form-group col-4">
+                                                <label asp-for="Bags" class="control-label"></label>
+                                                <input asp-for="Bags" class="form-control" />
+                                                <span asp-validation-for="Bags" class="text-danger"></span>
+                                            </div>*@
+
+                                        @*<div class="form-group col-4">
+                                                @if (bagMarkingList != null)
+                                                {
+                                                    <label class="control-label" asp-for="BagMarkingId"></label>
+                                                    <partial name="~/Views/Shared/_SelectList.cshtml" model="bagMarkingSl" />
+                                                }
+                                                <span asp-validation-for="BagMarkingId" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-4">
+                                                @if (coneMarkingList != null)
+                                                {
+                                                    <label class="control-label" asp-for="ConeMarkingId"></label>
+                                                    <partial name="~/Views/Shared/_SelectList.cshtml" model="coneMarkingSl" />
+                                                }
+                                                <span asp-validation-for="ConeMarkingId" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-4">
+                                                @if (yarnTypeList != null)
+                                                {
+                                                    <label class="control-label" asp-for="YarnTypeId"></label>
+                                                    <partial name="~/Views/Shared/_SelectList.cshtml" model="yarnTypeSl" />
+                                                }
+                                                <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-4">
+                                                @if (yarnQualityList != null)
+                                                {
+                                                    <label class="control-label" asp-for="YarnQualityId"></label>
+                                                    <partial name="~/Views/Shared/_SelectList.cshtml" model="YarnQualitySl" />
+                                                }
+                                                <span asp-validation-for="YarnQualityId" class="text-danger"></span>
+                                            </div>*@
+                                    </div>
+
+                                </div>
+
+                                @*<form asp-area="ProductionPlaningControl" asp-controller="IGP" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>*@
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Details</h5>
+                <button href="#@(AddOrUpdateAction)?igpId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?igpId=@(Model.Id)" data-title="Create @title">ADD NEW</button>
+
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div>
+                            <div class="col-xs-12 col-sm-12 m-dT">
+                                @*dataTable*@
+                                <table id="IGPDetailsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            @if (filter.IsYarn == true)
+                                            {
+                                                <th class="sorting">Yarn Type</th>
+                                                <th class="sorting">Yarn Quality</th>
+                                                <th class="sorting">Yarn Manufacturer</th>
+                                                <th class="sorting">Bag Marking</th>
+                                                <th class="sorting">Cone Marking</th>
+                                                <th class="sorting">Bags</th>
+                                                <th class="sorting">PartyRefNo</th>
+                                            }
+                                            else
+                                            {
+
+                                                <th class="sorting">Fabric Type</th>
+                                                <th class="sorting">Fabric Quality</th>
+                                                <th class="sorting">Knitter</th>
+                                                <th class="sorting">Dia</th>
+                                                <th class="sorting">GSM</th>
+
+
+                                                <th class="sorting">No of Rolls</th>
+
+
+                                            }
+
+                                            <th class="sorting">Lot No</th>
+
+                                            <th class="sorting">Gross Weight (Kg)</th>
+                                            <th class="sorting">Tear Weight (Kg)</th>
+                                            <th class="sorting">Net Weight (Kg)</th>
+
+                                            <th class="sorting">BuyerPO</th>
+                                            @*<th class="sorting">Difference</th>*@
+                                            <th class="sorting">Store Location</th>
+                                            <th class="sorting">Process Activity</th>
+                                            <th class="sorting">Description</th>
+                                            <th class="sorting">Is Zero Balance</th>
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model.InwardGatePassDetails.Where(x => !x.IsDeleted))
+                                        {
+                                            <tr role="row">
+                                                @if (filter.IsYarn == true)
+                                                {
+
+
+                                                    <td class="sorting">@c.YarnType?.Name</td>
+                                                    <td class="sorting">@c.YarnQuality?.Name</td>
+                                                    <td class="sorting">@c.YarnManufacturer?.Name</td>
+                                                    <td class="sorting">@c.BagMarking?.Name</td>
+                                                    <td class="sorting">@c.ConeMarking?.Name</td>
+                                                    <td class="sorting">@c.Bags</td>
+                                                    <td class="sorting">@c.PartyRefNo</td>
+
+                                                }
+                                                else
+                                                {
+
+
+                                                    <td class="sorting">@c.FabricTypes?.Name</td>
+                                                    <td class="sorting">@c.FabricQuality?.Name</td>
+                                                    <td class="sorting">@c.knittingParty?.Name</td>
+
+                                                    <td class="sorting">@c.Dia</td>
+                                                    <td class="sorting">@c.GSM</td>
+
+
+                                                    <td class="sorting">@c.NoOfRolls</td>
+                                                }
+
+
+
+
+
+                                                <td class="sorting">@c.LotNo</td>
+
+                                                <td class="sorting">@c.GrossWeightInKg</td>
+                                                <td class="sorting">@c.TearWeightInKg</td>
+                                                <td class="sorting">@(c.NetWeightInKg)</td>
+
+                                                <td class="sorting">@c.BuyerPO</td>
+                                                @*<td class="sorting">@c.Difference</td>*@
+                                                <td class="sorting">@c.StoreLocation?.Name</td>
+                                                <td class="sorting">@c.ActivityType?.Name</td>
+                                                <td class="sorting">@c.Description</td>
+                                                <td class="sorting">
+                                                    <div class="border-checkbox-section">
+                                                        <div class="row">
+                                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                                <input class="border-checkbox" type="checkbox" disabled="disabled" @{var isChecked = c.IsZeroBalance == true ? "checked" : ""; } @isChecked>
+                                                                <label class="border-checkbox-label" for="Confirmed"> </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="width:150px;">
+                                                    @*<a asp-action="Details" class="btn btn-primary">Details</a>*@
+                                                    @*<button type="button" class="btn btn-primary update-js" data-action="#@AddDetailsAction@c.Id" data-title="Detail @title">Details</button>*@
+                                                    @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_IGP_DETAIL_EDIT))
+                                                    {
+                                                        <button type="button" class="btn btn-primary update-js" data-action="#@(AddOrUpdateAction)@(c.Id)/?igpId=@(Model.Id)&sno=@(c.Sno)" data-title="Update @title">Edit</button>
+
+                                                    }
+                                                    @*<button class="btn btn-danger item-delete-btn" data-delete-url="@(DeleteAction)@(c.Id)/?igpId=@(Model.Id)&sno=@(c.Sno)">Delete</button>
+                                                    *@
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+
+                                            @if (filter.IsYarn == true)
+                                            {
+                                                <th class="sorting">Yarn Type</th>
+                                                <th class="sorting">Yarn Quality</th>
+                                                <th class="sorting">Yarn Manufacturer</th>
+                                                <th class="sorting">Bag Marking</th>
+                                                <th class="sorting">Cone Marking</th>
+                                                <th class="sorting">Bags</th>
+                                                <th class="sorting">PartyRefNo</th>
+                                            }
+                                            else
+                                            {
+
+                                                <th class="sorting">Fabric Type</th>
+                                                <th class="sorting">Fabric Quality</th>
+                                                <th class="sorting">Knitter</th>
+                                                <th class="sorting">Dia</th>
+                                                <th class="sorting">GSM</th>
+                                                <th class="sorting">No of Rolls</th>
+
+
+                                            }
+
+                                            <th class="sorting">Lot No</th>
+
+                                            <th class="sorting">Gross Weight (Kg)</th>
+                                            <th class="sorting">Tear Weight (Kg)</th>
+                                            <th class="sorting">Net Weight (Kg)</th>
+
+                                            <th class="sorting">BuyerPO</th>
+                                            @*<th class="sorting">Difference</th>*@
+                                            <th class="sorting">Store Location</th>
+                                            <th class="sorting">Process Activity</th>
+                                            <th class="sorting">Description</th>
+                                            <th class="sorting">Is Zero Balance</th>
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (filter.IsYarn == false)
+        {
+
+            <div class="card-header d-flex  align-items-end">
+
+                <h5 class="text-success">
+                    No of Rolls : @{ var qty = Model.InwardGatePassDetails.Where(x => !x.IsDeleted).Sum(x => x.NoOfRolls); } @qty
+
+                </h5>
+                &emsp;
+                &emsp;
+
+
+                <h5 class="text-info">
+                    Total Weight : @{ var Amount = Model.InwardGatePassDetails.Where(x => !x.IsDeleted).Sum(x => x.NetWeightInKg); } @Amount
+                </h5>
+            </div>
+
+
+        }
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+

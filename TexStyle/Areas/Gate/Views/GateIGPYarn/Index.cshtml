@@ -1,0 +1,212 @@
+﻿@model IEnumerable<TexStyle.Core.Gate.GateTr>
+@{
+    var title = $"IGP Tr";
+    ViewData["Title"] = $"{title}es";
+    var AddOrUpdateAction = "/gate/GateIGPYarn/AddOrUpdate/";
+    var AddDetailsAction = "/gate/GateIGPYarn/Details/";
+    var GateIGPYarnDetailReport = "/gate/GateIGPYarn/GateIGPYarnDetailReport/";
+    //    var DeleteAction = "/cs/InterUnit/Delete/";
+    var filter = ViewBag.filter;
+
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.GATE_IGP_YARN_CREATE)){*@<button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW </button>
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" data-order="[[ 2, &quot;asc&quot; ]]" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>Actions</th>
+                                            <th>Tr No</th>
+                                            <th>Tr Date</th>
+                                            <th>Book IGP</th>
+
+                                            <th>Party</th>
+
+                                            @if (filter.IsYarn == false)
+                                            {
+
+                                                <th>Buyer</th>
+
+                                            }
+                                            <th>Gate IGP Type</th>
+                                            <th>Driver Name</th>
+                                            <th>Vehicle No</th>
+                                            <th>Billity No</th>
+                                            <th>NIC No</th>
+                                            <th>Employee No</th>
+                                            <th>Return From Party?</th>
+                                            <th>Without OGP Return?</th>
+                                            <th>Reprocess?</th>
+
+                                            @if (filter.IsYarn == false)
+                                            {
+                                                <th>Comercial Finishing?</th>
+                                                <th>Return  Finishing?</th>
+                                                <th>Reprocess Finishing?</th>
+
+
+                                            }
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                                        <tr role="row">
+                                            <td style="width:150px;">
+                                                <a href="@GateIGPYarnDetailReport@c.Id" class="btn btn-outline-secondary">IGP Detail Report</a>
+                                                <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-primary ">Details</a>
+                                                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.GATE_IGP_YARN_EDIT))
+                                                {<button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdateAction@c.Id" data-title="Update @title">Edit</button>}
+                                                @*<button type="button" class="btn btn-primary update-js" data-action="#@AddDetailsAction@c.Id" data-title="Detail @title">Details</button>
+            @if (User.Claims.Any(x => x.Value == AccountClaimKeys.Something)){<button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>}*@
+                                            </td>
+                                            <td>@c.Sno</td>
+                                            <td>@c.Date.ToString("dd MMM yyyy")</td>
+                                            <td>@c.IGPReffNo</td>
+
+                                            <td>@c.Party?.Name</td>
+
+                                            @if (filter.IsYarn == false)
+                                            {
+                                                <td>@c.Buyer?.Name</td>
+
+                                            }
+                                            <td>@c.GateActivityType?.Name</td>
+                                            <td>@c.DriverName</td>
+                                            <td>@c.VehicleNo</td>
+                                            <td>@c.BillityNo</td>
+                                            <td>@c.NICNo</td>
+                                            <td>@c.EmpNo</td>
+                                            <td class="sorting">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @{var isReturned = c.IsReturnFromParty == true ? "checked" : ""; } @isReturned>
+                                                            <label class="border-checkbox-label" for="IsReprocessed"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td class="sorting">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @{var IsWithoutOGP = c.IsWithoutOGP == true ? "checked" : ""; } @IsWithoutOGP>
+                                                            <label class="border-checkbox-label" for="IsReprocessed"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="sorting">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @{var IsReprocessed = c.IsReprocessed == true ? "checked" : ""; } @IsReprocessed>
+                                                            <label class="border-checkbox-label" for="IsReprocessed"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            @if (filter.IsYarn == false)
+                                            {
+                                                
+
+                                                <td class="sorting">
+                                                    <div class="border-checkbox-section">
+                                                        <div class="row">
+                                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                                <input class="border-checkbox" type="checkbox" disabled="disabled" @{var IsForComercialFinishing = c.IsForComercialFinishing == true ? "checked" : ""; } @IsForComercialFinishing>
+                                                                <label class="border-checkbox-label" for="IsReprocessed"> </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="sorting">
+                                                    <div class="border-checkbox-section">
+                                                        <div class="row">
+                                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                                <input class="border-checkbox" type="checkbox" disabled="disabled" @{var IsAfterFinishing = c.IsAfterFinishing == true ? "checked" : ""; } @IsAfterFinishing>
+                                                                <label class="border-checkbox-label" for="IsReprocessed"> </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="sorting">
+                                                    <div class="border-checkbox-section">
+                                                        <div class="row">
+                                                            <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                                <input class="border-checkbox" type="checkbox" disabled="disabled" @{var IsForFinishing = c.IsForFinishing == true ? "checked" : ""; } @IsForFinishing>
+                                                                <label class="border-checkbox-label" for="IsReprocessed"> </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+
+
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th>Actions</th>
+                                            <th>Tr No</th>
+                                            <th>Tr Date</th>
+                                            <th>Party</th>
+
+                                            @if (filter.IsYarn == false)
+                                            {
+
+                                                <th>Buyer</th>
+
+                                            }
+                                            <th>Gate IGP Type</th>
+                                            <th>Driver Name</th>
+                                            <th>Vehicle No</th>
+                                            <th>Billity No</th>
+                                            <th>NIC No</th>
+                                            <th>Employee No</th>
+
+
+                                            <th>Return From Party?</th>
+                                            <th>Without OGP Return?</th>
+                                            <th>Reprocess?</th>
+
+                                            @if (filter.IsYarn == false)
+                                            {
+                                        <th>Comercial Finishing?</th>
+                                        <th>Return  Finishing?</th>
+                                        <th>Reprocess Finishing?</th>
+                                   
+
+                                            }
+
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var modal = "#igpModal";
+    </script>
+}

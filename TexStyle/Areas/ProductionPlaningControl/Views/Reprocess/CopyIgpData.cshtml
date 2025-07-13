@@ -1,0 +1,126 @@
+﻿@model IEnumerable<TexStyle.Core.PPC.InwardGatePassDetail>
+@{
+    var title = $"Inward Gate Pass";
+}
+
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>@title Details</h5>
+            @*<button href="#@(AddOrUpdateAction)?igpId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?igpId=@(Model.Id)" data-title="Create @title">ADD NEW</button>*@
+        </div>
+        <div class="card-block">
+            <div class="dt-responsive table-responsive">
+                <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="">
+                        <div class="col-xs-12 col-sm-12 m-dT">
+                            @*dataTable*@
+                            <table id="IGPDetailsTable" class="table table-striped table-bordered nowrap sdatatable" role="grid" aria-describedby="simpletable_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting">Gross Weight (Kg)</th>
+                                        <th class="sorting">Tear Weight (Kg)</th>
+                                        <th class="sorting">Net Weight (Kg)</th>
+
+                                          @if (Model.FirstOrDefault().FabricTypesId == null && Model.FirstOrDefault().YarnQualityId != null)
+                                          {
+                                        <th class="sorting">Yarn Type</th>
+                                        <th class="sorting">Yarn Quality</th>
+                                        <th class="sorting">Yarn Manufacturer</th>
+                                        <th class="sorting">Bag Marking</th>
+                                        <th class="sorting">Cone Marking</th>
+                                          }
+
+                                          else
+                                          {
+
+                                            <th class="sorting">Fabric Type</th>
+                                            <th class="sorting">Fabric Quality</th>
+                                            <th class="sorting">GSM</th>
+                                            <th class="sorting">Dia</th>
+                                    
+                                            <th class="sorting">Knitter</th>
+
+
+                                          }
+
+
+                                        <th class="sorting">Lot No</th>
+                                        <th class="sorting">Bags</th>
+                                        <th class="sorting">Store Location</th>
+                                        <th class="sorting">Description</th>
+                                        <th class="sorting">Is Zero Balance</th>
+                                        <th class="sorting">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var c in Model) {
+                                        <tr role="row">
+                                            <td class="sorting_asc">
+                                                @c.GrossWeightInKg
+                                                <input type="hidden" name="InwardGatePassDetailId" value="@c.Id" />
+                                                <input type="hidden" name="OrderActivityTypeId" value="@c.InwardGatePass.ActivityTypeId" />
+                                            </td>
+                                            <td class="sorting">@c.TearWeightInKg</td>
+                                            <td class="sorting">
+                                                @c.NetWeightInKg
+                                                <input type="hidden" name="Kgs" value="@c.AvailableLpsKgs" />
+                                                <input type="hidden" id="@nameof(c.AvailableLpsKgs)" name="@nameof(c.AvailableLpsKgs)" value="@c.AvailableLpsKgs" />
+                                            </td>
+                                            @if (c.FabricTypesId==null && c.YarnQualityId !=null) { 
+                                            
+                                                   <td class="sorting">@c.YarnType?.Name <input type="hidden" name="@nameof(c.YarnTypeId)" value="@c.YarnTypeId" /></td>
+                                            <td class="sorting">@c.YarnQuality?.Name <input type="hidden" name="@nameof(c.YarnQualityId)" value="@c.YarnQualityId" /></td>
+                                            <td class="sorting">@c.YarnManufacturer?.Name  <input type="hidden" name="@nameof(c.YarnManufacturerId)" value="@c.YarnManufacturerId" /></td>
+                                            <td class="sorting">@c.BagMarking?.Name</td>
+                                            <td class="sorting">@c.ConeMarking?.Name </td>
+
+
+
+
+                                            }
+                                            else
+                                            {
+
+                                                <td class="sorting">@c.FabricTypes?.Name <input type="hidden" name="@nameof(c.FabricTypesId)" value="@c.FabricTypesId" /></td>
+                                            <td class="sorting">@c.FabricQuality?.Name <input type="hidden" name="@nameof(c.FabricQualityId)" value="@c.FabricQualityId" /></td>
+                                            <td class="sorting">@c.GSM
+                                                <input type="hidden" name="@nameof(c.GSM)" value="@c.GSM" />
+                                        
+                                        </td>
+                                            <td class="sorting">
+                                                @c.Dia <input type="hidden" name="@nameof(c.Dia)" value="@c.Dia" />
+                                                                                    </td>
+                                    
+                                            <td class="sorting">@c.knittingParty?.Name  <input type="hidden" name="@nameof(c.KnitingPartyId)" value="@c.KnitingPartyId" /></td>
+
+                                            }
+
+
+
+
+
+                                            <td class="sorting">@c.LotNo</td>
+                                            <td class="sorting">@c.Bags</td>
+                                            <td class="sorting">@c.StoreLocation?.Name</td>
+                                            <td class="sorting">@c.Description</td>
+                                            <td class="sorting">@c.IsZeroBalance</td>
+                                            <td style="width:150px;">
+                                                <button type="button" class="btn btn-primary copyIgpId-js copy-js" data-title="Copy @title">Copy This</button>
+                                                @*<a asp-action="Details" class="btn btn-primary">Details</a>*@
+                                                @*<button type="button" class="btn btn-primary update-js" data-action="#@(AddOrUpdateAction)@(c.Id)/?igpId=@(Model.Id)&sno=@(c.Sno)" data-title="Update @title">Edit</button>*@
+                                                @*<button class="btn btn-danger item-delete-btn" data-delete-url="@(DeleteAction)@(c.Id)/?igpId=@(Model.Id)&sno=@(c.Sno)">Delete</button>*@
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

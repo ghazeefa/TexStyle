@@ -1,0 +1,101 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.Gate.GateTrDetailViewModel;
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    //var YarnTypeSl = new SelectListItemViewModel
+    //{
+    //    Name =     nameof(Model.YarnTypeId),
+    //    PlaceHolder = "Select Yarn Type",
+    //    UseDefault = false,
+    //    SelectList = ViewBag.yarnTypeList
+    //};
+
+}
+
+<form asp-area="@AreaConstants.GATE.Name" asp-controller="GateIGPDyesChemicalDetail" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.GateTrId)
+    <div class="row">
+        @*<div class="form-group col-4">
+            <label class="control-label">No</label>
+            <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+            <span class="text-danger"></span>
+        </div>*@
+        @*<div class="form-group col-4">
+            <label class="control-label">Yarn IGP No</label>
+            <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.GateTrId" />
+            <span class="text-danger"></span>
+        </div>*@
+
+        <div class="form-group col-4">
+            <label class="control-label" asp-for="ChemicalId"></label>
+            <select asp-for="ChemicalId" select2="@(ViewBag.chemicalList)" select2-ph="Select Chemical" class="form-control select2"></select>
+            <span asp-validation-for="ChemicalId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label class="control-label" asp-for="DyeId"></label>
+            <select asp-for="DyeId" select2="@(ViewBag.dyeList)" select2-ph="Select Dye" class="form-control select2"></select>
+            <span asp-validation-for="DyeId" class="text-danger"></span>
+        </div>
+        @*<div class="form-group col-4">
+            @if (YarnTypeSl != null)
+            {
+                <label class="control-label" asp-for="YarnTypeId"></label>
+                <partial name="@AppConsts.SelectListPartial" model="YarnTypeSl" />
+            }
+            @Html.HiddenFor(x => x.YarnTypeId)
+            <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+        </div>*@
+
+        <div class="form-group col-4">
+            <label asp-for="QtyDr" class="control-label"></label>
+            <input asp-for="QtyDr" class="form-control" required />
+            <span asp-validation-for="QtyDr" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="QtyCr" class="control-label"></label>
+            <input asp-for="QtyCr" class="form-control" disabled="disabled" />
+            <span asp-validation-for="QtyCr" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="Packet" class="control-label"></label>
+            <input asp-for="Packet" class="form-control" required />
+            <span asp-validation-for="Packet" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea rows="3" asp-for="Description" class="form-control">@Model.Description</textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" id="btnSubmit">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+@*<script>
+        $(function () {
+
+
+            $('#YarnTypeId').change(function (e) {
+                $("#DyeId").val("-1").trigger("change");
+                $("#ChemicalId").val("-1").trigger("change");
+                });
+
+        })
+    </script>*@
+
+<script type="text/javascript">
+    $("button").click(function () {
+        debugger;
+        $("#btnSubmit").attr('disabled', true);
+    }
+</script>

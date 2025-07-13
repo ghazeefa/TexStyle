@@ -1,0 +1,378 @@
+﻿@model TexStyle.Core.PPC.ReturnNote
+@{
+    //var ReturnType = IssueTypes.ReturnTypeList.Single(i => i.Id == Model.ReturnTypeId);
+
+    var title = "Production Recieved";
+    ViewData["Title"] = $"{title} No. {Model.Id}";
+
+
+    var AddOrUpdateAction = "/ppc/ReturnNoteDetail/AddOrUpdate/";
+    var DeleteAction = "/ppc/ReturnNoteDetail/Delete/";
+
+    var filter = ViewBag.filter;
+
+
+    List<SelectListItem> processActivityTypeList = ViewBag.processActivityTypeList;
+    var activityTypeSl = new SelectListItemViewModel {
+        Name = "ProcessActivityTypeId",
+        PlaceHolder = "Select Activity Type",
+        UseDefault = false,
+        IsReadonly = true,
+        SelectList = processActivityTypeList
+    };
+
+    //List<SelectListItem> bagMarkingList = ViewBag.bagMarkingList;
+    //var bagMarkingSl = new SelectListItemViewModel {
+    //    Name = "BagMarkingId",
+    //    PlaceHolder = "Select Bag Marking",
+    //    UseDefault = false,
+    //    SelectList = bagMarkingList
+    //};
+
+    //List<SelectListItem> coneMarkingList = ViewBag.coneMarkingList;
+    //var coneMarkingSl = new SelectListItemViewModel {
+    //    Name = "ConeMarkingId",
+    //    PlaceHolder = "Select Cone Marking",
+    //    UseDefault = false,
+    //    SelectList = coneMarkingList
+    //};
+
+    //List<SelectListItem> yarnTypeList = ViewBag.yarnTypeList;
+    //var yarnTypeSl = new SelectListItemViewModel {
+    //    Name = "YarnTypeId",
+    //    PlaceHolder = "Select Yarn Type",
+    //    UseDefault = false,
+    //    SelectList = yarnTypeList
+    //};
+
+    //List<SelectListItem> yarnQualityList = ViewBag.yarnQualityList;
+    //var YarnQualitySl = new SelectListItemViewModel {
+    //    Name = "YarnQualityId",
+    //    PlaceHolder = "Select Yarn Quality",
+    //    UseDefault = false,
+    //    SelectList = yarnQualityList
+    //};
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.Something)){<button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW</button>}*@
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="form-horizontal">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    @*<input type="hidden" asp-for="Id" />*@
+                                    @Html.HiddenFor(m => m.Id)
+                                    <div class="row">
+                                        <div class="form-group col-4">
+                                            <label asp-for="Id" class="control-label"></label>
+                                            <input asp-for="Id" readonly="readonly" disabled="disabled" value="@Model.Id" class="form-control" />
+                                            <span class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <label asp-for="ReturnDate" class="control-label"></label>
+                                            <input asp-for="ReturnDate" readonly="readonly" disabled="disabled" type="date" class="form-control" />
+                                            <span asp-validation-for="ReturnDate" class="text-danger"></span>
+                                        </div>
+                                        @*@if (Model.ReturnTypeId == IssueTypes.ReturnToParty.Id) {
+                                            <div class="form-group col-4">
+                                                <label asp-for="IRNO" class="control-label"></label>
+                                                <input asp-for="IRNO" class="form-control" readonly="readonly" disabled />
+                                                <span asp-validation-for="IRNO" class="text-danger"></span>
+                                            </div>
+
+                                        }*@
+                                        <div class="form-group form-check col-4">
+                                            <div class="border-checkbox-section">
+                                                <div class="row">
+                                                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                        <input class="border-checkbox" type="checkbox" disabled="disabled" @(Model.IsReprocessed == true ? "checked" : "")>
+                                                        <label class="border-checkbox-label" asp-for="IsReprocessed"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="border-checkbox-section">
+                                                <div class="row">
+                                                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                        <input class="border-checkbox" type="checkbox" disabled="disabled" @(Model.IsConfirm == true ? "checked" : "")>
+                                                        <label class="border-checkbox-label" asp-for="IsConfirm"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                        @*<div class="form-group col-4">
+                                                <label class="control-label" asp-for="Confirmed"></label>
+                                                <input asp-for="Confirmed" readonly="readonly" disabled="disabled" class="form-control" />
+                                            </div>*@
+                                    </div>
+
+                                </div>
+
+                                @*<form asp-area="ProductionPlaningControl" asp-controller="IGP" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>*@
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Details</h5>
+                @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.purchase))*@
+                <a href="@(AddOrUpdateAction)?rnId=@(Model.Id)" class="btn btn-primary" data-title="Create @title">ADD NEW</a>
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12 m-dT">
+                                <table id="IGPDetailsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Return No</th>
+                                            <th class="sorting">LPS No</th>
+                                            @if (filter.IsYarn == false)
+                                            {
+                                                <th class="sorting">NoOfRoll</th>
+                                              
+                                            }
+
+                                            <th class="sorting_asc">PO No</th>
+                                            @*<th class="sorting_asc">IGP No</th>*@
+
+                                            <th class="sorting_asc">Lot No</th>
+
+                                            @if (filter.IsYarn == true)
+                                            {
+                                                <th class="sorting">Yarn Type</th>
+                                                <th class="sorting">Yarn Quality</th>
+                                                <th class="sorting">Yarn Manufacturer</th>
+                                            }
+                                            else
+                                            {
+                                                <th class="sorting">Buyer Po</th>
+                                                <th class="sorting">Fabric Type</th>
+                                              
+                                                <th class="sorting">Color</th>
+                                            }
+                                            <th class="sorting">Kgs</th>
+                                            <th class="sorting">Party</th>
+                                            <th class="sorting">Buyer</th>
+                                            @*<th class="sorting">Store Location</th>*@
+
+
+
+
+
+                                            @if (filter.IsYarn == true)
+                                            {
+                                                <th class="sorting">Bags</th>
+
+                                            }
+
+                                            <th class="sorting">Status</th>
+
+                                            <th class="sorting">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model.ReturnNoteDetails.Where(x => !x.IsDeleted))
+                                        {
+                                        <tr role="row">
+                                            <td>@Model.Id</td>
+
+                                            @if (c.ReprocessId != null)
+                                            {
+                                                <td>@c.Reprocess.PPCPlanningId</td>
+
+
+                                                @if (filter.IsYarn == true)
+                                                {
+                                                    <td>@c.NoOfRolls</td>
+
+                                                }
+
+
+
+
+                                                <td>@c.Reprocess.PPCPlanning.PurchaseOrder?.Po</td>
+                                                <td>@c.Reprocess.PPCPlanning.LotNo</td>
+                                                <td>@c.Reprocess.PPCPlanning?.InwardGatePassDetail.InwardGatePassId</td>
+
+
+
+                                                if (filter.IsYarn == true)
+                                                {
+                                                    <td>@c.Reprocess.PPCPlanning.YarnType?.Name</td>
+                                                    <td>@c.Reprocess.PPCPlanning.YarnQuality?.Name</td>
+                                                    <td>@c.Reprocess.PPCPlanning.YarnManufacturer?.Name</td>
+
+                                                }
+                                                else
+                                                {
+                                                    <td>@c.Reprocess.PPCPlanning.InwardGatePassDetail.BuyerPO</td>
+                                                    <td>@c.Reprocess.PPCPlanning.FabricType?.Name</td>
+                                                    @*<td>@c.PPCPlanning.FabricQuality?.Name</td>*@
+                                                    <td>@c.Reprocess.PPCPlanning.BuyerColor?.Name  </td>
+                                                }
+                                                <td>
+                                                    @c.Kgs
+                                                </td>
+                                                <td>@c.PPCPlanning.Party?.Name</td>
+                                                <td>@c.PPCPlanning.Buyer?.Name</td>
+
+
+
+                                                @if (filter.IsYarn == true)
+                                                {
+                                                    <td>@c.Bags</td>
+
+                                                }
+
+
+
+                                                <td>@c.Status</td>
+
+                                            }
+                                            else
+                                            {
+                                                <td>@c.PPCPlanningId</td>
+
+
+                                                @if (filter.IsYarn == false)
+                                                {
+                                                    <td>@c.NoOfRolls</td>
+
+                                                    @*<td>@c.EcruKgs</td>*@
+
+
+                                                }
+
+                                                <td>@c.PPCPlanning.PurchaseOrder?.Po</td>
+                                                <td>@c.PPCPlanning.LotNo</td>
+                                                @*<td>@c.PPCPlanning?.InwardGatePassDetail.InwardGatePassId</td>*@
+                                                @if (filter.IsYarn == true)
+                                                {
+                                                    <td>@c.PPCPlanning.YarnType?.Name</td>
+                                                    <td>@c.PPCPlanning.YarnQuality?.Name</td>
+                                                    <td>@c.PPCPlanning.YarnManufacturer?.Name</td>
+
+                                                }
+                                                else
+                                                {
+                                                    <td>@c.PPCPlanning.InwardGatePassDetail.BuyerPO</td>
+                                                    <td>@c.PPCPlanning.FabricType?.Name</td>
+                                                    @*<td>@c.PPCPlanning.FabricQuality?.Name</td>*@
+                                                    <td>@c.PPCPlanning.BuyerColor?.Name  </td>
+                                                }
+                                                <td>
+                                                    @c.Kgs
+                                                </td>
+                                                <td>@c.PPCPlanning.Party?.Name</td>
+                                                <td>@c.PPCPlanning.Buyer?.Name</td>
+
+
+
+                                                @if (filter.IsYarn == true)
+                                                {
+                                                    <td>@c.Bags</td>
+
+                                                }
+
+
+
+                                                <td>@c.Status</td>
+
+                                            }
+
+                                            <td style="width:150px;">
+                                                @*<a asp-action="Details" class="btn btn-primary">Details</a>*@
+                                                @*<button type="button" class="btn btn-primary update-js" data-action="#@AddDetailsAction@c.Id" data-title="Detail @title">Details</button>*@
+                                                @*<button type="button" class="btn btn-primary update-js" data-action="#@(AddOrUpdateAction)@(c.Id)/?igpId=@(Model.Id)&sno=@(c.Sno)" data-title="Update @title">Edit</button>*@
+                                                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_PRODUCTION_RECEIVED_DETAIL_EDIT))
+                                                {
+                                                    <a href="@(AddOrUpdateAction)@c.Id?rnId=@Model.Id" class="btn btn-primary" data-title="Update @title">Edit</a>
+
+                                                }
+                                                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.PPC_PRODUCTION_RECEIVED_DETAIL_DELETE))
+                                                {
+                                                    <button disabled class="btn btn-danger item-delete-btn" data-delete-url="@(DeleteAction)@(c.Id)">Delete</button>
+
+                                                }
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th class="sorting_asc">Return No</th>
+                                            <th class="sorting">LPS No</th>
+                                            @if (filter.IsYarn == false)
+                                            {
+                                                <th class="sorting">NoOfRoll</th>
+
+                                                @*<th class="sorting">EcruKgs</th>*@
+
+                                            }
+
+                                            <th class="sorting_asc">PO No</th>
+                                            @*<th class="sorting_asc">IGP No</th>*@
+                                            <th class="sorting_asc">Lot No</th>
+
+                                            @if (filter.IsYarn == true)
+                                            {
+                                                <th class="sorting">Yarn Type</th>
+                                                <th class="sorting">Yarn Quality</th>
+                                                <th class="sorting">Yarn Manufacturer</th>
+                                                <th class="sorting">Kgs</th>
+                                            }
+                                            else
+                                            {
+                                                <th class="sorting">Buyer Po</th>
+                                                <th class="sorting">Fabric Type</th>
+                                                @*<th class="sorting">Fabric Quality</th>*@
+                                                <th class="sorting">Color</th>
+                                            }
+                                            <th class="sorting">Kgs</th>
+                                            <th class="sorting">Party</th>
+                                            <th class="sorting">Buyer</th>
+
+                                            <th class="sorting">Status</th>
+
+                                            <th class="sorting">Actions</th>
+
+</tfoot>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

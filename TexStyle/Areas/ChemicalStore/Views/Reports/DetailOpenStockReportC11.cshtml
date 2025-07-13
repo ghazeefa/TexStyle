@@ -1,0 +1,131 @@
+﻿
+@model IEnumerable<TexStyle.ViewModels.CS.Reports.DetailOpenStockReportC11_ViewModel>
+@{
+    ViewData["Title"] = "Detail Open Stock Report";
+    Layout = "_LayoutPrint";
+
+}
+
+
+<style>
+
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+</style>
+
+
+
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-1 report-numberheading">C-11</div>
+            <div class="col-11"></div>
+        </div>
+        <div class="row">
+            <div class="col-12 report-header1">
+
+                @Model.FirstOrDefault().CompanyName
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 report-header2">
+                @ViewData["Title"]
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 report-header3">
+                DATE FROM: @Model.FirstOrDefault().DateFrom TO: @Model.FirstOrDefault().DateTo
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <div class="table-responsive">
+        <table class="table table-responsive">
+
+            <thead>
+                <div class="container">
+                    <div class="row " style="font-size:12px;">
+                        <div class="col-3 report-detailheader">
+                            Status
+                        </div>
+                        <div class="col-3 report-detailheader">
+                            Name
+                        </div>
+                        <div class="col-3 report-detailheader">
+                            QtyDr
+                        </div>
+                        <div class="col-3 report-detailheader">
+                            Rate
+                        </div>
+
+                    </div>
+                </div>
+                @*<tr class="report-detailheader">
+                    <th width="25%">Item</th>
+                    <th width="25%">Name</th>
+                    <th width="20%"></th>
+                    <th width="25%">Balance</th>
+                    <th width="25%">Final Rate</th>
+                </tr>*@
+            </thead>
+            <tbody>
+                @foreach (var grp in Model)
+                {
+                    <div class="container">
+                        <div class="row" style="text-align:center;font-size:10px;">
+                            <div class="col-3 report-detail-footer" style="font-size:large;">
+                                @grp.Status
+                            </div>
+                            @*<td colspan="2" class="report-detail-footer"></td>
+                    <td></td>
+                    <td></td>*@
+                            @*</tr>
+
+                    <tr>*@
+
+                            @*<td colspan="1" class="report-detail-footer"></td>*@
+                        </div>
+                    </div>
+                    @foreach (var detail in grp.DetailOpenStockDetailReportC11_ViewModel)
+                    {
+
+                        <div class="container">
+                            <div class="row" style="text-align:center;">
+                                <div class="col-3 report-detail-footer"></div>
+                                <div class="col-3 report-detail-footer">
+                                    @detail.Name
+                                </div>
+                                <div class="col-3 report-detail-footer">
+                                    @detail.QtyDr
+                                </div>
+                                <div class="col-3 report-detail-footer">
+                                    @detail.Rate
+                                </div>
+                                
+                            </div>
+                        </div>
+                        }
+                    }
+
+                </tbody>
+            <tfoot>
+                <tr>
+
+                    <td colspan="5"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+}
+else
+{
+    <h1><center> No Record in Report </center></h1>
+}

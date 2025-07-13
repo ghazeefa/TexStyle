@@ -1,0 +1,74 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.PPC.Forms.FactoryPoDetailViewModel
+
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    List<SelectListItem> fabricTypeList = ViewBag.fabricTypeList;
+    List<SelectListItem> fabricQualityList = ViewBag.fabricQualityList;
+    List<SelectListItem> buyercolorlist = ViewBag.buyercolorlist;
+
+    var filter = ViewBag.filter;
+    var igpheader = ViewBag.igpheader;
+}
+
+<form asp-area="ProductionPlaningControl" asp-controller="FactoryPoDetail" asp-action="AddOrUpdate" asp-route-id="@if (Model != null) { <text>@Model.FactoryPoId</text> } " method="post" ifctype="multipart/form-data">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        @Html.HiddenFor(x => x.FactoryPoId)
+
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="row">
+
+            <div class="form-group col-3">
+                <label asp-for="TearWeightInKg" class="control-label"></label>
+                <input asp-for="TearWeightInKg" class="form-control" id="tearKg" />
+                <span asp-validation-for="TearWeightInKg" class="text-danger"></span>
+            </div>
+            <div class="form-group col-3">
+                <label asp-for="NetWeightInKg" class="control-label"></label>
+                <input asp-for="NetWeightInKg" class="form-control" id="netKg" />
+                <span asp-validation-for="NetWeightInKg" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-3">
+                <label asp-for="GSM" class="control-label"></label>
+                <input asp-for="GSM" class="form-control" />
+                <span asp-validation-for="GSM" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group col-3">
+                <label class="control-label" asp-for="FabricTypesId"></label>
+                <select asp-for="FabricTypesId" select2="@(fabricTypeList)" select2-ph="Select Fabric Type" class="form-control select2"></select>
+                <span asp-validation-for="FabricTypesId" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group col-3">
+                <label class="control-label" asp-for="BuyerColorId"></label>
+                <select asp-for="BuyerColorId" select2="@(buyercolorlist)" select2-ph="Select Buyer Color" class="form-control select2"></select>
+                <span asp-validation-for="BuyerColorId " class="text-danger"></span>
+            </div>  
+            <div class="form-group col-3">
+                <label class="control-label" asp-for="FabricQualityId"></label>
+                <select asp-for="FabricQualityId" select2="@(fabricQualityList)" select2-ph="Select Fabric Quality" class="form-control select2"></select>
+                <span asp-validation-for="FabricQualityId" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group col-12">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea rows="3" asp-for="Description" class="form-control">@Model.Description</textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

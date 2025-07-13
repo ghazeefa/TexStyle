@@ -1,0 +1,165 @@
+﻿@model List<TexStyle.ViewModels.YD.Reports.DyeingRecipeReprocessReport_ViewModel>;
+
+@{ ViewData["Title"] = "Dyeing Recipe Reprocess";
+    Layout = "_LayoutPrint";
+}
+<style>
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .borders > tbody > tr > td, .borders > thead > tr > td {
+        border: 1px solid black !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+        line-height: 15px !important;
+    }
+</style>
+
+@{
+    decimal sumDyeing = Model.Where(i => (i.RecipeNo % 1) == 0.00m).Sum(x => x.Weight);
+    decimal sumDyeingReprocess = Model.Where(i => (i.RecipeNo % 1) > 0.00m).Sum(x => x.Weight);
+    decimal reProcessPercent = 0;
+    if (sumDyeing > 0 && sumDyeingReprocess > 0)
+    {
+        reProcessPercent = sumDyeingReprocess / sumDyeing * 100;
+    }
+
+    decimal sumDyeingShiftA = Model.Where(i => i.ShiftName == "A" && (i.RecipeNo % 1) == 0.00m).Sum(x => x.Weight);
+    decimal sumDyeingReprocessShiftA = Model.Where(i => i.ShiftName == "A" && (i.RecipeNo % 1) > 0.00m).Sum(x => x.Weight);
+    decimal reProcessPercentShiftA = 0;
+    if (sumDyeingShiftA > 0 && sumDyeingReprocessShiftA > 0)
+    {
+        reProcessPercentShiftA = sumDyeingReprocessShiftA / sumDyeingShiftA * 100;
+    }
+
+    decimal sumDyeingShiftB = Model.Where(i => i.ShiftName == "B" && (i.RecipeNo % 1) == 0.00m).Sum(x => x.Weight);
+    decimal sumDyeingReprocessShiftB = Model.Where(i => i.ShiftName == "B" && (i.RecipeNo % 1) > 0.00m).Sum(x => x.Weight);
+    decimal reProcessPercentShiftB = 0;
+    if (sumDyeingShiftB > 0 && sumDyeingReprocessShiftB > 0)
+    {
+        reProcessPercentShiftB = sumDyeingReprocessShiftB / sumDyeingShiftB * 100;
+    }
+}
+
+
+@if (Model.Count() > 0)
+{
+    <div class="container">
+        <div class="text-center" style=" line-height:16px;">
+            <div style="text-align:end; font-weight:bold; font-size:22px;">
+                <p>@Model.FirstOrDefault().CompanyName</p>
+            </div>
+            @if (Model.FirstOrDefault().CompanyBranch != null)
+            {
+<div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+    <p>@Model.FirstOrDefault().CompanyBranch</p>
+</div>}
+        </div>
+        <div class="text-center" style=" line-height:10px;float:right">
+            <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                Report No.
+            </div>
+            <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+                D-4
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="w-100 text-center" style="margin-top:-110px">
+                <h4>@ViewData["Title"]</h4>
+                Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+            </div>
+        </div>
+
+    </div>
+                    <br />
+
+                    <div class="table-responsive">
+                        <table class="table table-responsive">
+
+                            <thead>
+                                <tr class="report-detailheader">
+                                    <th width="15%" style="font-size:large;">Shade</th>
+                                    <th width="10%" style="font-size:large;">LotNo</th>
+                                    <th width="25%" style="font-size:large;">Buyer</th>
+                                    <th width="10%" style="font-size:large;">Recipe #</th>
+                                    <th width="15%" style="font-size:large;">Recpie Date</th>
+                                    <th width="10%" style="font-size:large;">Weight</th>
+                                    <th width="15%" style="font-size:large;">Machine</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var item1 in Model.Where(x => (x.RecipeNo % 1) > 0.00m).GroupBy(x => x.ShiftName))
+                                {
+                                    <tr>
+                                        <td style="font-size:large; font-weight: bold;">Shift : </td>
+                                        <td style="font-size:large;"> @item1.FirstOrDefault().ShiftName</td>
+                                    </tr>
+
+                                    foreach (var item in item1)
+                                    {
+                                        <tr>
+                                            <td class="report-detail-footer">@item.BuyerColor</td>
+                                            <td class="report-detail-footer" style="text-align:center">@item.LotNo</td>
+                                            <td class="report-detail-footer">@item.BuyerName</td>
+                                            <td class="report-detail-footer" style="text-align:center">@item.RecipeNo</td>
+                                            <td class="report-detail-footer" style="text-align:center">@item.RecipeDate.ToString("dd-MM-yyyy")</td>
+                                            <td class="report-detail-footer" style="text-align:center">@item.Weight</td>
+                                            <td class="report-detail-footer">@item.MachineName</td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+
+
+                            <tfoot>
+
+
+                            </tfoot>
+                        </table>
+
+                    </div>
+
+                    <div><h5 style="font-weight:bold;">Totals:</h5></div>
+                    <div style="margin-top:1px; font-size:medium; font-family:  font-family 'Times New Roman, Times, serif'; ">
+
+                        <table style="border: 1px solid black;width:60%">
+
+                            <tr style="width:100%; background-color:lightgray;">
+                                <th style="width:20%; text-align:center"></th>
+                                <th style="width:30%; text-align:center">Dyeing</th>
+                                <th style="width:30%; text-align:center">Reprocess</th>
+                                <th style="width:20%; text-align:center">Reporcess %</th>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Shift A</td>
+                                <td style="border: 1px solid black;">@Math.Round(sumDyeingShiftA, 2)</td>
+                                <td style="border: 1px solid black; text-align:center">@Math.Round(sumDyeingReprocessShiftA, 2)</td>
+                                <td style="border: 1px solid black; text-align: center">@Math.Round(reProcessPercentShiftA, 2)</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Shift B</td>
+                                <td style="border: 1px solid black;">@Math.Round(sumDyeingShiftB, 2)</td>
+                                <td style="border: 1px solid black; text-align:center">@Math.Round(sumDyeingReprocessShiftB, 2)</td>
+                                <td style="border: 1px solid black; text-align: center">@Math.Round(reProcessPercentShiftB, 2)</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black;">Total Dyeing</td>
+                                <td style="border: 1px solid black;">@Math.Round(sumDyeing, 2)</td>
+                                <td style="border: 1px solid black; text-align:center">@Math.Round(sumDyeingReprocess, 2)</td>
+                                <td style="border: 1px solid black; text-align: center">@Math.Round(reProcessPercent, 2)</td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+
+                }
+                else
+                {
+                    <center><h1> No Record in Report </h1></center>
+                }

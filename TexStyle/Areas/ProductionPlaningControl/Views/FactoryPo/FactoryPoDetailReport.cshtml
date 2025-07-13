@@ -1,0 +1,215 @@
+﻿@model TexStyle.Core.PPC.FactoryPo
+@{
+    ViewData["Title"] = "IGP Report";
+
+    var noData = "No Data Available";
+}
+<style>
+    @@media print {
+        .m-grid {
+            margin-left: 50px;
+        }
+
+        .h {
+            background-color: white;
+        }
+
+        .d {
+            padding-left: 30px;
+        }
+
+        .card .card-block {
+            /*        border: 1px solid black;
+            border-top: 2px solid black;*/
+            margin-top: -64px;
+        }
+
+            .card .card-block .s .d {
+                padding-right: 60px;
+            }
+        /*           #any{
+
+
+
+            }*/
+    }
+
+    .m .c {
+        padding-left: 50px;
+    }
+
+    table, td, th {
+        border: 1px solid black;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #span01 {
+        display: inline-block;
+    }
+
+    #span02 {
+        display: inline-block;
+    }
+
+    #watermark {
+        position: fixed;
+        bottom: 100px;
+        right: 100px;
+    }
+</style>
+
+
+
+
+<div class="any">
+
+    <div style="margin:initial; font-family:'Bookman Old Style';  " class="card user-activity-card">
+
+        <div class="card-header d-flex justify-content-between align-items-center no-print">
+            <button class="btn btn-sm btn-info " onclick="window.print()"><i class="ti-printer"></i></button>
+        </div>
+        <div style="height:15px;"></div>
+        <div style="height:15px;"></div>
+        <div class="card-block" style=" margin-left: 30px; margin-right: 30px;">
+            <div class="w-100 text-center" style="line-height:2px; margin-bottom:30px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+                <img src="~/images/logo.png" width="80" height="45" style="padding-top:10px;  " />
+
+
+                    <h4 style="font-weight:bold; justify-content:center;font-family:'Times New Roman'">COMFORT KNITWARE FABRIC DYEING &nbsp;</h4>
+
+                
+
+
+                <div class="m-grid">
+                    <div class="row m-g-head">
+                        <div class="col-2"></div>
+                        <div class="col-7" style="line-height:2 ">
+                            <h4 style="font-family: 'Times New Roman'; font-weight:bold">Factory Purchase Order</h4>
+
+                                <h5 style="font-family: 'Times New Roman';  justify-content: center">COMMERCIAL Fabric DYEING</h5>
+
+                        </div>
+                        @*<div class="col-3"></div>*@
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+            <span id="span01">
+                <div style="margin-top:10px; font-size:medium ">
+                    <table width="100%">
+                        <tr style="margin-top:20px; font-size:medium; text-align:center; ">
+
+                            <td width="50%" style="border:hidden;margin-top:20px "></td>
+                            <td width="50%" style="border-top:hidden; border-left:hidden; border-bottom:hidden;margin-top:20px"></td>
+                            <td style="font-weight: bolder; background-color:lightgray; margin-top:20px">Sr No  :  </td>
+                            <td>@Model.Id</td>
+
+
+                        </tr>
+                        <tr style="margin-top:20px; font-size:medium; text-align:center; ">
+
+                            <td width="50%" style="border:hidden;"></td>
+                            <td width="50%" style="border-top:hidden; border-left:hidden; border-bottom:hidden;"></td>
+
+                            <td style="font-weight: bolder; background-color:lightgray">DATE  :  </td>
+                            <td>@Model.Date.ToString("dd-MMM-yyyy")</td>
+                        </tr>
+                        <tr style="margin-top:20px; font-size:medium; text-align:center; ">
+
+                            <td width="50%" style="border:hidden;"></td>
+                            <td width="50%" style="border-top:hidden; border-left:hidden; border-bottom:hidden;"></td>
+
+                            <td style="font-weight: bolder; background-color:lightgray">Po :  </td>
+                            <td>@Model.Po</td>
+                        </tr>
+
+                    </table>
+
+                </div>
+            </span>
+
+
+            @*<div style="height:15px;"></div>*@
+
+            <div style=" font-size:medium;text-align:center">
+                <table width="100%">
+                    <tr style="line-height:30px">
+
+                        <td width="14%" style="font-weight: bolder;">Buyer</td>
+                        <td width="20%">@Model.Buyer?.Name</td>
+                        @*<td ></td>*@
+
+
+                        <td width="14%" style="font-weight: bolder; ">Buyer Color</td>
+                        <td width="14%">@Model.BuyerColor?.Name</td>
+                        <td width="14%" style="font-weight: bolder; ">Description</td>
+                        <td width="14%">@Model.Description</td>
+
+                    </tr>
+
+                </table>
+            </div>
+
+
+            <div style="margin-top:20px; font-size:medium">
+                <table width="100%">
+                    <thead>
+                        <tr style="border-bottom: 1px solid black; text-align:center; line-height:40px; background-color:lightgray">
+                            @*<div>&nbsp;&nbsp;</div>*@
+                           
+                                <td width="16%" style="font-weight:bold;">Fabric Type</td>
+                                <td width="16%" style="font-weight:bold;">Fabric Quality</td>
+                                <td width="16%" style="font-weight:bold;">Buyer Color</td>
+                                <td width="16%" style="font-weight:bold;">GSM</td>
+                                  
+                                <td width="16%" style="font-weight:bold;">G Weight</td>                         
+                                <td width="16%" style="font-weight:bold;">Net Weight</td>
+                                <td width="16%" style="font-weight:bold;">Description</td>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var igp in Model.FactoryPoDetail.Where(x => !x.IsDeleted))
+                            {
+
+                                <tr style="border-bottom:1px solid black; text-align:center; line-height:30px">
+
+
+                                 
+                                   
+
+                                        <td width="16%" style="border-right:1px solid black; ">@igp.FabricTypes?.Name</td>
+                                        <td width="16%">@igp.FabricQuality?.Name</td>
+                                        <td width="16%">@igp.BuyerColor?.Name</td>
+                                        <td width="16%">@igp.GSM</td>
+                                
+                                    <td width="16%">@igp.TearWeightInKg</td>
+                                    <td width="16%">@igp.NetWeightInKg</td>
+                                    <td width="16%">@igp.Description</td>
+
+
+
+                                </tr>
+
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>

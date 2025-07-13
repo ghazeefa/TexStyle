@@ -1,0 +1,370 @@
+﻿@*@model TexStyle.Core.PPC.OutwardGatePass*@
+@model TexStyle.ViewModels.PPC.Reports.OutwardGatePassReportViewModel
+@{
+    ViewData["Title"] = "Outward Gate Pass";
+    Layout = "_LayoutPrint";
+    var noData = "No Data Available";
+}
+<style>
+    @@media print {
+        .m-grid {
+            margin-left: 50px;
+        }
+
+        .h {
+            background-color: white;
+        }
+
+        .d {
+            padding-left: 30px;
+        }
+
+        .card .card-block {
+            margin-top: -64px;
+        }
+
+            .card .card-block .s .d {
+                padding-right: 60px;
+            }
+    }
+
+    .m .c {
+        padding-left: 50px;
+    }
+
+    table, td, th {
+        /*border: 1px solid black;*/
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #span01 {
+        display: inline-block;
+    }
+
+    #span02 {
+        display: inline-block;
+    }
+
+    #watermark {
+        position: fixed;
+        bottom: 100px;
+        right: 100px;
+    }
+</style>
+
+<div class="text-center" style=" line-height:16px;">
+    <div style="text-align:end; font-weight:bold; font-size:22px;">
+        <p>@Model.CompanyName</p>
+    </div>
+    @if (Model.CompanyBranch != null)
+    {
+        <div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+            <p>@Model.CompanyBranch</p>
+        </div>}
+</div>
+
+
+<div style="line-height:12px; text-align:center; margin-top: -40px">
+    <h4 style="font-family: 'Times New Roman'; font-weight:bold">OUTWARD GATE PASS</h4>
+
+    @if (Model.IsYarn == true)
+    {
+        <h5 style="font-family: 'Times New Roman'; color: black; ">COMMERCIAL YARN DYEING</h5>
+    }
+    else
+    {
+        <h5 style="font-family: 'Times New Roman'; color: black; justify-content: center">COMMERCIAL FABRIC DYEING</h5>
+    }
+
+    @if (Model.IsCancel == true)
+    {
+        <h4 style="color: RED; font-family:'Times New Roman'">This OGP is cancled </h4>}
+    @if (Model.IsAfterFinishing == true)
+    {
+        <h6 style="color:dimgrey; font-family:'Times New Roman'"> Return After Finishing</h6>
+    }
+
+    @if (Model.IsReprocessed == true)
+    {
+        <h6 style="color:dimgrey; font-family:'Times New Roman'"> Reprocessed </h6>
+    }
+</div>
+
+@*<div style="margin-top:10px; font-size:medium ">
+        <table width="100%">
+            <tr style="margin-top:20px; font-size:medium; text-align:center; ">
+
+                <td width="70%" style="border-left: hidden; border-top: hidden; border-bottom: hidden; "></td>
+                <td style="font-weight: bolder;  background-color:lightgray; margin-top:20px; ">Sr No  :  </td>
+                <td>@Model.Id</td>
+
+            </tr>
+            <tr style="margin-top:20px; font-size:medium; text-align:center; ">
+
+                <td width="70%" style="border-left: hidden; border-top: hidden; border-bottom: hidden; "></td>
+                <td style="font-weight: bolder; background-color: lightgray; border:1px solid black">DATE  :  </td>
+                <td>@Model.OgpDate.ToString("dd-MMM-yyyy")</td>
+
+            </tr>
+        </table>
+
+    </div>
+
+
+    <div style="height:15px;"></div>
+
+    <div style=" font-size:medium;text-align:center">
+        <table width="100%">
+            <tr style="line-height:30px">
+
+                <td width="20%" style="font-weight: bolder;">To</td>
+                <td colspan="2" width="30%">@Model.Party?.Name</td>
+
+
+                <td width="20%" style="font-weight: bolder; ">Receiving Person</td>
+                <td colspan="2" width="30%">@Model.ReceivingPerson</td>
+
+
+
+
+            </tr>
+            <tr style="line-height: 30px">
+
+                <td width="14%" style="font-weight: bolder; ">Book OGP#</td>
+                <td width="14%">@Model.OGPReffNO</td>
+
+                <td width="14%" style="font-weight: bolder;">Vehicle No</td>
+                <td width="14%">@Model.VehicleNo</td>
+
+                <td width="14%" style="font-weight: bolder; ">Driver ID #</td>
+                <td width="14%">@Model.IDCard</td>
+
+            </tr>
+        </table>
+    </div>*@
+
+@*code copied*@
+
+<div class="card-block" style="line-height:2; text-align: left;">
+
+    <div class="row" style="width:100%">
+        <div class="col-3" style="font-weight:bold;">Tr.No:</div>
+        <div class="col-3">@Model.Id</div>
+        <div class="col-3" style="font-weight:bold;">Book OGP #:</div>
+        <div class="col-3">@Model.OGPReffNO</div>
+    </div>
+    <div class="row" style="width:100%">
+        <div class="col-3" style="font-weight:bold;">Tr.Date:</div>
+        <div class="col-3">@Model.OgpDate.ToString("dd-MMM-yyyy")</div>
+        <div class="col-3" style="font-weight:bold;">Party:</div>
+        <div class="col-3">@Model.Party?.Name</div>
+    </div>
+    <div class="row" style="width:100%">
+        <div class="col-3" style="font-weight:bold;">Recieving Person:</div>
+        <div class="col-3">@Model.ReceivingPerson</div>
+        <div class="col-3" style="font-weight:bold;">Vehicle No:</div>
+        <div class="col-3">@Model.VehicleNo</div>
+    </div>
+    <div class="row" style="width:100%">
+        <div class="col-3" style="font-weight:bold;">DriverName:</div>
+        @*<div class="col-3">@Model.GateTr?.DriverName</div>*@
+        <div class="col-3">N/A</div>
+        <div class="col-3" style="font-weight:bold;">ID No:</div>
+        <div class="col-3">@Model.IDCard</div>
+    </div>
+
+
+    @*code copied end*@
+
+    <div style="margin-top:20px; font-size:medium">
+        <table width="100%">
+            <thead>
+                <tr style="line-height:40px;">
+                    @if (Model.IsReprocessed == true)
+                    {
+                        <th class="sorting">Reprocess Id</th>
+                        <th class="sorting">LPS No</th>
+                    }
+                    else if (Model.IsReturnToParty || Model.IsReCheck || Model.IsAfterFinishing || Model.IsAfterComercialFinishing)
+                    {
+                        <th class="sorting">InwardGatePass Detail Id</th>
+                    }
+                    else if (Model.IsYarn == true)
+                    {
+                        <th class="sorting">LPS No</th>
+                    }
+                    else
+                    {
+                        <th class="sorting">Lot No</th>
+                    }
+
+                    @if (Model.IsYarn == true)
+                    {
+                        <td width="10%" style="font-weight:bold;">Yarn Type</td>
+                        <td width="10%" style="font-weight:bold;">Bags</td>
+                        <td width="40%" style="font-weight:bold;">PO Detail</td>
+                        <td width="10%" style="font-weight:bold;">Kgs</td>
+                        <td width="10%" style="font-weight:bold;">Rate</td>
+                        <td width="10%" style="font-weight:bold;">Amount</td>
+                    }
+                    else
+                    {
+                        <td width="10%" style="font-weight:bold;">Fabric Type</td>
+                        <td width="10%" style="font-weight:bold;">No Of Rolls</td>
+                        <td width="60%" style="font-weight:bold;">PO Detail</td>
+                        <td width="10%" style="font-weight:bold;">Kgs</td>
+                    }
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var igp in Model.OutwardGatePassDetails)
+                    {
+
+                <tr style="line-height:30px">
+
+                    @if (Model.IsReprocessed == true)
+                    {
+                        <td class="sorting">@igp.ReprocessId</td>
+                        <td class="sorting">@igp.PPCPlanningId</td>
+                    }
+                    else if (Model.IsReturnToParty || Model.IsReCheck || Model.IsAfterFinishing || Model.IsAfterComercialFinishing)
+                    {
+                        <td class="sorting">@igp.InwardGatePassDetailId</td>
+                    }
+                    else if (Model.IsYarn == true)
+                    {
+                        <td class="sorting">@igp.PPCPlanningId</td>
+                    }
+                    else
+                    {
+                        <td class="sorting">@igp.LotNo</td>
+                    }
+
+                    @if (Model.IsYarn == true)
+                    {
+                        <td style="">@igp.YarnType?.Name</td>
+                        <td>@igp.Bags</td>
+                    }
+                    else
+                    {
+                        <td style=" ">@igp.FabricTypes?.Name</td>
+                        <td>@igp.NoOfRolls</td>
+                    }
+                    @if(Model.IsYarn == false){
+                        decimal remaingKgs = igp.PPCPlanning.Kgs - igp.Kgs;
+                        decimal pendingPercentage = (remaingKgs / igp.PPCPlanning.Kgs) * 100;
+                        
+                        <td>@igp.Description - @Math.Round(pendingPercentage)%</td>
+                    }                    
+                    @if(Model.IsYarn == true){
+                        <td>@igp.Description</td>
+                    }
+                    
+                    <td>@igp.Kgs</td>
+                    @if (Model.IsYarn == true)
+                    {
+                        <td>@igp.Rate</td>
+                        <td class="col-1 p-0">@igp.Amount</td>
+                    }
+
+
+                </tr>
+                    }
+
+                }
+                @*else
+                    {
+
+                        <tr style="border-bottom:1px solid black; text-align:center; line-height:30px">
+
+                            @if (Model.IsReturnToParty || Model.IsReCheck || Model.IsAfterFinishing || Model.IsAfterComercialFinishing)
+                            {
+                                <td class="sorting"> @Model.OutwardGatePassDetails.FirstOrDefault().InwardGatePassDetailId</td>
+                            }
+
+
+
+                            <td>&nbsp;&nbsp;</td>
+                            @if (Model.IsYarn == false)
+                            {
+
+
+
+                                <td width="16%" style="border-right:1px solid black; "> @Model.OutwardGatePassDetails.FirstOrDefault().FabricTypes?.Name</td>
+
+                                <td width="16%"> @Model.OutwardGatePassDetails.FirstOrDefault().NoOfRolls</td>
+
+
+
+                            }
+
+                            <td width="16%"> @Model.OutwardGatePassDetails.FirstOrDefault().Description</td>
+                            <td width="16%"> @Model.TotalWeight</td>
+                            <td width="16%"> @Model.OutwardGatePassDetails.FirstOrDefault().Rate</td>
+                            <td class="col-1 p-0"> @Model.OutwardGatePassDetails.FirstOrDefault().Amount</td>
+
+
+
+                        </tr>
+                    }*@
+
+
+
+
+
+                @if (Model.IsYarn == true || Model.IsAfterFinishing == true || Model.IsYarn == false)
+                {
+
+
+            <tr style="text-align:left; line-height:30px">
+
+                <td width="12.5%" style="font-weight:bolder;">Total</td>
+                @if (Model.IsYarn == true)
+                {
+                    <td width="12.5%"></td>
+
+                }
+                else
+                {
+                    <td width="12.5%"></td>
+                }
+
+                @if (Model.IsYarn == true)
+                {
+                    <td width="12.5%" style="font-weight: bolder;@*margin-left:8px;*@">@Model.OutwardGatePassDetails.Sum(x => x.Bags)</td>
+                }
+                else
+                {
+                    <td width="12.5%" style="font-weight: bolder;@*margin-left:8px;*@">@Model.OutwardGatePassDetails.Sum(x => x.NoOfRolls)</td>
+                }
+
+                <td width="12.5%" style="font-weight: bolder;"></td>
+                <td width="12.5%" style="font-weight: bolder;">@Model.OutwardGatePassDetails.Sum(x => x.Kgs)</td>
+                @if (Model.IsYarn == true)
+                {
+                    <td width="10%" style="font-weight: bolder;"></td>
+                    <td width="10%" style="font-weight: bolder;">@Model.OutwardGatePassDetails.Sum(x => x.Amount)</td>
+                }
+            </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<script src="shuiyin.js"></script>
+<script type="text/javascript"></script>
+
+

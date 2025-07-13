@@ -1,0 +1,60 @@
+﻿@model IEnumerable<TexStyle.ViewModels.YD.Reports.Sticker_D4ViewModel>
+@{ Layout = null; }
+
+
+<style>
+    .row3 > div {
+        display: inline-block;
+    }
+</style>
+
+@if (Model.Count() > 0)
+{
+        for (int j = 1; j <= Model.FirstOrDefault().Cons; j++)
+        {
+<div style="display:inline-block">
+    <div class="row m-g-head" style="margin-bottom:20px; margin-left: 20px; border: dashed 1px ; float:left; padding: 10px;" >
+        @*<div class="col-9"></div>*@
+        <div class=" col-2" style=" font-size: small"> Comfort Knitwear & Yarn Dyeing</div>
+
+        <div class="col-2">@Model.FirstOrDefault().LPSId &nbsp; @Model.FirstOrDefault().LotNo</div>
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div class="col-2 p-2">@Model.FirstOrDefault().Party</div>
+        <div class="col-2 p-2"> @Model.FirstOrDefault().Color</div>
+
+
+        <div class="col-2 p-2">@Model.FirstOrDefault().YarnQuality &nbsp; @Model.FirstOrDefault().Yarntype </div>
+
+
+
+        <div class="col-2">@Model.FirstOrDefault().Date.ToString("dd-MMM-yyyy")</div>
+
+
+
+
+    </div>
+</div> @*if (j>=5 && j % 5 == 0)
+{
+<br /> }*@
+
+                    }
+
+                }
+
+
+            
+
+
+

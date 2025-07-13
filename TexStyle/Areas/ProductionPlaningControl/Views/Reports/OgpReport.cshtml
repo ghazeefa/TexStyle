@@ -1,0 +1,42 @@
+﻿@model IEnumerable<TexStyle.ViewModels.PPC.OGPReportViewModel>
+@{
+    ViewData["Title"] = "OGP";
+
+    var noData = "No Data Available";
+}
+<div class="card user-activity-card">
+    <div class="card-header d-flex justify-content-between align-items-center no-print">
+        <h5>OGP Report</h5>
+        <button class="btn btn-sm btn-info " onclick="window.print()"><i class="ti-printer"></i></button>
+    </div>
+    <div class="card-block">
+        <table id="demo-foo-filtering" class="table table-borderless">
+            <thead>
+                <tr>
+                    <th>Sno</th>
+                    <th data-breakpoints="xs">LPS #</th>
+                    <th data-breakpoints="xs">Lot No.</th>
+                    <th data-breakpoints="xs">Description</th>
+                    <th>Kgs</th>
+                    <th>Rate/Kgs</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0) {
+                    foreach (var m in Model) {
+                        <tr>
+                            <td>@m.Id</td>
+                            <td>@m.Lps</td>
+                            <td>@m.LotNo</td>
+                            <td>@m.Description</td>
+                            <td>@m.Kgs</td>
+                            <td>@m.RateKg</td>
+                            <td>@m.Amount</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

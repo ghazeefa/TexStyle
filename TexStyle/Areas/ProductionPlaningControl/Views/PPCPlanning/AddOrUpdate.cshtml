@@ -1,0 +1,688 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.PPC.PPCPlanningViewModel
+@{
+    var title = $"PPC Planning";
+    ViewData["Title"] = $"{title}s";
+    var AddOrUpdateAction = "/ppc/PPCPlanning/AddOrUpdate/";
+    var CopyIGPAction = "/ppc/PPCPlanning/CopyIgpData/";
+    var CopyIGPFabricAction = "/ppc/PPCPlanning/CopyFabricIGPData/";
+    var GetPODataAction = "/ppc/PPCPlanning/GetCKL1POData/";
+    var ReprocessUrl = "/ppc/Reprocess/Index/";
+    var filter = ViewBag.filter;
+    var Issue = ViewBag.Issuance;
+
+    List<SelectListItem> ProductionTypeList = ViewBag.orderActivityList;
+    List<SelectListItem> partyList = ViewBag.partyList;
+    List<SelectListItem> buyerList = ViewBag.buyerlist;
+    List<SelectListItem> yarnTypeList = ViewBag.yarnTypeList;
+    List<SelectListItem> yarnQualityList = ViewBag.yarnQualityList;
+    List<SelectListItem> yarnManufacturerList = ViewBag.yarnManufacturerList;
+    List<SelectListItem> purchaseOrderList = ViewBag.purchaseOrderList;
+    List<SelectListItem> buyerColorList = ViewBag.buyerColorList;
+    List<SelectListItem> fabricTypesList = ViewBag.fabricTypesList;
+    List<SelectListItem> fabricTypeList = ViewBag.fabricTypeList;
+    List<SelectListItem> fabricQualityList = ViewBag.fabricQualityList;
+
+    List<SelectListItem> knittingPartyList = ViewBag.knittingPartyList;
+    List<SelectListItem> buyerlist = ViewBag.buyerlist;
+    var buyerSl = new SelectListItemViewModel
+    {
+        Name = "BuyerId",
+        PlaceHolder = "Select Buyer",
+        UseDefault = false,
+        Reqired = true,
+        SelectList = buyerlist
+    };
+
+
+
+
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                <div>
+
+                    @if (filter.IsYarn == true)
+                    {
+
+                        <button href="#@CopyIGPAction" class="btn btn-primary IgpRef-js" data-action="#@CopyIGPAction" data-title="Create @title">Get IGP Reference</button>
+
+                    }
+                    else
+                    {
+                        <button href="#@CopyIGPFabricAction" class="btn btn-primary IgpReff-js" data-action="#@CopyIGPFabricAction" data-title="Create @title">Get IGP</button>
+
+                        <button href="#@GetPODataAction" class="btn btn-primary PoReff-js" data-action="#@GetPODataAction" data-title="Create @title">Get PO Information</button>
+                    }
+
+                    @if (ViewBag.ShowReprocess)
+                    {
+                        <a href="@ReprocessUrl@Model.Id" class="btn btn-secondary">Reprocess</a>
+                    }
+                </div>
+            </div>
+            <!-- <form asp-area="ProductionPlaningControl" asp-controller="PPCPlanning" asp-action="AddOrUpdate" id="frmppcplanning" method="post" enctype="multipart/form-data">
+            -->
+            <form asp-area="ProductionPlaningControl" asp-controller="PPCPlanning" asp-action="AddOrUpdate" id="frmppcplanning" method="post" enctype="multipart/form-data">
+
+                <div class="card-block">
+                    <h4 style="padding-bottom:10px!important;">
+                        IGP No:@if (@Model.IGPNo != null)
+                        {@Model.IGPNo.Value}
+                    </h4>
+                    <hr />
+                    <div class="form-horizontal">
+                        <div class="form-horizontal">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            @Html.HiddenFor(m => m.Id)
+                            @Html.HiddenFor(m => m.InwardGatePassDetailId)
+                            @Html.HiddenFor(m => m.BuyerId)
+                            @Html.HiddenFor(m => m.PartyId)
+                            @*@Html.HiddenFor(m => m.IsFabricPrinting)
+                            @Html.HiddenFor(m => m.IsGarmentPrinting)
+                            @Html.HiddenFor(m => m.Pcs)*@
+
+                            <div class="row">
+
+                                @if (filter.IsYarn == true || Model.Id != null)
+                                {
+                                <div class="form-group col-3">
+                                    <label asp-for="IGPXref" class="control-label"></label>
+                                    <input asp-for="IGPXref" class="form-control" />
+                                    <span asp-validation-for="IGPXref" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label">Lps No</label>
+                                    <input class="form-control" name="LpsNo" value="@ViewBag.LpsNo" readonly disabled />
+                                </div>
+                                <div class="form-group col-3">
+
+                                    <label asp-for="IssuedDate" class="control-label"></label>
+                                    <input asp-for="IssuedDate" class="form-control" type="date" />
+                                    <span asp-validation-for="IssuedDate" class="text-danger"></span>
+                                </div>
+
+
+                                }
+                                @if (filter.IsYarn == false || Model.Id != null)
+                                {
+                                <div class="form-group col-3">
+                                    <label asp-for="FactoryPo" class="control-label"></label>
+                                    <input asp-for="FactoryPo" class="form-control" />
+                                    <span asp-validation-for="FactoryPo" class="text-danger"></span>
+                                </div>
+
+
+
+                                }
+                                <div class="form-group col-3">
+                                    <label asp-for="LotNo" class="control-label"></label>
+                                    <input asp-for="LotNo" class="form-control" />
+                                    <span asp-validation-for="LotNo" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label class="control-label" asp-for="PurchaseOrderId"></label>
+                                    <select asp-for="PurchaseOrderId" select2="@(purchaseOrderList)" class="form-control select2"></select>
+                                    <span asp-validation-for="PurchaseOrderId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label class="control-label">Party</label>
+                                    <input class="form-control" id="PartyName" type="text" value="@Model?.Buyer?.Party?.Name" placeholder="Select PO" disabled />
+                                </div>
+
+                                @if (filter.IsYarn == true)
+                                {
+                                <div class="form-group col-4">
+                                    <label class="control-label">Buyer</label>
+                                    <input class="form-control" id="BuyerName" type="text" value="@Model?.Buyer?.Name" placeholder="Select PO" disabled />
+                                </div>
+                                }
+                                else
+                                {
+
+
+                                <div class="form-group col-4">
+                                    <label class="control-label">Buyer</label>
+                                    <input class="form-control" id="BuyerName" type="text" value="@Model?.Buyer?.Name" placeholder="Select PO" disabled />
+                                </div>
+
+
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="ProductionTypeId"></label>
+                                    <select asp-for="ProductionTypeId" select2="@(ProductionTypeList)" select2-ph="Select Production Type" class="form-control select2"></select>
+                                    <span asp-validation-for="ProductionTypeId" class="text-danger"></span>
+                                </div>
+                                }
+
+
+
+                                @*</div>*@
+                                <div class="row">
+                                    <div class="form-group col-4">
+                                        <label class="control-label" asp-for="BuyerColorId"></label> <small class="text-warning">Select Buyer</small>
+                                        <div id="colorSelectCont" class="form-group">
+                                            <select asp-for="BuyerColorId" id="BuyerColorId" select2="@(buyerColorList)" select2-ph="Select Buyer Color" class="form-control select2"></select>
+                                        </div>
+                                        <span asp-validation-for="BuyerColorId" class="text-danger"></span>
+                                    </div>
+                                    @if (filter.IsYarn == true)
+                                    {
+                                    <div class="form-group col-lg-4">
+                                        <label class="control-label" asp-for="YarnTypeId"></label> <small class="text-warning">Copy From Table</small>
+                                        <select asp-for="YarnTypeId" select2="@(yarnTypeList)" select2-ph="Select Yarn Type" class="form-control select2" disabled></select>
+                                        <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label class="control-label" asp-for="YarnQualityId"></label> <small class="text-warning">Copy From Table</small>
+                                        <select asp-for="YarnQualityId" select2="@(yarnQualityList)" select2-ph="Select Yarn Quality" class="form-control select2" disabled></select>
+                                        <span asp-validation-for="YarnQualityId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <pre class="m-0" style="overflow:visible;display:inline-flex;align-items:baseline;">
+                                        <label class="control-label" asp-for="YarnManufacturerId"></label> <small class="text-warning">Copy From Table</small>
+                                    </pre>
+                                        <select asp-for="YarnManufacturerId" select2="@(yarnManufacturerList)" select2-ph="Select Yarn Manufacturer" class="form-control select2" disabled></select>
+                                        <span asp-validation-for="YarnManufacturerId" class="text-danger"></span>
+                                    </div>
+
+                                    @if (filter.IsYarn == true)
+                                        {
+                                    <div class="form-group col-3">
+                                        <label class="control-label">Kgs <span class="text-warning"> <small>Available: </small><span id="availableKgs">@{var availablekgs = Model.AvailableLpsKgs != 0 ? Model.AvailableLpsKgs : 0; } @availablekgs</span></span></label>
+                                        <input asp-for="Kgs" class="form-control" type="number" max="@availablekgs !=0? @availablekgs :0" step="0.01" />
+                                        <span asp-validation-for="Kgs" class="text-danger"></span>
+                                    </div>
+                                        }
+
+                                    <div class="form-group col-3" id="pcsField" style="display: none;">
+                                        <label class="control-label">PCs<span class="text-warning"> <small>Available: </small>@*<span id="availableKgs">@{var availablekgs = Model.AvailableLpsKgs != 0 ? Model.AvailableLpsKgs : 0; } @availablekgs</span>*@</span></label>
+                                        <input asp-for="Pcs" class="form-control" type="number" step="0.01" />
+                                        <span asp-validation-for="Pcs" class="text-danger"></span>
+                                    </div>
+
+                                    }
+                                    else
+                                    {
+                                    @*<div class="form-group col-lg-4">
+                            <label class="control-label" asp-for="FabricTypeId"></label> <small class="text-warning">Copy From Table</small>
+                            <select asp-for="FabricTypeId" select2="@(fabricTypeList)" select2-ph="Select Fabric Type" class="form-control select2" disabled></select>
+                            <span asp-validation-for="FabricTypeId" class="text-danger"></span>
+                        </div>*@
+
+
+
+                                    <div class="form-group col-lg-4">
+                                        <label class="control-label" asp-for="FabricTypesId"></label> <small class="text-warning">Copy From Table</small>
+                                        <select asp-for="FabricTypesId" select2="@(fabricTypeList)" select2-ph="Select Fabric Type" class="form-control select2"></select>
+                                        <span asp-validation-for="FabricTypeId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label class="control-label" asp-for="FabricQualityId"></label> <small class="text-warning">Copy From Table</small>
+                                        <select asp-for="FabricQualityId" select2="@(fabricQualityList)" select2-ph="Select Fabric Quality" class="form-control select2"></select>
+                                        <span asp-validation-for="FabricQualityId" class="text-danger"></span>
+                                    </div>
+
+                                    @*<div class="form-group col-4">
+                            <label asp-for="Remarks" class="control-label"></label>
+                            <input asp-for="Remarks" class="form-control" />
+                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                        </div>*@
+
+
+
+                                    }
+
+
+                                </div>
+
+                            </div>
+
+                            @if (filter.IsYarn == true)
+                            {
+                            <div class="row">
+                                <div class="form-group col-3">
+                                    <label asp-for="Cones" class="control-label"></label>
+                                    <input asp-for="Cones" class="form-control" />
+                                    <span asp-validation-for="Cones" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-3">
+                                    <label class="control-label" asp-for="ProductionTypeId"></label>
+                                    <select asp-for="ProductionTypeId" select2="@(ProductionTypeList)" select2-ph="Select Production Type" class="form-control select2"></select>
+                                    <span asp-validation-for="ProductionTypeId" class="text-danger"></span>
+                                </div>
+
+
+
+                            </div>
+                            @*<div class="row">
+                    <div class="form-group form-check col-3">
+                        <label class="control-label">Is Confirmed</label>
+                        <div class="border-checkbox-section">
+                            <div class="row">
+                                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                    <input class="border-checkbox" type="checkbox" asp-for="IsConfirmed">
+                                    <label class="border-checkbox-label" for="IsConfirmed"> Is Confirmed</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+                            }
+                        </div>
+                    </div>
+
+                    @if (filter.IsYarn == false || Issue == false)
+                    {
+                    <div class="row">
+                        <div class="form-group col-3">
+                            <label class="control-label">Kgs <span class="text-warning"> <small>Available: </small><span id="availableKgs">@{var availablekgs = Model.AvailableLpsKgs != 0 ? Model.AvailableLpsKgs : 0; } @availablekgs</span></span></label>
+                            <input asp-for="Kgs" class="form-control" type="number" max="@availablekgs !=0? @availablekgs :0" step="0.01" />
+                            <span asp-validation-for="Kgs" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-3">
+                            <pre class="m-0" style="overflow:visible;display:inline-flex;align-items:baseline;">
+                            <label class="control-label" asp-for="KnitingPartyId"></label> <small class="text-warning">Copy From Table</small>
+            </pre>
+                            <select asp-for="KnitingPartyId" select2="@(knittingPartyList)" select2-ph="Select Knitter" class="form-control select2" disabled></select>
+                            <span asp-validation-for="KnitingPartyId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-3">
+                            <label asp-for="NoOfRolls" class="control-label"></label>
+                            <input asp-for="NoOfRolls" class="form-control" />
+                            <span asp-validation-for="NoOfRolls" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group col-3">
+                            <label class="control-label">Dia</label>
+                            <input asp-for="Dia" class="form-control" type="number" />
+                            <span asp-validation-for="Dia" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-3">
+                            <label class="control-label">GSM</label>
+                            <input asp-for="GSM" class="form-control" type="number" />
+                            <span asp-validation-for="GSM" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-3">
+                            <label asp-for="DyeingWOID" class="control-label"></label>
+                            <input asp-for="DyeingWOID" class="form-control" id="input-field" disabled />
+                            <span asp-validation-for="DyeingWOID" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-3">
+                            <label asp-for="DyeingWODetailID" class="control-label"></label>
+                            <input asp-for="DyeingWODetailID" class="form-control" id="input-field-detail" disabled />
+                            <span asp-validation-for="DyeingWODetailID" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    }
+
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label asp-for="Remarks" class="control-label"></label>
+                            <input asp-for="Remarks" class="form-control" />
+                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group form-check col-3">
+                            <div class="border-checkbox-section">
+                                <div class="row">
+                                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                        <input class="border-checkbox" type="checkbox" asp-for="IsConfirmed">
+                                        <label class="border-checkbox-label" for="IsConfirmed"> Is Confirmed</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-check col-3">
+                            <div class="border-checkbox-section">
+                                <div class="row">
+                                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                        <input class="border-checkbox" type="checkbox" asp-for="IsCancel">
+                                        <label class="border-checkbox-label" for="IsCancel"> Is Cancel?</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-check col-3">
+                            <div class="border-checkbox-section">
+                                <div class="row">
+                                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                        <input class="border-checkbox" type="checkbox" asp-for="IsFabricPrinting">
+                                        <label class="border-checkbox-label" for="IsFabricPrinting">Is Fabric Printing?</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-check col-3">
+                            <div class="border-checkbox-section">
+                                <div class="row">
+                                    <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                        <input class="border-checkbox" type="checkbox" asp-for="IsGarmentPrinting">
+                                        <label class="border-checkbox-label" for="IsGarmentPrinting">Is Garment Printing?</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    @if (filter.IsYarn == true || Model.Id != null)
+                    {
+                    <div class="card-footer d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>}
+</form>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row d-none" id="partialWrapper">
+
+</div>
+
+
+
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).on('change', "#PurchaseOrderId", function (e) {
+            var pid = $("#PurchaseOrderId").val();
+            e.preventDefault();
+            $.ajax({
+                url: `/ppc/PPCPlanning/GetPartyandBuyer/${pid}`,
+                method: 'GET',
+            }).done(function (res) {
+                console.log(res);
+                $("#PartyId").val(res.pid);
+                $("#PartyName").val(res.pname);
+                $("#BuyerId").val(res.bid);
+                $("#BuyerName").val(res.bname);
+                if (res.bid != null) {
+                    $.ajax({
+                        method: 'GET',
+                        url: `/ppc/PurchaseOrder/GetColorsByBuyerId/${res.bid}`
+                    }).done(function (res) {
+                        $("#colorSelectCont").html(res);
+                        $("#colorSelectCont .select2").select2();
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        alert("error");
+                    });
+                }
+            }).fail(function (a, b, c) {
+                console.log(c)
+            });
+        });
+        //$("#PurchaseOrderId").change(function () {
+        //    var partyId = $(this).find('option:selected').val();
+        //    if (partyId != -1) {
+        //        $.ajax({
+        //            method: 'GET',
+        //            url: `/ppc/PurchaseOrder/GetBuyersByPartyId/${partyId}`
+        //        }).done(function (res) {
+        //            $("#buyerSelectCont").html(res);
+        //            $("#buyerSelectCont .select2").select2();
+        //        }).fail(function (jqXHR, textStatus, errorThrown) {
+        //            alert("error");
+        //        });
+        //    }
+        //});
+        //$("#PartyId").change(function () {
+        //    var partyId = $(this).find('option:selected').val();
+        //    if (partyId != -1) {
+        //        $.ajax({
+        //            method: 'GET',
+        //            url: `/ppc/PurchaseOrder/GetBuyersByPartyId/${partyId}`
+        //        }).done(function (res) {
+        //            $("#buyerSelectCont").html(res);
+        //            $("#buyerSelectCont .select2").select2();
+        //        }).fail(function (jqXHR, textStatus, errorThrown) {
+        //            alert("error");
+        //        });
+        //    }
+        //});
+
+        $("body").on("change", "#BuyerId", function () {
+            var Buyerid = $(this).find('option:selected').val();
+            if (Buyerid != -1) {
+                $.ajax({
+                    method: 'GET',
+                    url: `/ppc/PurchaseOrder/GetColorsByBuyerId/${Buyerid}`
+                }).done(function (res) {
+                    $("#colorSelectCont").html(res);
+                    $("#colorSelectCont .select2").select2();
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert("error");
+
+                });
+            }
+        });
+
+        $(function () {
+
+            var igpNo = 0;
+            $("#IGPXref").change(function (e) {
+                e.preventDefault();
+                igpNo = $(this).val();
+                console.log($(this).val());
+            });
+
+            $('.IgpRef-js').click(function (e) {
+                e.preventDefault();
+                var igpno = $("#IGPXref").val();
+
+                var btn = $(this);
+                var BtnText = btn.text();
+                btn.html(`<i class="fa fa-refresh fa-spin text-white"></i>`);
+                debugger;
+                var murl = `${$(this).data('action').replace('#', '')}${igpno}`
+                $.ajax({
+                    method: 'GET',
+                    url: murl
+                }).done(function (res) {
+                    btn.text(BtnText);
+
+                    $('#partialWrapper').removeClass('d-none').addClass('d-block').html(res);
+                    $("#IGPDetailsTable").DataTable({
+                        scrollX: 300,
+                        scrollY: true,
+                        autoWidth: true,
+                    });
+                    // script that will work on the partial view
+                    //ActivateCopyShit();
+                    $(".copy-js").click(function () {
+                        var btn = $(this);
+
+                        var tr = btn.parents("tr")
+                        tr.find("input[type='hidden']").each(function (i) {
+                            var input = $(this);
+                            $(`input[type='number']#${input.attr("name")},input[type='hidden']#${input.attr("name")}, select#${input.attr("name")}`).val(input.val());
+                            $('.select2').trigger('change');
+                        });
+
+                        var maxKg = tr.find("input#AvailableLpsKgs").val();
+                        $("input#Kgs").attr("max", maxKg);
+                        $("#availableKgs").text(maxKg);
+                    })
+                }).fail(function () {
+                    btn.text(BtnText);
+                    swal("Failed", "Request Failed. Try later.", "error");
+                });
+            });
+        })
+
+        $(function () {
+            debugger;
+            var igpNo = 0;
+            $("#IGPXref").change(function (e) {
+                e.preventDefault();
+                igpNo = $(this).val();
+                console.log($(this).val());
+            });
+
+            $('.IgpReff-js').click(function (e) {
+                e.preventDefault();
+                var igpno = $("#IGPXref").val();
+                var fabrictype = $("#FabricTypesId").val();
+                var fabricquality = $("#FabricQualityId").val();
+                var bbbbb = $("#BuyerId").val();
+                var buyer = $("#BuyerId").val();
+                var bbuyer = $("#BuyerId").val();
+                var dataobject = {};
+                dataobject.fabricquality = $("#FabricTypesId").val();
+                dataobject.fabrictype = $("#FabricQualityId").val();
+                var obj = { fabricTypesId: $("#FabricTypesId").val(), fabricQualityId: $("#FabricQualityId").val() };
+                var btn = $(this);
+                var BtnText = btn.text();
+                btn.html(`<i class="fa fa-refresh fa-spin text-white"></i>`);
+             
+                var murl = `${$(this).data('action').replace('#', '')}` + '?fabricTypesId=' + fabrictype + '&fabricQualityId=' + fabricquality + '&buyerId=' + buyer
+                $.ajax({
+                    method: 'GET',
+                    data: JSON.stringify(obj),
+                    url: murl
+                }).done(function (res) {
+                    btn.text(BtnText);
+
+                    $('#partialWrapper').removeClass('d-none').addClass('d-block').html(res);
+                    $("#IGPDetailsTable").DataTable({
+                        scrollX: 300,
+                        scrollY: true,
+                        autoWidth: true,
+                    });
+                    // script that will work on the partial view
+                    //ActivateCopyShit();
+                    $(".copy-js").click(function () {
+                        var btn = $(this);
+
+                        var tr = btn.parents("tr")
+                        tr.find("input[type='hidden']").each(function (i) {
+                            var input = $(this);
+                            $(`input[type='number']#${input.attr("name")},input[type='hidden']#${input.attr("name")}, select#${input.attr("name")}`).val(input.val());
+                            $('.select2').trigger('change');
+                        });
+
+                        var maxKg = tr.find("input#AvailableLpsKgs").val();
+                        $("input#Kgs").attr("max", maxKg);
+                        $("#availableKgs").text(maxKg);
+                    })
+                }).fail(function () {
+                    btn.text(BtnText);
+                    swal("Failed", "Request Failed. Try later.", "error");
+                });
+            });
+        })
+
+        $(function () {
+            debugger;
+            var igpNo = 0;
+            $("#IGPXref").change(function (e) {
+                e.preventDefault();
+                igpNo = $(this).val();
+                console.log($(this).val());
+            });
+
+            $('.PoReff-js').click(function (e) {
+                debugger
+                e.preventDefault();
+                var po = $("#FactoryPo").val();
+            
+                
+                var dataobject = {};
+                dataobject.fabricquality = $("#FabricTypesId").val();
+                dataobject.fabrictype = $("#FabricQualityId").val();
+                var obj = { fabricTypesId: $("#FabricTypesId").val(), fabricQualityId: $("#FabricQualityId").val() };
+                var btn = $(this);
+                var BtnText = btn.text();
+                btn.html(`<i class="fa fa-refresh fa-spin text-white"></i>`);
+
+                var murl = `${$(this).data('action').replace('#', '')}` + '?po=' + po
+                $.ajax({
+                    method: 'GET',
+                    data: JSON.stringify(obj),
+                    url: murl
+                }).done(function (res) {
+                    btn.text(BtnText);
+
+                    $('#partialWrapper').removeClass('d-none').addClass('d-block').html(res);
+                    $("#IGPDetailsTable").DataTable({
+                        scrollX: 300,
+                        scrollY: true,
+                        autoWidth: true,
+                    });
+                    // script that will work on the partial view
+                    //ActivateCopyShit();
+                    $(".copyPo-js").click(function () {
+                        var btn = $(this);
+
+                        var tr = btn.parents("tr")
+                        //tr.find("input[type='hidden']").each(function (i) {
+                        //    var input = $(this);
+                        //    $(`input[type='number']#${input.attr("name")},input[type='hidden']#${input.attr("name")}, select#${input.attr("name")}`).val(input.val());
+                        //    $('.select2').trigger('change');
+                        //});
+                        debugger
+                        var maxKg = tr.find("input#AvailableKgs").val();
+                        $("input#Kgs").attr("max", maxKg);
+                        $("#availableKgs").text(maxKg);
+                        //Id
+                        var id = tr.find("input#DyeingWOID").val();
+                       // $("input#DyeingWOID").attr("max", id);
+                       // $("#DyeingWOID").text(id);
+                        //Detail Id
+                        var dId = tr.find("input#DyeingWODetailID").val();
+                        //$("input#DyeingWODetailID").attr("max", dId);
+                        //$("#DyeingWODetailID").text(dId);
+
+                        var inputField = document.getElementById("input-field");
+                        inputField.value = id
+                        var inputFieldDetail = document.getElementById("input-field-detail");
+                        inputFieldDetail.value = dId
+                    })
+                }).fail(function () {
+                    btn.text(BtnText);
+                    swal("Failed", "Request Failed. Try later.", "error");
+                });
+            });
+        })
+
+
+
+
+
+        var pcsField = document.getElementById('pcsField');
+
+        $("#IsGarmentPrinting").click(function () {
+            if ($(this).is(":checked")) {
+                $("#IsFabricPrinting").prop("checked", false);
+                pcsField.style.display = 'block';
+                weightField.style.display = 'none';
+            } else {
+                pcsField.style.display = 'none';
+                weightField.style.display = 'block';
+            }
+        });
+
+    </script>
+}
+
+
+

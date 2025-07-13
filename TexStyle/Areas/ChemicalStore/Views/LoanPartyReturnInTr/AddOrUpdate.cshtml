@@ -1,0 +1,90 @@
+﻿@model TrViewModel
+@{
+    ViewData["Title"] = "Add Or Update";
+
+    List<SelectListItem> partyList = ViewBag.partyList;
+    List<SelectListItem> gateIgpList = ViewBag.gateIgpList;
+
+}
+
+<form asp-area="@AreaConstants.CHEMICAL_STORE.Name" asp-controller="LoanPartyReturnInTr" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.PartyId)
+
+    <div class="row">
+        <div class="form-group col-4">
+            <label class="control-label">Transaction Date</label>
+
+            @*<input class="form-control" asp-for="TransactionDate" type="text" value="@Model?.TransactionDate" placeholder="Select an IGP" readonly />*@
+
+           
+                <label asp-for="TransactionDate" class="control-label"></label>
+                <input asp-for="TransactionDate" class="form-control" type="date" />
+                <span asp-validation-for="TransactionDate" class="text-danger"></span>
+           
+
+        </div>
+
+        <div class="form-group col-4">
+            <label class="control-label" asp-for="GateTrId"></label>
+            <select asp-for="GateTrId" select2="@(gateIgpList)" select2-ph="Select Gate IGP" class="form-control select2"></select>
+            <span asp-validation-for="GateTrId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="InvoiceNo" class="control-label"></label>
+            <input asp-for="InvoiceNo" class="form-control" />
+            <span asp-validation-for="InvoiceNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-4">
+            <label asp-for="InvoiceNo" class="control-label"></label>
+            <input asp-for="InvoiceDate" class="form-control" type="date" />
+            <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="FairPrice" class="control-label"></label>
+            <input asp-for="FairPrice" class="form-control" />
+            <span asp-validation-for="FairPrice" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4">
+            <label asp-for="IGPReffNo" class="control-label"></label>
+            <input asp-for="IGPReffNo" class="form-control" />
+            <span asp-validation-for="IGPReffNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-4">
+            <label class="control-label">Party</label>
+            <input class="form-control" id="PartyName" type="text" value="@Model?.Party?.Name" placeholder="Select an IGP" disabled />
+        </div>
+        <div class="border-checkbox-section">
+            <div class="row">
+                <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                    <input class="border-checkbox" type="checkbox" asp-for="IsCancel">
+                    <label class="border-checkbox-label" asp-for="IsCancel"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+
+<script>
+    $(function () {
+        $("#GateTrId").change(function () {
+            $.get("/cs/LCImportInTr/GetParty/" + $(this).val(), function (d) {
+                $("#PartyId").val(d.id);
+                $("#PartyName").val(d.name);
+            });
+        });
+
+    })
+</script>

@@ -1,0 +1,126 @@
+﻿@model IEnumerable<TexStyle.ViewModels.CS.Reports.LoanPartyInOutC5ViewModel>
+@{ ViewData["Title"] = "Our Loan Record";
+    Layout = "_LayoutPrint"; }
+
+@if (Model.Count() > 0)
+{
+<div class="container">
+    <div class="text-center" style=" line-height:16px;">
+        <div style="text-align:end; font-weight:bold; font-size:22px;">
+            <p>@Model.FirstOrDefault().CompanyName</p>
+        </div>
+        @if (Model.FirstOrDefault().CompanyBranch != null)
+        {
+<div style="text-align: end; font-weight: bold; font-size: 16px; line-height:1px; ">
+    <p>@Model.FirstOrDefault().CompanyBranch</p>
+</div>}
+    </div>
+    <div class="text-center" style=" line-height:10px;float:right">
+        <div style="height: 30px; border: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            Report No.
+        </div>
+        <div style="height: 30px; border-left: solid 1px black; border-right: solid 1px black; border-bottom: solid 1px black; width: 100px; padding-top: 7px; font-weight: bold;">
+            C-5
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="w-100 text-center" style="margin-top:-110px">
+            <h4>@ViewData["Title"]</h4>
+            Report Dates: @Model.FirstOrDefault().DateFrom To @Model.FirstOrDefault().DateTo
+        </div>
+    </div>
+
+</div>
+                <br />
+
+
+                                <div class="row">
+
+                                    <table class="table">
+                                        @*<thead>
+                                                <tr>
+
+                                                    <th scope="col" width="14%" class="table-active report-numberheading">C-5</th>
+                                                    <th scope="col" width="14%"></th>
+                                                    <th scope="col" width="14%"></th>
+                                                    <th scope="col" width="14%"></th>
+                                                    <th scope="col" width="14%"></th>
+                                                    <th scope="col" width="14%"></th>
+                                                    <th scope="col" width="14%"></th>
+
+
+
+                                                </tr>
+                                            </thead>*@
+                                        @if (Model.Count() > 0)
+                                        {
+                        <tbody>
+                            @*<tr>
+                                    <td class="report-header1" style="font-size:32px !important" colspan="12">@Model.FirstOrDefault().CompanyName</td>
+                                <td class="report-header1" colspan="14">COMFORT KNITWEARS PVT </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="report-header2" colspan="12">@ViewData["Title"] </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="report-header3" colspan="12">DATE FROM: @Model.FirstOrDefault().DateFrom TO: @Model.FirstOrDefault().DateTo</td>
+                                <td class="report-header3" colspan="14">DATE FROM: 2020-01-01 TO: 2020-02-29</td>
+                                </tr>*@
+                            @*<tr>
+                                    <td colspan="7"> </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7"> </td>
+                                </tr>*@
+                            <tr style="background-color: lightgray;">
+                                <td colspan="2">Date</td>
+                                <td colspan="3" style="text-align:center;">Dye/Chemical</td>
+                                <td colspan="2" style="text-align:center;">OGP</td>
+                                <td colspan="2" style="text-align:center;">Qty</td>
+                                <td colspan="3"></td>
+                            </tr>
+                            @if (Model.Count() > 0)
+                            {
+        @foreach (var detail in Model)
+        {
+<tr>
+    <td colspan="2"> @detail.Date.ToShortDateString()</td>
+    <td colspan="3"> @detail.Item</td>
+    <td colspan="2"> @detail.OGPNo</td>
+    <td colspan="2"> @detail.Qty</td>
+    <td> </td>
+
+</tr>
+
+                            <tr>
+                                <td colspan="9"></td>
+                                <td class="report-Subdetailheader"> IGP No </td>
+                                <td class="report-Subdetailheader">Date </td>
+                                <td class="report-Subdetailheader"> Qty</td>
+                            </tr>
+                                                        @foreach (var d in detail.OGP_IGPDetailListViewModel)
+                                                        {
+                            <tr class="report-detail">
+                                <td colspan="9"></td>
+                                <td>@d.No</td>
+                                <td>@d.Date?.ToShortDateString()</td>
+                                <td>@d.Qty</td>
+
+
+                            </tr>
+}}}
+
+
+                        </tbody>
+}
+                                    </table>
+
+                                </div> }
+
+                                            else
+                                            {
+                                                <h1><center> No Record in Report </center></h1>
+                                            }

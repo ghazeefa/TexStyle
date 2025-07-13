@@ -1,0 +1,145 @@
+﻿@model RecipeViewModel
+@{
+    var CopyPPCAction = "/yd/Recipe/CopyPPCData/";
+    var title = "Recipe";
+    ViewData["Title"] = $"Add Or Update {title}";
+
+    List<SelectListItem> machineTypeList = ViewBag.machineTypeList;
+    var machineTypeSl = new SelectListItemViewModel
+    {
+        Name = nameof(Model.MachineTypeId),
+        PlaceHolder = "Select Machine Type",
+        UseDefault = false,
+        SelectList = machineTypeList
+    };
+
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                <button href="#@CopyPPCAction" class="btn btn-primary IgpRef-js" data-action="#@CopyPPCAction" data-title="Create @title">Copy LPS Reference</button>
+            </div>
+            <form asp-area="@AreaConstants.YARN_DYEING.Name" asp-controller="Recipe" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+                <div class="card-block">
+                    <div class="form-horizontal">
+                        <div class="form-horizontal">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            @Html.HiddenFor(m => m.Id)
+                        <div class="row">
+                            <div class="form-group col-3">
+                                <label class="control-label">Recipe Id</label>
+                                <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+                                <span class="text-danger"></span>
+                            </div>
+                            @*<div class="form-group col-3">
+                                <label asp-for="LPSNO" class="control-label"></label>
+                                <input asp-for="LPSNO" class="form-control" />
+                            </div>*@
+                            <div class="form-group col-3">
+                                <label asp-for="Date" class="control-label"></label>
+                                <input asp-for="Date" class="form-control" type="date" />
+                                <span asp-validation-for="Date" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-3">
+                                @if (machineTypeList != null)
+                                {
+                                    <label class="control-label" asp-for="MachineTypeId"></label>
+                                    <partial name="~/Views/Shared/_SelectList.cshtml" model="machineTypeSl" />
+                                }
+                                <span asp-validation-for="MachineTypeId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-3">
+                                <label asp-for="LiquorRate" class="control-label"></label>
+                                <input asp-for="LiquorRate" class="form-control" />
+                                <span asp-validation-for="LiquorRate" class="text-danger"></span>
+                            </div>
+                            @*<div class="form-group col-3">
+                                <label asp-for="Weight" class="control-label"></label>
+                                <input asp-for="Weight" class="form-control" disabled />
+                                <span asp-validation-for="Weight" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-3">
+                                <label asp-for="Cones" class="control-label"></label>
+                                <input asp-for="Cones" class="form-control" disabled />
+                                <span asp-validation-for="Cones" class="text-danger"></span>
+                            </div>*@
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row d-none" id="partialWrapper">
+
+</div>
+
+
+
+
+@section scripts {
+    <script type="text/javascript">
+
+        $(function () {
+            var igpNo = 0;
+            $("#LPSNO").change(function (e) {
+                e.preventDefault();
+                igpNo = $(this).val();
+                console.log($(this).val());
+            });
+            $('.IgpRef-js').click(function (e) {
+                e.preventDefault();
+                var igpno = $("#LPSNO").val();
+                //alert(igpno)
+
+                var btn = $(this);
+                var BtnText = btn.text();
+                btn.html(`<i class="fa fa-refresh fa-spin text-white"></i>`);
+
+                var url = `${$(this).data('action').replace('#', '')}${igpno}`
+                //alert(url)
+                console.log(url);
+                $.ajax({
+                    method: 'GET',
+                    url: url
+                }).done(function (res) {
+                    btn.text(BtnText);
+
+
+                    $('#partialWrapper').removeClass('d-none').addClass('d-block').html(res);
+                    $("#IGPDetailsTable").DataTable({
+                        scrollX: 300,
+                        scrollY: true,
+                        autoWidth: true,
+                    });
+                    // script that will work on the partial view
+                    $(".copy-js").click(function () {
+                        var btn = $(this);
+
+
+                        var tr = btn.parents("tr")
+                        tr.find("input[type='hidden']").each(function (i) {
+                            var input = $(this);
+                            $(`input[type='number']#${input.attr("name")},input[type='hidden']#${input.attr("name")}, select#${input.attr("name")}`).val(input.val());
+                            $('.select2').trigger('change');
+                        })
+                    })
+
+                }).fail(function () {
+                    btn.text(BtnText);
+                    console.log(
+                        swal("Failed", "Request Failed. Try later.", "error"));
+                });
+
+            });
+        });
+
+    </script>
+}

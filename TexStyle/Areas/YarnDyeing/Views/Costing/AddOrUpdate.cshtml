@@ -1,0 +1,53 @@
+﻿@model CostingViewModel
+
+@{
+    ViewData["Title"] = "Add Or Update";
+}
+
+<form asp-area="@(AreaConstants.YARN_DYEING.Name)" asp-controller="Costing" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(m => m.Id)
+            <div class="form-group col-3">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group col-3">
+                <label asp-for="Electricity" class="control-label"></label>
+                <input asp-for="Electricity" class="form-control" />
+                <span asp-validation-for="Electricity" class="text-danger"></span>
+            </div>
+            <div class="form-group col-3">
+                <label asp-for="Gas" class="control-label"></label>
+                <input asp-for="Gas" class="form-control" />
+                <span asp-validation-for="Gas" class="text-danger"></span>
+            </div>
+            <div class="form-group col-3">
+                <label asp-for="SalaryAndWage" class="control-label"></label>
+                <input asp-for="SalaryAndWage" class="form-control" />
+                <span asp-validation-for="SalaryAndWage" class="text-danger"></span>
+            </div>
+            <div class="form-group col-3">
+                <label asp-for="FurnaceCharges" class="control-label"></label>
+                <input asp-for="FurnaceCharges" class="form-control" />
+                <span asp-validation-for="FurnaceCharges" class="text-danger"></span>
+            </div>
+            <div class="form-group col-3">
+                <label asp-for="MIS" class="control-label"></label>
+                <input asp-for="MIS" class="form-control" />
+                <span asp-validation-for="MIS" class="text-danger"></span>
+            </div>
+            <div class="form-group col-3">
+                <label asp-for="ExportQuantity" class="control-label"></label>
+                <input asp-for="ExportQuantity" class="form-control" />
+                <span asp-validation-for="ExportQuantity" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>

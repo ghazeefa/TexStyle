@@ -1,0 +1,142 @@
+﻿@model IEnumerable<TexStyle.ViewModels.CS.Reports.StockDetailOut_C3ViewModel>
+@{
+    ViewData["Title"] = "Detailed Stock Out Report";
+    Layout = "_LayoutPrint";
+
+}
+
+<div class="table-responsive">
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+
+                <th scope="col" width="7%" class="table-active report-numberheading">C-3</th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+                <th scope="col" width="7%"></th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td class="report-header1" colspan="20">@Model.FirstOrDefault().CompanyName </td>
+                @*<td class="report-header1" colspan="14">COMFORT KNITWEARS PVT </td>*@
+            </tr>
+
+            <tr>
+                <td class="report-header2" colspan="20">@ViewData["Title"] </td>
+            </tr>
+
+            <tr>
+                <td class="report-header3" colspan="20">DATE FROM: @Model.FirstOrDefault().DateFrom TO: @Model.FirstOrDefault().DateTo</td>
+
+                @*<td class="report-header3" colspan="14">DATE FROM: 2020-01-01 TO: 2020-02-29</td>*@
+            </tr>
+            <tr>
+                <td colspan="20"> </td>
+            </tr>
+            <tr>
+                <td colspan="20"> </td>
+            </tr>
+            <tr class="report-detailheader">
+                <td colspan="2">Dye/Chmical</td>
+                <td colspan="3">Inter Unit Out</td>
+                <td colspan="3">Loan Taken Return Out</td>
+                <td colspan="3">Chemical Issuance</td>
+                <td colspan="3">Loan Party Given Out</td>
+                <td colspan="3">Store Return Note</td>
+                <td colspan="3"></td>
+            </tr>
+            <tr class="report-detailSubheader">
+                <td colspan="2"></td>
+                <td>OGP No</td>
+                <td>Date</td>
+                <td>Qty</td>
+                <td>OGP No</td>
+                <td>Date</td>
+                <td>Qty</td>
+                <td>Issuance No</td>
+                <td>Date</td>
+                <td>Qty</td>
+                <td>OGP No</td>
+                <td>Date</td>
+                <td>Qty</td>
+                <td>OGP No</td>
+                <td>Date</td>
+                <td>Qty</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            @if (Model.Count() > 0)
+            {
+                @foreach (var detail in Model)
+                {
+                    <tr>
+                        <td colspan="2">@detail.Name </td>
+                        <td colspan="18"></td>
+
+                    </tr>
+
+                    @foreach (var d in detail.StockDetailOut1_C3ViewModels)
+                    {
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>@d.InterUnitNo</td>
+                            <td>@if (d.InterUnitDate != null) 
+                            {@d.InterUnitDate.Value.ToShortDateString()}</td>
+                            <td>@if (d.InterUnitQty != null)
+                            {@Math.Round(d.InterUnitQty.Value, 2)}</td>
+                            <td>@d.LoanTakenOutNo</td>
+                            <td>@if (d.LoanTakenOutDate != null)
+                            {@d.LoanTakenOutDate.Value.ToShortDateString()}</td>
+                            <td>@if (d.LoanTakenOutQty != null)
+                            {@Math.Round(@d.LoanTakenOutQty.Value, 2)}</td>
+                            <td>@d.RecipieIssuanceNo</td>
+                            <td>@if (d.RecipieIssuanceDate != null)
+                            {@d.RecipieIssuanceDate.Value.ToShortDateString()}</td>
+                            <td>@if (d.RecipieIssuanceQty != null)
+                            {@d.RecipieIssuanceQty}</td>
+                            <td>@d.LoanPartyNo</td>
+                            <td>@if (d.LoanPartyDate != null)
+                            {@d.LoanPartyDate.Value.ToShortDateString()}</td>
+                            <td>@if (d.LoanPartyQty != null)
+                            {@Math.Round(@d.LoanPartyQty.Value, 2)}</td>
+                            <td>@d.StoreReturnNoteNo</td>
+                            <td>@if (d.StoreReturnNoteDate != null)
+                            {@d.StoreReturnNoteDate.Value.ToShortDateString()}</td>
+                            <td>@if (d.StoreReturnNoteQty != null)
+                            {@Math.Round(@d.StoreReturnNoteQty.Value, 2)}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+
+                }
+
+
+            }
+
+
+
+
+
+
+        </tbody>
+    </table>
+</div>
+

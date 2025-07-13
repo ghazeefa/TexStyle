@@ -1,0 +1,892 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewData["Title"] - TexStyle</title>
+
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+          <![endif]-->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="TexStyle is an online textile management system implementing Production Planing Control, Chemical Store, Yarn Dyeing etc.. ">
+    <meta name="keywords" content="TexStyle, Tex Style, TexStyler, Text Styler, Textile App, Production Planing Control, Chemical Store, Yarn Dyeing">
+    <meta name="author" content="Perspective-V">
+    <link rel="icon" href="~/theme/default/assets/images/favicon.ico" type="image/x-icon">
+
+    @*<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">*@
+
+    <link rel="stylesheet" type="text/css" href="~/theme/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/icon/themify-icons/themify-icons.css">
+    <link href="~/theme/default/assets/icon/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/icon/icofont/css/icofont.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/pages/flag-icon/flag-icon.min.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/pages/menu-search/css/component.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/pages/dashboard/horizontal-timeline/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/pages/dashboard/amchart/css/amchart.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/pages/flag-icon/flag-icon.min.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/css/color/color-1.css" id="color" />
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/css/linearicons.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/css/simple-line-icons.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/css/ionicons.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/css/jquery.mCustomScrollbar.css">
+
+    @*data tables*@
+    <link rel="stylesheet" type="text/css" href="~/theme/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+    <link href="~/theme/default/assets/pages/data-table/css/buttons.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/theme/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
+
+    @*select*@
+    <link rel="stylesheet" type="text/css" href="~/theme/bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" />
+    <link rel="stylesheet" type="text/css" href="~/theme/bower_components/multiselect/css/multi-select.css" />
+    <link rel="stylesheet" href="~/theme/bower_components/select2/dist/css/select2.min.css" />
+
+    @* Color picker *@
+    <link rel="stylesheet" type="text/css" href="~/theme/bower_components/spectrum/spectrum.css" />
+    <link rel="stylesheet" type="text/css" href="~/theme/bower_components/jquery-minicolors/jquery.minicolors.css" />
+
+    @*Sweetr alert*@
+    <link rel="stylesheet" type="text/css" href="~/theme/bower_components/sweetalert/dist/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/bower_components/switchery/dist/switchery.min.css">
+    <link rel="stylesheet" type="text/css" href="~/theme/default/assets/css/style.css">
+    @* Site Overrides *@
+    <link href="~/css/site.css" rel="stylesheet" />
+
+
+
+</head>
+<body>
+
+    <div class="theme-loader">
+        <div class="ball-scale">
+            <div></div>
+        </div>
+    </div>
+
+
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+            <nav class="navbar header-navbar pcoded-header" header-theme="theme4" pcoded-header-position="fixed">
+                <div class="navbar-wrapper">
+                    <div class="navbar-logo">
+                        <a class="mobile-menu" id="mobile-collapse" href="#!">
+                            <i class="ti-menu"></i>
+                        </a>
+                        <a class="mobile-search morphsearch-search" href="#">
+                            <i class="ti-search"></i>
+                        </a>
+                        <a asp-action="/" style="font-size: 26px;font-family: fantasy;font-weight: 100;">
+                            TexStyle
+                            @*<img class="img-fluid" src="~/theme/default/assets/images/logo.png" alt="Theme-Logo" />*@
+                        </a>
+                        <a class="mobile-options">
+                            <i class="ti-more"></i>
+                        </a>
+                    </div>
+                    <div class="navbar-container container-fluid">
+                        <div>
+                            <ul class="nav-left">
+                                <li>
+                                    <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
+                                </li>
+                                <li>
+                                    <a href="#!" onclick="javascript:toggleFullScreen()">
+                                        <i class="ti-fullscreen"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav-right">
+                                <li>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a asp-controller="Home" asp-action="Logout"><i class="ti-layout-sidebar-left"></i> Logout</a>
+                                    }
+                                    @*<a href="#!">
+                                            <i class="ti-layout-sidebar-left"></i> Logout
+                                        </a>*@
+                                </li>
+                            </ul>
+
+                            <div id="morphsearch" class="morphsearch">
+                                <form class="morphsearch-form">
+                                    <input class="morphsearch-input" type="search" placeholder="Search..." />
+                                    <button class="morphsearch-submit" type="submit">Search</button>
+                                </form>
+                                <div class="morphsearch-content">
+                                    <div class="dummy-column">
+                                        <h2>People</h2>
+                                        <a class="dummy-media-object" href="#!">
+                                            <img class="round" src="http://0.gravatar.com/avatar/81b58502541f9445253f30497e53c280?s=50&amp;d=identicon&amp;r=G" alt="Sara Soueidan" />
+                                            <h3>Sara Soueidan</h3>
+                                        </a>
+                                        <a class="dummy-media-object" href="#!">
+                                            <img class="round" src="http://1.gravatar.com/avatar/9bc7250110c667cd35c0826059b81b75?s=50&amp;d=identicon&amp;r=G" alt="Shaun Dona" />
+                                            <h3>Shaun Dona</h3>
+                                        </a>
+                                    </div>
+                                    <div class="dummy-column">
+                                        <h2>Popular</h2>
+                                        <a class="dummy-media-object" href="#!">
+                                            <img src="~/theme/default/assets/images/avatar-1.png" alt="PagePreloadingEffect" />
+                                            <h3>Page Preloading Effect</h3>
+                                        </a>
+                                        <a class="dummy-media-object" href="#!">
+                                            <img src="~/theme/default/assets/images/avatar-1.png" alt="DraggableDualViewSlideshow" />
+                                            <h3>Draggable Dual-View Slideshow</h3>
+                                        </a>
+                                    </div>
+                                    <div class="dummy-column">
+                                        <h2>Recent</h2>
+                                        <a class="dummy-media-object" href="#!">
+                                            <img src="~/theme/default/assets/images/avatar-1.png" alt="TooltipStylesInspiration" />
+                                            <h3>Tooltip Styles Inspiration</h3>
+                                        </a>
+                                        <a class="dummy-media-object" href="#!">
+                                            <img src="~/theme/default/assets/images/avatar-1.png" alt="NotificationStyles" />
+                                            <h3>Notification Styles Inspiration</h3>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <span class="morphsearch-close"><i class="icofont icofont-search-alt-1"></i></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div id="sidebar" class="users p-chat-user showChat">
+                <div class="had-container">
+                    <div class="card card_main p-fixed users-main">
+                        <div class="user-box">
+                            <div class="card-block">
+                                <div class="right-icon-control">
+                                    <input type="text" class="form-control  search-text" placeholder="Search Friend" id="search-friends">
+                                    <div class="form-icon">
+                                        <i class="icofont icofont-search"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="main-friend-list">
+                                <div class="media userlist-box" data-id="1" data-status="online" data-username="Josephin Doe" data-toggle="tooltip" data-placement="left" title="Josephin Doe">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/avatar-1.png" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Josephin Doe</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="2" data-status="online" data-username="Lary Doe" data-toggle="tooltip" data-placement="left" title="Lary Doe">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/task/task-u1.jpg" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Lary Doe</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="3" data-status="online" data-username="Alice" data-toggle="tooltip" data-placement="left" title="Alice">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/avatar-2.png" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Alice</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="4" data-status="online" data-username="Alia" data-toggle="tooltip" data-placement="left" title="Alia">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/task/task-u2.jpg" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Alia</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="5" data-status="online" data-username="Suzen" data-toggle="tooltip" data-placement="left" title="Suzen">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/task/task-u3.jpg" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Suzen</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="6" data-status="offline" data-username="Michael Scofield" data-toggle="tooltip" data-placement="left" title="Michael Scofield">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/avatar-3.png" alt="Generic placeholder image">
+                                        <div class="live-status bg-danger"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Michael Scofield</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="7" data-status="online" data-username="Irina Shayk" data-toggle="tooltip" data-placement="left" title="Irina Shayk">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/avatar-4.png" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Irina Shayk</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="8" data-status="offline" data-username="Sara Tancredi" data-toggle="tooltip" data-placement="left" title="Sara Tancredi">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/avatar-5.png" alt="Generic placeholder image">
+                                        <div class="live-status bg-danger"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Sara Tancredi</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="9" data-status="online" data-username="Samon" data-toggle="tooltip" data-placement="left" title="Samon">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/avatar-1.png" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Samon</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="10" data-status="online" data-username="Daizy Mendize" data-toggle="tooltip" data-placement="left" title="Daizy Mendize">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/task/task-u3.jpg" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Daizy Mendize</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="11" data-status="offline" data-username="Loren Scofield" data-toggle="tooltip" data-placement="left" title="Loren Scofield">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/avatar-3.png" alt="Generic placeholder image">
+                                        <div class="live-status bg-danger"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Loren Scofield</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="12" data-status="online" data-username="Shayk" data-toggle="tooltip" data-placement="left" title="Shayk">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/avatar-4.png" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Shayk</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="13" data-status="offline" data-username="Sara" data-toggle="tooltip" data-placement="left" title="Sara">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/task/task-u3.jpg" alt="Generic placeholder image">
+                                        <div class="live-status bg-danger"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Sara</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="14" data-status="online" data-username="Doe" data-toggle="tooltip" data-placement="left" title="Doe">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/avatar-1.png" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Doe</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box" data-id="15" data-status="online" data-username="Lary" data-toggle="tooltip" data-placement="left" title="Lary">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-circle" src="~/theme/default/assets/images/task/task-u1.jpg" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Lary</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="showChat_inner">
+                <div class="media chat-inner-header">
+                    <a class="back_chatBox">
+                        <i class="icofont icofont-rounded-left"></i> Josephin Doe
+                    </a>
+                </div>
+                <div class="media chat-messages">
+                    <a class="media-left photo-table" href="#!">
+                        <img class="media-object img-circle m-t-5" src="~/theme/default/assets/images/avatar-1.png" alt="Generic placeholder image">
+                    </a>
+                    <div class="media-body chat-menu-content">
+                        <div class="">
+                            <p class="chat-cont">I'm just looking around. Will you tell me something about yourself?</p>
+                            <p class="chat-time">8:20 a.m.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="media chat-messages">
+                    <div class="media-body chat-menu-reply">
+                        <div class="">
+                            <p class="chat-cont">I'm just looking around. Will you tell me something about yourself?</p>
+                            <p class="chat-time">8:20 a.m.</p>
+                        </div>
+                    </div>
+                    <div class="media-right photo-table">
+                        <a href="#!">
+                            <img class="media-object img-circle m-t-5" src="~/theme/default/assets/images/avatar-2.png" alt="Generic placeholder image">
+                        </a>
+                    </div>
+                </div>
+                <div class="chat-reply-box p-b-20">
+                    <div class="right-icon-control">
+                        <input type="text" class="form-control search-text" placeholder="Share Your Thoughts">
+                        <div class="form-icon">
+                            <i class="icofont icofont-paper-plane"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pcoded-main-container mt-0">
+                <div class="pcoded-wrapper">
+                    <nav class="pcoded-navbar" pcoded-header-position="fixed" style="padding-top:56px !important;">
+                        <div class="sidebar_toggle"><a href="#!"><i class="icon-close icons"></i></a></div>
+                        <div class="pcoded-inner-navbar main-menu">
+                            <div class="">
+                                <div class="main-menu-header">
+                                    <img class="img-40" src="~/theme/default/assets/images/user.png" alt="User-Profile-Image">
+                                    <div class="user-details">
+                                        <span>
+                                            @if (User.Identity.IsAuthenticated)
+                                            {<text>@User.Identity.Name</text>}
+                                        </span>
+                                        <span id="more-details">Manager<i class="ti-angle-down"></i></span>
+                                    </div>
+                                </div>
+                                <div class="main-menu-content">
+                                    <ul>
+                                        <li class="more-details">
+                                            @*<a href="#!"><i class="ti-user"></i>View Profile</a>
+                                                <a href="#!"><i class="ti-settings"></i>Settings</a>*@
+                                            <a asp-controller="Home" asp-action="Logout"><i class="ti-layout-sidebar-left"></i> Logout</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @* This is Side Navigation Partial *@
+                            <partial name="_SideNavigation" />
+                        </div>
+                    </nav>
+                    <div class="pcoded-content">
+                        <div class="pcoded-inner-content" style="padding-top:56px !important;">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    <div class="page-header d-flex justify-content-between">
+                                        <div class="page-header-title">
+
+                                            @{
+                                                var areStr = ViewContext.RouteData.Values["area"]?.ToString();
+                                                var areaName = "";
+                                                if (!string.IsNullOrEmpty(areStr))
+                                                {
+                                                    areaName = System.Text.RegularExpressions.Regex.Replace(areStr, "([a-z])([A-Z])", "$1 $2");
+                                                    <h4 class="no-print">@areaName / @ViewData["Title"] </h4>
+                                                }
+
+                                                FilterOptionsViewModel FilterOpts = ViewBag.FilterOpts;
+                                            }
+
+                                        </div>
+                                        @if (FilterOpts != null)
+                                        {
+                                            <div class="d-flex">
+                                                <div class="form-group m-0 d-flex align-items-center mr-1">
+                                                    <label class="control-label">From: </label>
+                                                    <input id="sd" class="form-control form-control-sm" type="date" value="@FilterOpts.sd" />
+                                                </div>
+                                                <div class="form-group m-0 d-flex align-items-center mr-1">
+                                                    <label class="control-label">To: </label>
+                                                    <input id="ed" class="form-control form-control-sm" type="date" value="@FilterOpts.ed" />
+                                                </div>
+                                                <div class="form-group m-0 d-flex align-items-center">
+                                                    <a href="#" id="FilterBtn" class="btn btn-primary btn-sm">Filter</a>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @*<div class="page-header-breadcrumb">
+                                                <ul class="breadcrumb-title">
+                                                    <li class="breadcrumb-item">
+                                                        <a href="index-2.html">
+                                                            <i class="icofont icofont-home"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li class="breadcrumb-item">
+                                                        <a href="#!">Pages</a>
+                                                    </li>
+                                                    <li class="breadcrumb-item">
+                                                        <a href="#!">Dashboard</a>
+                                                    </li>
+                                                </ul>
+                                            </div>*@
+                                    </div>
+                                    <div class="page-body">
+                                        @RenderBody()
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--[if lt IE 9]>
+    <div class="ie-warning">
+        <h1>Warning!!</h1>
+        <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+        <div class="iew-container">
+            <ul class="iew-download">
+                <li>
+                    <a href="http://www.google.com/chrome/">
+                        <img src="~/theme/assets/images/browser/chrome.png" alt="Chrome">
+                        <div>Chrome</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.mozilla.org/en-US/firefox/new/">
+                        <img src="~/theme/assets/images/browser/firefox.png" alt="Firefox">
+                        <div>Firefox</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.opera.com">
+                        <img src="~/theme/assets/images/browser/opera.png" alt="Opera">
+                        <div>Opera</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.apple.com/safari/">
+                        <img src="~/theme/assets/images/browser/safari.png" alt="Safari">
+                        <div>Safari</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                        <img src="~/theme/assets/images/browser/ie.png" alt="">
+                        <div>IE (9 & above)</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <p>Sorry for the inconvenience!</p>
+    </div>
+    <![endif]-->
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @*
+        ////////////
+        ///////////   NEVER PUT 2 JQUERYS IN ONE PROJECT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHH!!!!!!!!
+        ///////////
+    *@
+    @*<script type="text/javascript" src="~/theme/bower_components/jquery/dist/jquery.min.js"></script>*@
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+    <script src="~/theme/bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/tether/dist/js/tether.min.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="~/theme/bower_components/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/modernizr/modernizr.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/modernizr/feature-detects/css-scrollbars.js"></script>
+
+    <script type="text/javascript" src="~/theme/bower_components/classie/classie.js"></script>
+    <script src="~/theme/bower_components/d3/d3.js"></script>
+    <script src="~/theme/bower_components/rickshaw/rickshaw.js"></script>
+
+    <script src="~/theme/bower_components/raphael/raphael.min.js"></script>
+    <script src="~/theme/bower_components/morris.js/morris.js"></script>
+
+    <script type="text/javascript" src="~/theme/default/assets/pages/dashboard/horizontal-timeline/js/main.js"></script>
+    <script type="text/javascript" src="~/theme/default/assets/pages/dashboard/amchart/js/amcharts.js"></script>
+    <script type="text/javascript" src="~/theme/default/assets/pages/dashboard/amchart/js/serial.js"></script>
+    <script type="text/javascript" src="~/theme/default/assets/pages/dashboard/amchart/js/light.js"></script>
+    <script type="text/javascript" src="~/theme/default/assets/pages/dashboard/amchart/js/custom-amchart.js"></script>
+
+    <script type="text/javascript" src="~/theme/bower_components/i18next/i18next.min.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/i18next-xhr-backend/i18nextXHRBackend.min.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/jquery-i18next/jquery-i18next.min.js"></script>
+
+    <script type="text/javascript" src="~/theme/default/assets/pages/dashboard/custom-dashboard.js"></script>
+    <script type="text/javascript" src="~/theme/default/assets/js/script.js"></script>
+    @* Table *@
+    <script type="text/javascript" src="~/theme/bower_components/spectrum/spectrum.js"></script>
+
+    <script src="~/theme/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/theme/bower_components/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/theme/bower_components/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/theme/bower_components/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/theme/bower_components/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/theme/bower_components/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/theme/bower_components/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/theme/default/assets/pages/data-table/js/data-table-custom.js"></script>
+
+    @*slect*@
+    <script type="text/javascript" src="~/theme/bower_components/select2/dist/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/multiselect/js/jquery.multi-select.js"></script>
+    <script src="~/theme/default/assets/pages/advance-elements/select2-custom.js"></script>
+
+    @*Sweet alert*@
+    <script type="text/javascript" src="~/theme/bower_components/classie/classie.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/classie/classie.js"></script>
+    <script type="text/javascript" src="~/theme/bower_components/switchery/dist/switchery.min.js"></script>
+
+    @* Color picker *@
+    <script type="text/javascript" src="~/theme/bower_components/spectrum/spectrum.js"></script>
+    @*<script type="text/javascript" src="~/theme/bower_components/jscolor/jscolor.html"></script>*@
+    <script type="text/javascript" src="~/theme/bower_components/jquery-minicolors/jquery.minicolors.min.js"></script>
+    @*<script src="~/theme/default/assets/pages/advance-elements/custom-picker.js"></script>*@
+
+    <script src="~/theme/default/assets/js/pcoded.min.js"></script>
+    <script src="~/theme/default/assets/js/demo-12.js"></script>
+    <script src="~/theme/default/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/theme/default/assets/js/jquery.mousewheel.min.js"></script>
+
+    <!-- NOTE: Removed 'Fade' class from the modals for avoiding a known error in bootstrap -->
+    <!-- modal -->
+    <div class="modal" id="adminModal" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-b-0">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- IGP modal -->
+    <div class="modal" id="igpModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-b-0">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var modal = "#igpModal";
+    </script>
+
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(".select2").select2();
+        $(".dataTable").DataTable();
+        $(".sdataTable").DataTable({
+            scrollX: 600,
+            scrollY: true,
+            autoWidth: true,
+        });
+
+        $(document).on("click", '.create-js,.update-js', function (e) {
+            e.preventDefault();
+            var mtitle = $(modal).children().find(".modal-title");
+            var mbody = $(modal).children().find(".modal-body");
+            var url = $(this).data("action").replace('#', '');
+
+            var btn = $(this);
+            btn.prop('disabled', true);
+            var BtnText = btn.text();
+            btn.html(`<i class="fa fa-refresh fa-spin text-white"></i>`);
+
+            mtitle.text($(this).data("title"))
+            $.ajax({
+                url: url,
+                method: 'GET'
+            }).done(function (res) {
+                btn.text(BtnText);
+                mbody.html(res);
+
+                var form = $("form");
+                form.removeData('validator');
+                form.removeData('unobtrusiveValidation');
+                $.validator.unobtrusive.parse(form);
+
+                $(".select2").select2({
+                    dropdownParent: $(modal)
+                });
+
+                $(".m-colorpicker").spectrum({
+                    flat: true,
+                    showInput: true
+                });
+
+                // Mini-color js start
+                $('.demo').each(function () {
+                    //
+                    // Dear reader, it's actually very easy to initialize MiniColors. For example:
+                    //
+                    //  $(selector).minicolors();
+                    //
+                    // The way I've done it below is just for the demo, so don't get confused
+                    // by it. Also, data- attributes aren't supported at this time...they're
+                    // only used for this demo.
+                    //
+                    $(this).minicolors({
+                        control: $(this).attr('data-control') || 'hue',
+                        defaultValue: $(this).attr('data-defaultValue') || '',
+                        format: $(this).attr('data-format') || 'hex',
+                        keywords: $(this).attr('data-keywords') || '',
+                        inline: $(this).attr('data-inline') === 'true',
+                        letterCase: $(this).attr('data-letterCase') || 'lowercase',
+                        opacity: $(this).attr('data-opacity'),
+                        position: $(this).attr('data-position') || 'bottom left',
+                        swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+                        change: function (value, opacity) {
+                            if (!value) return;
+                            if (opacity) value += ', ' + opacity;
+                            if (typeof console === 'object') {
+                                console.log(value);
+                            }
+                        },
+                        theme: 'bootstrap'
+                    });
+                });
+                // Mini-color js ends
+
+                $(modal).modal();
+                btn.prop('disabled', false);
+
+            }).fail(function () {
+                btn.text(BtnText);
+                swal("Failed", "Request Failed. Try later.", "error");
+                btn.prop('disabled', false);
+
+            });
+
+        });
+
+        $(function () {
+
+            $("form").submit(function () {
+                if (!$(this).valid()) return false;
+
+                $("form *:not(option)").prop("disabled", false);
+            });
+
+            $("#sd, #ed").change(function () {
+                var sd = $("#sd").val();
+                var ed = $("#ed").val();
+
+                var url = window.location.href.substring(0, window.location.href.lastIndexOf("?")) + `?sd=${sd}&ed=${ed}`;
+
+                $("#FilterBtn").attr("href", url);
+            });
+
+            $(document).on("click", ".item-delete-btn", function () {
+                var url = $(this).attr("data-delete-url");
+                var table = $(this).parents("table").DataTable();
+                var parentRow = $(this).closest("tr");
+
+                swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to undo this action!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                success: function (result) {
+                                    table.row(parentRow)
+                                        .remove()
+                                        .draw();
+                                    swal("Deleted!", "Item has been deleted.", "success");
+
+                                }, error: function () {
+                                    swal("Failed", "Request Failed. Try later.", "error");
+                                }
+                            });
+
+                        } else {
+                            swal("Cancelled", "Operation has been canceled.", "error");
+                        }
+                    });
+            });
+        })
+    </script>
+
+
+    <script>
+        $(function () {
+
+            $(document).on("input", "#QtyDr", function () {
+                $("#QtyCr").val("").attr("placeholder", "Unset");
+                $("#Amount").val(parseInt($("#QtyDr").val()) * parseInt($("#Rate").val()));
+            });
+
+            $(document).on("input", "#QtyCr", function () {
+                $("#QtyDr").val("").attr("placeholder", "Unset");
+                $("#Amount").val(parseInt($("#QtyCr").val()) * parseInt($("#Rate").val()));
+
+            });
+
+            $(document).on("input", "#Rate", function () {
+                var CR = $("#QtyCr").val();
+                var DR = $("#QtyDr").val();
+
+                var qty = 0;
+
+                if (CR != "") {
+                    qty = parseInt(CR);
+                }
+                else if (DR != "") {
+                    qty = parseInt(DR);
+                }
+
+                $("#Amount").val(qty * parseInt($(this).val()));
+            });
+
+
+            $(document).on("change", "#ChemicalId", function (e) {
+                if ($(this).val() == null) // Value of Select is null instead of -1 because -1 option is disabled
+                {
+                    return;
+                }
+
+                $("#DyeId").val("-1").trigger("change");
+
+            })
+
+            $(document).on("change", "#DyeId", function (e) {
+                if ($(this).val() == null) // Value of Select is null instead of -1 because -1 option is disabled
+                {
+                    return;
+                }
+
+                $("#ChemicalId").val("-1").trigger("change");
+
+            })
+        })
+    </script>
+
+</body>
+
+</html>
+
+
+@*<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - TexStyle</title>
+
+        <environment include="Development">
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        </environment>
+        <environment exclude="Development">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+                  crossorigin="anonymous"
+                  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
+        </environment>
+        <link rel="stylesheet" href="~/css/site.css" />
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TexStyle</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <partial name="_LoginPartial" />
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            <partial name="_CookieConsentPartial" />
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2019 - TexStyle - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+
+        <environment include="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        </environment>
+        <environment exclude="Development">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+            </script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+            </script>
+        </environment>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+        @RenderSection("Scripts", required: false)
+    </body>
+    </html>*@

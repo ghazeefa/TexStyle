@@ -1,0 +1,116 @@
+﻿@model RecipeViewModel
+
+@{ var title = "Recipe";
+    ViewData["Title"] = $"Add Or Update {title}";
+
+    List<SelectListItem> machineTypeList = ViewBag.machineTypeList;
+
+    List<SelectListItem> recipeFormatList = ViewBag.recipeFormatList;
+    List<SelectListItem> shiftList = ViewBag.shiftNameList; }
+
+<form asp-area="@AreaConstants.YARN_DYEING.Name" asp-controller="RecipeTime" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="card-block">
+        <div class="form-horizontal">
+            <div class="form-horizontal">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.No)
+                @Html.HiddenFor(m => m.Cones)
+                @Html.HiddenFor(m => m.PartyId)
+                @Html.HiddenFor(m => m.BuyerColorId)
+                @Html.HiddenFor(m => m.MachineTypeId)
+                @Html.HiddenFor(m => m.ShiftName)
+                @Html.HiddenFor(m => m.ShiftInchargeName)
+                @Html.HiddenFor(m => m.ShiftInchargeCode)
+                @Html.HiddenFor(m => m.MachineOperatorName)
+                @Html.HiddenFor(m => m.MachineOperatorCode)
+                @Html.HiddenFor(m => m.HelperName)
+                @Html.HiddenFor(m => m.HelperCode)
+                @Html.HiddenFor(m => m.CStoreOperatorName)
+                @Html.HiddenFor(m => m.CStoreOperatorCode)
+                @Html.HiddenFor(m => m.LiquorRate)
+                @Html.HiddenFor(m => m.Color)
+                @Html.HiddenFor(m => m.Cones)
+                @Html.HiddenFor(m => m.Weight)
+                @Html.HiddenFor(m => m.RecipeFormatId)
+                @Html.HiddenFor(m => m.IsFabric)
+                @Html.HiddenFor(m => m.IsYarn)
+                @Html.HiddenFor(m => m.IsWithoutLPS)
+
+
+
+
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label class="control-label">Recipe No</label>
+                                <input class="form-control" readonly value="@Model.No" />
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-6">
+                                <label asp-for="Date" class="control-label"></label>
+                                <input asp-for="Date" class="form-control" type="date" readonly/>
+                                <span asp-validation-for="Date" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-4">
+                                <label asp-for="MachineStartTime" class="control-label"></label>
+                                <input asp-for="MachineStartTime" class="form-control" type="time" />
+                                <span asp-validation-for="MachineStartTime" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-4">
+                                <label asp-for="MachineUnloadTime" class="control-label"></label>
+                                <input asp-for="MachineUnloadTime" class="form-control" type="time" />
+                                <span asp-validation-for="MachineUnloadTime" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-4">
+                                <label asp-for="SoapingDrainTime" class="control-label"></label>
+                                <input asp-for="SoapingDrainTime" class="form-control" type="time" />
+                                <span asp-validation-for="SoapingDrainTime" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="form-group col-4">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+
+
+</form>
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#lpscheck').change(function (e) {
+            $("#Weight").removeAttr('disabled');
+            $("#Cones").removeAttr('disabled');
+        });
+
+    });
+
+
+    $("#IsFabric").click(function () {
+
+        $("#IsYarn").prop("disabled", true);
+    });
+
+    $("#IsYarn").click(function () {
+
+        $("#IsFabric").prop("disabled", true);
+    });
+
+
+
+</script>
+

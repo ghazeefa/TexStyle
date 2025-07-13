@@ -1,0 +1,79 @@
+﻿@using Newtonsoft.Json
+@model IEnumerable<TexStyle.Core.PPC.ReturnNoteDetail>
+@{ 
+    var title = $"Return Note Detail";
+}
+
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>@title Details</h5>
+            @*<button href="#@(AddOrUpdateAction)?igpId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?igpId=@(Model.Id)" data-title="Create @title">ADD NEW</button>*@
+        </div>
+        <div class="card-block">
+            <div class="dt-responsive table-responsive">
+                <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="">
+                        <div class="col-xs-12 col-sm-12 m-dT">
+                            @*dataTable*@
+                            <table id="IGPDetailsTable" class="table table-striped table-bordered nowrap sdataTable" role="grid" aria-describedby="simpletable_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc">Return No</th>
+                                        <th class="sorting">Yarn Type</th>
+                                        <th class="sorting">Yarn Quality</th>
+                                        @*@if (Model.FirstOrDefault().ReturnNote.ReturnTypeId == IssueTypes.ReturnToWinding.Id)
+                                        {
+                                            <th class="sorting">Store Location</th>
+                                            <th class="sorting">Issue Xrefrence</th>
+                                        }*@
+                                        else
+                                        {
+                                            <th class="sorting">Yarn Manufacturer</th>
+                                            <th class="sorting">LPS No</th>
+                                            <th class="sorting">IGP No</th>
+                                        }
+                                        <th class="sorting">Kgs</th>
+                                        <th class="sorting">Bags</th>
+                                        <th class="sorting">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var c in Model)
+                                    {
+                                        <tr role="row">
+                                            <td>@c.ReturnNoteId</td>
+                                            @*<td>@c.YarnType?.Name <input type="hidden" name="@nameof(c.YarnTypeId)" value="@c.YarnTypeId" /></td>
+                                            <td>@c.YarnQuality?.Name</td>
+                                            @if (c.ReturnNote.ReturnTypeId == IssueTypes.ReturnToWinding.Id)
+                                            {
+                                                <td>@c.StoreLocation?.Name</td>
+                                                <td>@c.IssueNoteId</td>
+
+                                            }
+                                            else
+                                            {
+                                                <td>@c.YarnManufacturer?.Name</td>
+                                                <td>@c.LPSNO</td>
+                                                <td>@c.XRefIGPNO</td>*@
+                                            }
+                                            <td>@c.Kgs</td>
+                                            <td>@c.Bags</td>
+                                            <td style="width:150px;">
+                                                <button type="button" class="btn btn-primary copyIgpId-js copy-js" data-title="Copy @title">Copy This</button>
+                                                @*<a asp-action="Details" class="btn btn-primary">Details</a>*@
+                                                @*<button type="button" class="btn btn-primary update-js" data-action="#@(AddOrUpdateAction)@(c.Id)/?igpId=@(Model.Id)&sno=@(c.Sno)" data-title="Update @title">Edit</button>*@
+                                                @*<button class="btn btn-danger item-delete-btn" data-delete-url="@(DeleteAction)@(c.Id)/?igpId=@(Model.Id)&sno=@(c.Sno)">Delete</button>*@
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

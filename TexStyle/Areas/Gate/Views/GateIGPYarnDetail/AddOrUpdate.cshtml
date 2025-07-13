@@ -1,0 +1,229 @@
+﻿@using TexStyle.ViewModels
+@model TexStyle.ViewModels.Gate.GateTrDetailViewModel;
+@{ ViewData["Title"] = "Add Or Update";
+
+                //var chemicalSl = new SelectListItemViewModel
+                //{
+                //    Name = nameof(Model.ChemicalId),
+                //    PlaceHolder = "Select Chemical",
+                //    UseDefault = false,
+                //    SelectList = ViewBag.chemicalList
+                //};
+
+                //var dyeSl = new SelectListItemViewModel
+                //{
+                //    Name = nameof(Model.DyeId),
+                //    PlaceHolder = "Select Dye",
+                //    UseDefault = false,
+                //    SelectList = ViewBag.dyeList
+                //};
+                var YarnTypeSl = new SelectListItemViewModel
+                {
+                    Name = nameof(Model.YarnTypeId),
+                    PlaceHolder = "Select Yarn Type",
+                    UseDefault = false,
+                    SelectList = ViewBag.yarnTypeList
+                };
+                var FabricType = new SelectListItemViewModel
+                {
+                    Name = nameof(Model.FabricTypeId),
+                    PlaceHolder = "Select Fabric Type",
+                    UseDefault = false,
+                    SelectList = ViewBag.fabricTypeList
+                };
+                var filter = ViewBag.filter; }
+
+<form id="formABC" asp-area="@AreaConstants.GATE.Name" asp-controller="GateIGPYarnDetail" asp-action="AddOrUpdate" method="post" enctype="multipart/form-data">
+    <div class="form-horizontal">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.GateTrId)
+
+        @* @Html.HiddenFor(m => m.YarnTypeId)*@
+        <div class="row">
+            @*<div class="form-group col-4">
+                    <label class="control-label">No</label>
+                    <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.Id" />
+                    <span class="text-danger"></span>
+                </div>*@
+            @*<div class="form-group col-4">
+                    <label class="control-label">Yarn IGP No</label>
+                    <input class="form-control" readonly="readonly" disabled="disabled" value="@Model.GateTrId" />
+                    <span class="text-danger"></span>
+                </div>*@
+
+            @*<div class="form-group col-4">
+                    @if (chemicalSl != null)
+                    {
+                        <label class="control-label" asp-for="ChemicalId"></label>
+                        <partial name="@AppConsts.SelectListPartial" model="chemicalSl" />
+                    }
+                    <span asp-validation-for="ChemicalId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    @if (dyeSl != null)
+                    {
+                        <label class="control-label" asp-for="DyeId"></label>
+                        <partial name="@AppConsts.SelectListPartial" model="dyeSl" />
+                    }
+                    <span asp-validation-for="DyeId" class="text-danger"></span>
+                </div>*@
+
+            @if (ViewBag.ogpId == null)
+            {
+                <div class="form-group col-4">
+
+                    @if (filter.IsYarn == true)
+                    {
+                        <label class="control-label" asp-for="YarnTypeId"></label>
+                        <select asp-for="YarnTypeId" select2="@(ViewBag.yarnTypeList)" class="form-control select2"></select>
+                        @Html.HiddenFor(x => x.YarnTypeId)
+                        <span asp-validation-for="YarnTypeId" class="text-danger"></span>
+
+
+
+                    }
+
+                    else
+
+                    {
+                        <label class="control-label" asp-for="FabricTypeId"></label>
+                        <select asp-for="FabricTypeId" select2="@(ViewBag.fabricTypeList)" class="form-control select2"></select>
+                        @*@Html.HiddenFor(x => x.FabricTypeId)*@
+                        <span asp-validation-for="FabricTypeId" class="text-danger"></span>
+
+
+
+                    }
+
+                </div>
+            }
+
+
+
+            <div class="form-group col-4">
+                <label asp-for="QtyDr" class="control-label"></label>
+                <input asp-for="QtyDr" class="form-control" required />
+                <span asp-validation-for="QtyDr" class="text-danger"></span>
+            </div>
+            @*<div class="form-group col-4">
+                    <label asp-for="QtyCr" class="control-label"></label>
+                    <input asp-for="QtyCr" class="form-control" disabled="disabled" />
+                    <span asp-validation-for="QtyCr" class="text-danger"></span>
+                </div>*@
+
+            @if (filter.IsYarn == true)
+            {
+                <div class="form-group col-4">
+                    <label asp-for="Bags" class="control-label"></label>
+                    <input asp-for="Bags" class="form-control" />
+                    <span asp-validation-for="Bags" class="text-danger"></span>
+                </div>
+
+
+            }
+            else
+            {
+
+                <div class="form-group col-4">
+                    <label asp-for="NoOfRolls" class="control-label"></label>
+                    <input asp-for="NoOfRolls" class="form-control" />
+                    <span asp-validation-for="NoOfRolls" class="text-danger"></span>
+                </div>
+
+
+            }
+
+
+            <div class="form-group col-4">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea rows="3" asp-for="Description" class="form-control">@Model.Description</textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary"   id="btnSubmit" >Save</button>
+
+
+
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+@*<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/global/vendor/datatables/jquery.dataTables.min.js"></script>*@
+
+
+<script type="text/javascript">
+    $("button").click(function () {
+        debugger;
+        $("#btnSubmit").attr('disabled', true);
+    }
+</script>
+
+
+@*<script type="text/javascript">
+
+
+
+    //$("#button").click(function () {
+
+    //    $("#btnSubmit").prop("disabled", true);
+    //});
+    
+    //$(document).ready(function () {
+    //    debugger;
+
+    //        $("#formABC").submit(function (e) {
+
+    //            //stop submitting the form to see the disabled button effect
+    //            //e.preventDefault();
+
+    //            ////disable the submit button
+    //            //$("#btnSubmit").attr("disabled", true);
+
+    //            return true;
+
+    //        });
+    //});
+
+    @*$(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            $("#btnSubmit").prop('disabled', true);
+        });
+    });
+    function dispAlert() {
+        alert("Button disabled.");
+    }
+
+</script>*@
+
+
+@*<script>
+    function submit() {
+        debugger;
+        $("#check").attr('disabled', true);
+    }
+</script>*@
+
+
+
+
+
+@*<script>
+    $(function () {
+
+
+        $('#YarnTypeId').change(function (e) {
+            $("#DyeId").val("-1").trigger("change");
+            $("#ChemicalId").val("-1").trigger("change");
+            });
+
+    })
+</script>*@2

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<DyeingEnergyConsumption>
+
+@{ var title = $"Dyeing Energy Consumption";
+                ViewData["Title"] = $"{title}s";
+
+                var AddOrUpdateAction = "/cs/DyeingEnergyConsumption/AddOrUpdate/";
+                var DeleteAction = "/cs/DyeingEnergyConsumption/Delete/";
+
+                Layout = "_Layout"; }
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @if (TempData["Msg"] != null)
+                {
+            <div class="alert alert-danger">
+                @TempData["Msg"]
+            </div>}
+                <button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW </button>
+
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" data-order="[[ 2, &quot;asc&quot; ]]" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>Date</th>
+                                            <th>Electricity Cost</th>
+                                            <th>Gass Cost</th>
+                                            <th>Coal Cost</th>
+                                            <th>Salary Cost</th>
+                                            <th>Yarn/Fabric</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                            <tr role="row">
+                                <td>@c.Date.ToString("dd MMM yyyy")</td>
+                                <td>@c.ElectricityCost</td>
+                                <td>@c.GassCost</td>
+                                <td>@c.CoalCost</td>
+                                <td>@c.SalaryCost</td>
+                                @if (c.IsYarn == true)
+                                {
+                                    <td>Yarn Consumption</td>
+                                }
+                                else
+                                {
+                                    <td>Fabric Consumption</td>
+                                }
+
+                                @if (c.IsConfirmed == false)
+                                {
+                <td style="width:150px;">
+                    <button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdateAction@c.Id" data-title="Update @title">Edit</button>
+                </td> }
+                                else
+                                {
+                                    <td style="font-weight:bold;">Locked</td>
+                                }
+
+
+
+                            </tr>
+}
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>var modal = "#adminModal";</script>
+}

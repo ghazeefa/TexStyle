@@ -1,0 +1,90 @@
+﻿@model IEnumerable<DyeChemicalTr>
+
+@{
+    var title = $"Chemical Issuance Recipe In Tr";
+    ViewData["Title"] = $"{title}s";
+
+    var DetailsAction = "/cs/ChemicalIssuanceRecipeTr/Details/";
+    var AddOrUpdateAction = "/cs/ChemicalIssuanceRecipeTr/AddOrUpdate/";
+    //var DeleteAction = "/cs/ChemicalIssuanceRecipeTr/Delete/";
+
+    Layout = "_Layout";
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@title Management</h5>
+                @if (User.Claims.Any(x => x.Value == AccountClaimKeys.CS_CHEMICAL_ISSUANCE_RECIPE_CREATE)){<button href="#@AddOrUpdateAction" class="btn btn-primary create-js" data-action="#@AddOrUpdateAction" data-title="Create @title">ADD NEW </button>}
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="">
+                            <div class="col-xs-12 col-sm-12">
+                                <table id="BrandsTable" data-order="[[ 2, &quot;asc&quot; ]]" class="table table-striped table-bordered nowrap dataTable" role="grid" aria-describedby="simpletable_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>Tr Id</th>
+                                            <th>Recipe No </th>
+                                            <th>Recipe Date</th>
+                                            <th>Issuance Date</th>
+                                            <th>IsCompleteIssued?</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>fcgfgfg
+                                    <tbody>
+                                        @foreach (var c in Model)
+                                        {
+                                        <tr role="row">
+                                            <td>@c.Id</td>
+                                            <td>@c.Recipe?.No</td>
+                                            <td>@c.TransactionDate.ToString("dd-MMM-yyyy")</td>
+                                            <td>@c.RecipieIssuanceDate?.ToString("dd-MMM-yyyy")</td>
+                                            <td class="sorting_3">
+                                                <div class="border-checkbox-section">
+                                                    <div class="row">
+                                                        <div class="col-12 border-checkbox-group border-checkbox-group-primary">
+                                                            <input class="border-checkbox" type="checkbox" disabled="disabled" @{var isCompleted = c.IsCompleteIssued == true ? "checked" : ""; } @isCompleted>
+                                                            <label class="border-checkbox-label" for="IsConfirmed"> </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="width:150px;">
+                                                <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-primary">Details</a>
+                                                @*@if (User.Claims.Any(x => x.Value == AccountClaimKeys.Something)){<button type="button" class="btn btn-primary update-js" data-action="#@AddOrUpdateAction@c.Id" data-title="Update @title">Edit</button>}*@
+                                                @*<button type="button" class="btn btn-primary" data-action="#@DetailsAction@c.Id" data-title="Detail @title">Details</button>*@
+            @* @if (User.Claims.Any(x => x.Value == AccountClaimKeys.Something)){<button class="btn btn-danger item-delete-btn" data-delete-url="@DeleteAction@c.Id">Delete</button>}*@
+                                            </td>
+
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr role="row">
+                                            <th>Tr Id</th>
+                                            <th>Recipe No </th>
+                                            <th>Recipe Date</th>
+                                            <th>Issuance Date</th>
+                                            <th>IsCompleteIssued?</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        var modal = "#adminModal";
+    </script>
+}

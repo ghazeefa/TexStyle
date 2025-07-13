@@ -1,0 +1,352 @@
+﻿
+@model IEnumerable<TexStyle.Core.ReportsViewModel.PPC.IGPRecordFabric_P8ViewModel>
+
+@{
+    @*var AddOrUpdateAction = "/cs/LoanTakenReturnOutTr/AddOrUpdate/";
+    var DeleteAction = "/cs/LCImportInTrDetail/Delete/";
+*@
+
+var a = 0;
+    }
+
+<div class="row ">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Details</h5>
+                @*<button href="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" class="btn btn-primary create-js" data-action="#@(AddOrUpdateAction)?ParentId=@(Model.Id)" data-title="Create @title Detail">ADD NEW</button>*@
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <div id="simpletable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                        <div class="col-xs-20 col-sm-20 m-dT">
+                            <h6 class="text-danger" style="display:none" id="msg">Please Enter Rate</h6>
+                            @*dataTable*@
+                            <div class="form-group modal-dialog-scrollable" style="overflow-y:scroll; height:200px;">
+                                <table id="datatbl" class="table table-bordered table-hover table-striped overflow-hidden" style="overflow:scroll; height:100px;">
+                                    <thead>
+                                        <tr>
+                                            <th class="sorting_asc">IGPNo</th>
+                                            <th class="sorting_asc">Detail</th>
+                                            <th class="sorting_asc" hidden></th>
+                                            <th class="sorting_asc" hidden></th>
+                                            <th class="sorting_asc" hidden></th>
+                                            <th class="sorting_asc" hidden></th>
+
+                                            <th class="sorting">GateReff</th>
+                                            @*<th class="sorting">Buyer</th>*@
+                                            <th class="sorting">Party</th>
+                                            @*<th class="sorting">FabricType</th>
+                            <th class="sorting">Fabric Quality</th>*@
+                                            <th class="sorting">Knitter</th>
+                                            <th class="sorting">Dia</th>
+                                            @*<th class="sorting">GSM</th>*@
+                                            <th class="sorting">NetKgs</th>
+                                            <th class="sorting">PlannedKgs</th>
+                                            <th class="sorting">Availablekgs</th>
+                                            <th class="sorting">RequiredKgs</th>
+                                            <th class="sorting">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var c in Model)
+                                        {
+                                            <tr>
+                                                <td>@c.HeaderId <input style="width:5%" type="text" id="hidid" value="@c.HeaderId" class="invisible" />  @*<input type="text" class="invisible" id="index" />*@</td>
+                                                <td class="sorting_asc">@c.DetailId<input type="hidden" id="did" value="@c.DetailId" /></td>
+
+                                                <td class="sorting_asc" hidden>@c.FabricTypesId<input type="hidden" id="ftypeid" value="@c.FabricTypesId" /></td>
+                                                <td class="sorting_asc" hidden>@c.PartyId<input type="hidden" id="pid" value="@c.PartyId" /></td>
+                                                <td class="sorting_asc" hidden>@c.FabricQualityId<input type="hidden" id="fqualityid" value="@c.FabricQualityId" /></td>
+                                                <td class="sorting_asc" hidden>@c.KnitingPartyId<input type="hidden" id="kpid" value="@c.KnitingPartyId" /></td>
+
+
+
+
+
+                                                <td class="sorting_asc">@c.GateReffId </td>
+                                                @*@*<td class="sorting_asc" > @c.Buyer</td>*@
+                                                <td class="sorting_asc">@c.Party</td>
+                                                @*<td class="sorting_asc" >@c.FabricType</td>
+
+                                <td class="sorting_asc" >@c.FabricQuality</td>*@
+                                                <td class="sorting_asc">@c.Knitter</td>
+                                                <td class="sorting_asc">@c.Dia <input type="hidden" id="diaid" value="@c.Dia" /> </td>
+                                                @*<td class="sorting_asc" >@c.GSM</td>*@
+
+                                                <td class="sorting_asc">@c.NetWeightInKg</td>
+                                                <td class="sorting_asc">@c.Plannedkgs</td>
+                                                <td class="sorting_asc">@c.RemainingKgs <input type="hidden" id="AvailableQtyDr" value="@c.RemainingKgs" /></td>
+                                                <td class="sorting_asc"><input type="text" id="QtyDr" onblur="check()" value="@c.RemainingKgs" onkeypress="return event.charCode > 0 || event.charCode < 1" pattern="(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)" title="Rate is Required" required /><img src="~/images/ticks.png" style="display:none;" width="30" height="30" id="msg" /><img src="~/images/loader2.gif" width="30" height="30" style="display:none;" id="msg2" /> </td>
+                                                @*<td class="sorting_asc" style="width:12%"></td>*@
+
+                                                <td>
+                                                    <a class="btn btn-pinterest">Remove</a>
+
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+
+                                    <tr>
+                                        <th class="sorting_asc">IGPNo</th>
+                                        <th class="sorting_asc">Detail</th>
+
+                                        <th class="sorting_asc" hidden></th>
+                                        <th class="sorting_asc" hidden></th>
+                                        <th class="sorting_asc" hidden></th>
+                                        <th class="sorting_asc" hidden></th>
+
+                                        <th class="sorting">GateReff</th>
+                                        @*<th class="sorting">Buyer</th>*@
+                                        <th class="sorting">Party</th>
+                                        @*<th class="sorting">FabricType</th>
+                        <th class="sorting">Fabric Quality</th>*@
+                                        <th class="sorting">Knitter</th>
+                                        <th class="sorting">Dia</th>
+                                        @*<th class="sorting">GSM</th>*@
+                                        <th class="sorting">NetKgs</th>
+                                        <th class="sorting">PlannedKgs</th>
+                                        <th class="sorting">Availablekgs</th>
+                                        <th class="sorting">RequiredKgs</th>
+                                        <th class="sorting">Action</th>
+
+                                    </tr>
+
+                                </table>
+
+
+                            </div>
+                            <button class="btn btn-primary" onclick="sub()" id="btnUpdate">Final</button>
+                        </div>
+                        <div>
+                            <table id="datatb2">
+                                <tr>
+
+
+                                    @*<td>
+
+                                        @Model.Sum(x => x.RemainingKgs)
+                                    </td>*@
+                                    <td class="sorting_asc"><input type="text" id="sum" value=" @Model.Sum(x => x.RemainingKgs)"/> </td>
+
+                                </tr>
+                                
+                                
+
+                            </table>
+                            
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/global/vendor/datatables/jquery.dataTables.min.js"></script>
+
+
+
+<script>
+
+
+
+
+
+    $("a").click(function () {
+
+
+        debugger;
+        //alert($("#sum").val());
+
+        //var table = $('#datatbl').DataTable();
+
+        var sum = $('#sum').val();
+        //var arr = [];
+        //var totalrecord = table.rows().count();
+        //var rowcount = 0;
+        //for (var i = 0; i < table.rows().count(); i++) {
+        //    var id = 0;
+          var QtyDr = 0;
+        //    var AvailableQtyDr = 0;
+
+        //    QtyDr = table.cell(i, 13).nodes().to$().find('#QtyDr').val();
+       // QtyDr = $(this).('#QtyDr').val();
+
+        var $row = $(this).closest("tr"),       // Finds the closest row <tr> 
+     /*       $tds = $row.find("td"); */            // Finds all children <td> elements
+           // Finds the closest row <tr> 
+            $tds = $row.find("td:nth-child(14)"); // Finds the 2nd <td> element
+        $.each($tds, function () {
+
+            QtyDr=$(this)
+          
+        /*    console.log($(this).text());  */      // Prints out the text within the <td>
+        });
+
+       var  Qty = QtyDr.val();
+
+            sum = sum - Qty
+
+            $("#sum").val(sum);
+         
+        
+
+
+
+        $(this).closest("tr").remove();
+
+
+
+    });
+
+
+    function check() {
+       debugger;
+        var table = $('#datatbl').DataTable();
+        var table2 = $('#datatb2').DataTable();
+
+        var sum = 0
+        sum = table2.cell(i, 0).nodes().to$().find('#sum').val();
+
+        var arr = [];
+        var totalrecord = table.rows().count();
+        var rowcount = 0;
+        for (var i = 0; i < table.rows().count(); i++) {
+            var id = 0;
+            var QtyDr = 0;
+            var AvailableQtyDr = 0;
+           
+
+            table.cell(i, 12).nodes().to$().find('#msg2').show();
+            id = table.cell(i, 0).nodes().to$().find('#hidid').val();
+            /*QtyDr = table.cell(i, 7).nodes().to$().find('#QtyDr').val().toFixed(7);*/
+            QtyDr = table.cell(i, 13).nodes().to$().find('#QtyDr').val();
+            AvailableQtyDr = table.cell(i, 12).nodes().to$().find('#AvailableQtyDr').val();
+           
+
+
+           
+            if (QtyDr == "0" || QtyDr == "0.00" || QtyDr == 'undefined' || QtyDr == null || QtyDr == '') {
+
+
+
+
+                $("#btnUpdate").attr('disabled', true);
+
+
+            }
+            else {
+                var a = AvailableQtyDr - QtyDr;
+                if (a<0) {
+                    $("#btnUpdate").attr('disabled', true);
+
+
+                    
+
+                }
+                else {
+                    rowcount++;
+                }
+                if (rowcount == totalrecord) {
+                    $("#btnUpdate").attr('disabled', false);
+                }
+
+            }
+
+
+        }
+    }
+
+
+
+    function sub() {
+       debugger;
+        var table = $('#datatbl').DataTable();
+        var arr = [];
+
+        var GSM = $("#GSM").val();
+        var LotNo = $("#LotNo").val();
+        //var IssuedDate = $("#IssuedDate").val();
+        var PurchaseOrderId = $("#PurchaseOrderId").val();
+        var IsConfirmed = $("#IsConfirmed").val();
+        var ProductionTypeId = $("#ProductionTypeId").val();
+        var BuyerColorId = $("#BuyerColorId").val();
+        var FactoryPo = $("#FactoryPo").val();
+        debugger
+        var DyeingWOID = $("#input-field").val();
+       // var DyeingWODetailID = $("#DyeingWODetailID").val();
+        var DyeingWODetailID = $("#input-field-detail").val();
+
+        for (var i = 0; i < table.rows().count(); i++) {
+            var id = 0;
+            var QtyDr = 0;
+            var detailid = 0;
+            var fabrictypeid = 0;
+            var partyid = 0;
+            var fabricqualityid = 0;
+            var knittingpartyid = 0;
+            var dia = 0;
+           //var buyercolorid = 0;
+
+            table.cell(i, 13).nodes().to$().find('#msg2').show();
+            id = table.cell(i, 0).nodes().to$().find('#hidid').val();
+            QtyDr = table.cell(i, 13).nodes().to$().find('#QtyDr').val();
+            detailid = table.cell(i, 1).nodes().to$().find('#did').val();
+            fabrictypeid = table.cell(i, 2).nodes().to$().find('#ftypeid').val();
+            partyid = table.cell(i, 3).nodes().to$().find('#pid').val();
+            fabricqualityid = table.cell(i, 4).nodes().to$().find('#fqualityid').val();
+            knittingpartyid = table.cell(i, 5).nodes().to$().find('#kpid').val();
+            dia = table.cell(i, 9).nodes().to$().find('#diaid').val();
+            arr.push({
+                                'id': id,
+                               'QtyDr': QtyDr,
+                               'DetailId': detailid,                    
+                               'ProductionTypeId': ProductionTypeId,
+                               'LotNo': LotNo ,
+                               //'IssuedDate': IssuedDate ,
+                               'PurchaseOrderId': PurchaseOrderId,
+                               'BuyerColorId': BuyerColorId,
+                               'IsConfirmed': IsConfirmed,
+                'FactoryPo': FactoryPo,
+                'DyeingWOID': DyeingWOID,
+                'DyeingWODetailID': DyeingWODetailID
+
+
+                              
+            });
+        }
+        $.ajax({
+        
+
+            method: 'POST',
+      
+            data: {
+                list: JSON.stringify(arr)
+            },
+           url: `/ppc/PPCPlanning/AddQuantity`
+           //url: `/cs/LoanTakenReturnOutTr/AddQuantity`
+        }).done(function (res) {
+            debugger;
+ 
+            alert("Your Record has been created. GO on PPC Planning for checking newly entred record. ");
+           
+            
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert("error");
+        });
+
+
+    }
+    
+   
+</script>
